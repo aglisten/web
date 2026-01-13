@@ -1,0 +1,23 @@
+{
+    "name": "@aglisten/web-runtime",
+    "version": "0.1.0",
+    "description": "A web runtime for Aglisten",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "@aglisten/transpiler": "workspace:*",
+        "lightningcss": "^1.30.2"
+    }
+}
