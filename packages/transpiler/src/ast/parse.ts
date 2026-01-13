@@ -8,10 +8,7 @@ type ParseOptions = {
 };
 
 const parse = async (options: ParseOptions): Promise<ParseResult> => {
-    return await oxcParse(
-        options.filename,
-        options.source,
-    );
+    return await oxcParse(options.filename, options.source);
 };
 
 export type { ParseOptions, ParseResult };
