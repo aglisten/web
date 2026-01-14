@@ -67,7 +67,12 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
                         });
                     }
 
-                    // unhandled type: Literal
+                    // unsupported type
+                    else {
+                        throw new TypeError(
+                            `Unsupported specifier imported type: ${specifier.imported.type}`,
+                        );
+                    }
                 }
             }
         },
@@ -101,24 +106,42 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
                         // const { x } = require("p");
                         // const { x: y } = require("p");
                         if (prop.type === "Property") {
-                            if (
-                                prop.key.type === "Identifier" &&
-                                prop.value.type === "Identifier"
-                            ) {
-                                specifiers.push({
-                                    imported: prop.key.name,
-                                    local: prop.value.name,
-                                });
+                            if (prop.key.type !== "Identifier") {
+                                throw new TypeError(
+                                    `Unsupported require property key type: ${prop.key.type}`,
+                                );
                             }
+
+                            if (prop.value.type !== "Identifier") {
+                                throw new TypeError(
+                                    `Unsupported require property value type: ${prop.value.type}`,
+                                );
+                            }
+
+                            specifiers.push({
+                                imported: prop.key.name,
+                                local: prop.value.name,
+                            });
                         }
 
                         // const { ...x } = require("p");
                         else if (prop.type === "RestElement") {
-                            if (prop.argument.type === "Identifier") {
-                                namespaces.push(prop.argument.name);
+                            if (prop.argument.type !== "Identifier") {
+                                throw new TypeError(
+                                    `Unsupported require rest argument type: ${prop.argument.type}`,
+                                );
                             }
+
+                            namespaces.push(prop.argument.name);
                         }
                     }
+                }
+
+                // unsupported type
+                else {
+                    throw new TypeError(
+                        `Unsupported variable declaration id type: ${decl.id.type}`,
+                    );
                 }
             }
         },
