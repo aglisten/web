@@ -1,5 +1,6 @@
 import type { Program } from "oxc-parser";
 
+import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
 type PreprocessOptions = {
@@ -13,10 +14,7 @@ type PreprocessResult = {
 const preprocess = async (
     options: PreprocessOptions,
 ): Promise<PreprocessResult> => {
-    // copy object
-    const result: Program = {
-        ...options.program,
-    };
+    const result: Program = cloneDeep(options.program);
 
     const visitor: Visitor = new Visitor({});
 

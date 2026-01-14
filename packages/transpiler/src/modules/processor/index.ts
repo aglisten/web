@@ -1,5 +1,6 @@
 import type { Program } from "oxc-parser";
 
+import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
 type ProcessOptions = {
@@ -11,10 +12,7 @@ type ProcessResult = {
 };
 
 const process = async (options: ProcessOptions): Promise<ProcessResult> => {
-    // copy object
-    const result: Program = {
-        ...options.program,
-    };
+    const result: Program = cloneDeep(options.program);
 
     const visitor: Visitor = new Visitor({});
 

@@ -5,6 +5,7 @@ import type {
     VariableDeclaration,
 } from "oxc-parser";
 
+import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
 type CollectOptions = {
@@ -25,10 +26,7 @@ type CollectResult = {
 };
 
 const collect = async (options: CollectOptions): Promise<CollectResult> => {
-    // copy object
-    const result: Program = {
-        ...options.program,
-    };
+    const result: Program = cloneDeep(options.program);
 
     let isImported: boolean = false;
     const namespaces: string[] = [];
