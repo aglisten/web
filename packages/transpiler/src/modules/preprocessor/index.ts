@@ -1,10 +1,17 @@
 import type { Program } from "oxc-parser";
 
-import { cloneDeep } from "es-toolkit";
-import { Visitor } from "oxc-parser";
+import type { Specifier } from "#/@types/specifier";
+import type { PreprocessCallExprResult } from "#/modules/preprocessor/preprocess/call-expr";
+import type { PreprocessVarDeclResult } from "#/modules/preprocessor/preprocess/var-decl";
+
+import { preprocessCallExpr } from "#/modules/preprocessor/preprocess/call-expr";
+import { preprocessVarDecl } from "#/modules/preprocessor/preprocess/var-decl";
 
 type PreprocessOptions = {
     program: Program;
+    namespaces: string[];
+    includedFunctions: string[];
+    specifiers: Specifier[];
 };
 
 type PreprocessResult = {
@@ -14,14 +21,22 @@ type PreprocessResult = {
 const preprocess = async (
     options: PreprocessOptions,
 ): Promise<PreprocessResult> => {
-    const result: Program = cloneDeep(options.program);
+    const resultCallExpr: PreprocessCallExprResult = await preprocessCallExpr({
+        program: options.program,
+        namespaces: options.namespaces,
+        includedFunctions: options.includedFunctions,
+        specifiers: options.specifiers,
+    });
 
-    const visitor: Visitor = new Visitor({});
-
-    visitor.visit(result);
+    const resultVarDecl: PreprocessVarDeclResult = await preprocessVarDecl({
+        program: resultCallExpr.program,
+        namespaces: options.namespaces,
+        includedFunctions: options.includedFunctions,
+        specifiers: options.specifiers,
+    });
 
     return {
-        program: result,
+        program: resultVarDecl.program,
     };
 };
 

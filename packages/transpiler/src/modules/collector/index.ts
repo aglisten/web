@@ -5,6 +5,8 @@ import type {
     VariableDeclaration,
 } from "oxc-parser";
 
+import type { Specifier } from "#/@types/specifier";
+
 import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
@@ -12,11 +14,6 @@ type CollectOptions = {
     program: Program;
     packageName: string;
     includedFunctions: string[];
-};
-
-type Specifier = {
-    imported: string;
-    local: string;
 };
 
 type CollectResult = {
