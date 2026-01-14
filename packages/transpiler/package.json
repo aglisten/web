@@ -8,6 +8,21 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         },
+        "./collector": {
+            "types": "./dist/modules/collector/index.d.ts",
+            "import": "./dist/modules/collector/index.mjs",
+            "require": "./dist/modules/collector/index.js"
+        },
+        "./preprocessor": {
+            "types": "./dist/modules/preprocessor/index.d.ts",
+            "import": "./dist/modules/preprocessor/index.mjs",
+            "require": "./dist/modules/preprocessor/index.js"
+        },
+        "./processor": {
+            "types": "./dist/modules/processor/index.d.ts",
+            "import": "./dist/modules/processor/index.mjs",
+            "require": "./dist/modules/processor/index.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",
