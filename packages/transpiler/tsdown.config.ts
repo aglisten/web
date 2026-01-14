@@ -4,7 +4,11 @@ import { cjsPreset, dtsPreset, esmPreset } from "@apst/tsdown/presets";
 export default defineConfig(
     {
         entry: {
+            // public
             index: "./src/index.ts",
+            // internal
+            "ast/parse": "./src/ast/parse.ts",
+            "ast/codegen": "./src/ast/codegen.ts",
             "modules/collector/index": "./src/modules/collector/index.ts",
             "modules/preprocessor/index": "./src/modules/preprocessor/index.ts",
             "modules/processor/index": "./src/modules/processor/index.ts",

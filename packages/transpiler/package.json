@@ -8,6 +8,16 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         },
+        "./ast/parse": {
+            "types": "./dist/ast/parse.d.ts",
+            "import": "./dist/ast/parse.mjs",
+            "require": "./dist/ast/parse.js"
+        },
+        "./ast/codegen": {
+            "types": "./dist/ast/codegen.d.ts",
+            "import": "./dist/ast/codegen.mjs",
+            "require": "./dist/ast/codegen.js"
+        },
         "./collector": {
             "types": "./dist/modules/collector/index.d.ts",
             "import": "./dist/modules/collector/index.mjs",
