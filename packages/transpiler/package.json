@@ -44,7 +44,6 @@
     "dependencies": {
         "es-toolkit": "^1.43.0",
         "esrap": "^2.2.1",
-        "oxc-parser": "~0.108.0",
-        "oxc-walker": "~0.6.0"
+        "oxc-parser": "~0.108.0"
     }
 }

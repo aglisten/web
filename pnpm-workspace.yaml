@@ -1,5 +1,6 @@
 packages:
     - ./packages/*
+    - ./tests/*
 
 minimumReleaseAge: 1440
 

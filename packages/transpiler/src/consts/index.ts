@@ -1,4 +1,4 @@
-const SIGNATURE = "aglisten" as const;
+const SIGNATURE = "_aglisten" as const;
 
 const ID = "id" as const;
 

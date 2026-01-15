@@ -1,0 +1,12 @@
+{
+    "name": "test-transpiler",
+    "private": true,
+    "dependencies": {
+        "@aglisten/transpiler": "workspace:*",
+        "oxc-minify": "~0.108.0",
+        "vitest": "^4.0.17"
+    },
+    "devDependencies": {
+        "vite-tsconfig-paths": "^6.0.4"
+    }
+}

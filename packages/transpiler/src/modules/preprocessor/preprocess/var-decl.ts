@@ -3,7 +3,6 @@ import type {
     Directive,
     IdentifierReference,
     MemberExpression,
-    Node,
     Program,
     Statement,
     VariableDeclarator,
@@ -14,7 +13,6 @@ import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/tra
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
 import { cloneDeep } from "es-toolkit";
-import { walk } from "oxc-walker";
 
 import { SIGNATURE } from "#/consts";
 import { transformIdent } from "#/modules/preprocessor/preprocess/transform/ident";
@@ -36,83 +34,69 @@ const preprocessVarDecl = async (
 ): Promise<PreprocessVarDeclResult> => {
     const result: Program = cloneDeep(options.program);
 
-    walk(result, {
-        enter: async (node: Node): Promise<void> => {
-            if (node.type !== "Program") return void 0;
+    for (let i: number = 0; i < result.body.length; i++) {
+        const body: Directive | Statement | undefined = result.body[i];
 
-            for (let i: number = 0; i < node.body.length; i++) {
-                const body: Directive | Statement | undefined = node.body[i];
+        if (!body) continue;
 
-                if (!body) return void 0;
+        if (body.type !== "VariableDeclaration") continue;
 
-                if (body.type !== "VariableDeclaration") return void 0;
+        for (let j: number = 0; j < body.declarations.length; j++) {
+            const decl: VariableDeclarator | undefined = body.declarations[j];
 
-                for (let j: number = 0; j < body.declarations.length; j++) {
-                    const decl: VariableDeclarator | undefined =
-                        body.declarations[j];
+            if (!decl) continue;
 
-                    if (!decl) return void 0;
+            if (!decl.init) continue;
 
-                    if (!decl.init) return void 0;
+            if (decl.init.type !== "CallExpression") continue;
 
-                    if (decl.init.type !== "CallExpression") return void 0;
+            const call: CallExpression = decl.init;
 
-                    const call: CallExpression = decl.init;
+            const id: string =
+                decl.id.type === "Identifier"
+                    ? decl.id.name
+                    : `${SIGNATURE}_vd_${i}_${j}`;
 
-                    const id: string =
-                        decl.id.type === "Identifier"
-                            ? decl.id.name
-                            : `${SIGNATURE}_vd_${i}_${j}`;
+            // const abc = x.y();
+            if (call.callee.type === "MemberExpression") {
+                const member: MemberExpression = call.callee;
 
-                    // const abc = x.y();
-                    if (call.callee.type === "MemberExpression") {
-                        const member: MemberExpression = call.callee;
+                if (member.object.type !== "Identifier") continue;
 
-                        if (member.object.type !== "Identifier") return void 0;
+                if (!options.namespaces.includes(member.object.name)) continue;
 
-                        if (!options.namespaces.includes(member.object.name))
-                            return void 0;
+                if (member.property.type !== "Identifier") continue;
 
-                        if (member.property.type !== "Identifier")
-                            return void 0;
+                if (!options.includedFunctions.includes(member.property.name))
+                    continue;
 
-                        if (
-                            !options.includedFunctions.includes(
-                                member.property.name,
-                            )
-                        )
-                            return void 0;
+                const resultTransform: TransformMemberExprResult =
+                    await transformMemberExpr({
+                        id,
+                        member,
+                        arguments: call.arguments,
+                    });
 
-                        const resultTransform: TransformMemberExprResult =
-                            await transformMemberExpr({
-                                id,
-                                member,
-                                arguments: call.arguments,
-                            });
-
-                        decl.init = resultTransform.object;
-                    }
-
-                    // const abc = x();
-                    else if (call.callee.type === "Identifier") {
-                        const ident: IdentifierReference = call.callee;
-
-                        if (!options.includedFunctions.includes(ident.name))
-                            return void 0;
-
-                        const resultTransform: TransformIdentResult =
-                            await transformIdent({
-                                id,
-                                ident,
-                                arguments: call.arguments,
-                            });
-
-                        decl.init = resultTransform.object;
-                    }
-                }
+                decl.init = resultTransform.object;
             }
-        },
-    });
+
+            // const abc = x();
+            else if (call.callee.type === "Identifier") {
+                const ident: IdentifierReference = call.callee;
+
+                if (!options.includedFunctions.includes(ident.name)) continue;
+
+                const resultTransform: TransformIdentResult =
+                    await transformIdent({
+                        id,
+                        ident,
+                        arguments: call.arguments,
+                    });
+
+                decl.init = resultTransform.object;
+            }
+        }
+    }
 
     return {
         program: result,
