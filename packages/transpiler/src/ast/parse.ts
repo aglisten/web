@@ -3,12 +3,12 @@ import type { ParseResult } from "oxc-parser";
 import { parseSync } from "oxc-parser";
 
 type ParseOptions = {
-    filename: string;
-    source: string;
+    file: string;
+    code: string;
 };
 
 const parse = (options: ParseOptions): ParseResult => {
-    return parseSync(options.filename, options.source);
+    return parseSync(options.file, options.code);
 };
 
 export type { ParseOptions, ParseResult };

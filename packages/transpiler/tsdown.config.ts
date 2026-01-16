@@ -11,6 +11,7 @@ export default defineConfig(
             "ast/codegen": "./src/ast/codegen.ts",
             "modules/collector/index": "./src/modules/collector/index.ts",
             "modules/preprocessor/index": "./src/modules/preprocessor/index.ts",
+            "modules/bundler/index": "./src/modules/bundler/index.ts",
             "modules/processor/index": "./src/modules/processor/index.ts",
         },
     },

@@ -5,7 +5,7 @@ import ts from "esrap/languages/ts";
 import tsx from "esrap/languages/tsx";
 
 type CodegenOptions = {
-    filename: string;
+    file: string;
     program: Program;
 };
 
@@ -16,10 +16,7 @@ type CodegenResult = {
 
 const codegen = (options: CodegenOptions): CodegenResult => {
     // tsx / jsx
-    if (
-        options.filename.endsWith(".tsx") ||
-        options.filename.endsWith(".jsx")
-    ) {
+    if (options.file.endsWith(".tsx") || options.file.endsWith(".jsx")) {
         return print(options.program, tsx());
     }
 

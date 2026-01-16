@@ -28,6 +28,11 @@
             "import": "./dist/modules/preprocessor/index.mjs",
             "require": "./dist/modules/preprocessor/index.js"
         },
+        "./bundler": {
+            "types": "./dist/modules/bundler/index.d.ts",
+            "import": "./dist/modules/bundler/index.mjs",
+            "require": "./dist/modules/bundler/index.js"
+        },
         "./processor": {
             "types": "./dist/modules/processor/index.d.ts",
             "import": "./dist/modules/processor/index.mjs",
@@ -44,6 +49,9 @@
     "dependencies": {
         "es-toolkit": "^1.43.0",
         "esrap": "^2.2.1",
-        "oxc-parser": "~0.108.0"
+        "fdir": "^6.5.0",
+        "oxc-parser": "~0.108.0",
+        "rolldown": "1.0.0-beta.60",
+        "ts-vista": "~0.2.3"
     }
 }
