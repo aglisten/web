@@ -5,6 +5,7 @@ import { Visitor } from "oxc-parser";
 
 type ProcessOptions = {
     program: Program;
+    programRef: Program;
 };
 
 type ProcessResult = {

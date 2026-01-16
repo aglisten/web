@@ -9,9 +9,9 @@ import { minify } from "#/functions/minify";
 
 describe("preprocessor tests", (): void => {
     it("should preprocess the call expression", (): void => {
-        const filename = "index.ts" as const;
+        const file = "index.ts" as const;
 
-        const source = `
+        const code = `
             import { x } from "p";
 
             x({
@@ -35,8 +35,8 @@ describe("preprocessor tests", (): void => {
         ` as const;
 
         const { program } = parse({
-            filename,
-            source,
+            file,
+            code,
         });
 
         const { program: preprocessed } = preprocess({
@@ -54,22 +54,22 @@ describe("preprocessor tests", (): void => {
         });
 
         const preprocessedMinify: MinifyResult = minify(
-            filename,
+            file,
             codegen({
-                filename,
+                file,
                 program: preprocessed,
             }).code,
         );
 
-        const outputMinify: MinifyResult = minify(filename, output);
+        const outputMinify: MinifyResult = minify(file, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });
 
     it("should preprocess the variable declaration", (): void => {
-        const filename = "index.ts" as const;
+        const file = "index.ts" as const;
 
-        const source = `
+        const code = `
             import { x } from "p";
 
             const block = x({
@@ -93,8 +93,8 @@ describe("preprocessor tests", (): void => {
         ` as const;
 
         const { program } = parse({
-            filename,
-            source,
+            file,
+            code,
         });
 
         const { program: preprocessed } = preprocess({
@@ -112,14 +112,14 @@ describe("preprocessor tests", (): void => {
         });
 
         const preprocessedMinify: MinifyResult = minify(
-            filename,
+            file,
             codegen({
-                filename,
+                file,
                 program: preprocessed,
             }).code,
         );
 
-        const outputMinify: MinifyResult = minify(filename, output);
+        const outputMinify: MinifyResult = minify(file, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });

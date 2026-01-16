@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 
 describe("collector tests", (): void => {
     it("should collect the default namespace information", (): void => {
-        const source = `
+        const code = `
             import x from "p";
 
             x.y({
@@ -15,8 +15,8 @@ describe("collector tests", (): void => {
         ` as const;
 
         const { program } = parse({
-            filename: "index.ts",
-            source,
+            file: "index.ts",
+            code,
         });
 
         const { isImported, namespaces, specifiers } = collect({
@@ -35,7 +35,7 @@ describe("collector tests", (): void => {
     });
 
     it("should collect the namespace information", (): void => {
-        const source = `
+        const code = `
             import * as x from "p";
 
             x.y({
@@ -44,8 +44,8 @@ describe("collector tests", (): void => {
         ` as const;
 
         const { program } = parse({
-            filename: "index.ts",
-            source,
+            file: "index.ts",
+            code,
         });
 
         const { isImported, namespaces, specifiers } = collect({
@@ -64,7 +64,7 @@ describe("collector tests", (): void => {
     });
 
     it("should collect the specifier information", (): void => {
-        const source = `
+        const code = `
             import { x } from "p";
 
             x({
@@ -73,8 +73,8 @@ describe("collector tests", (): void => {
         ` as const;
 
         const { program } = parse({
-            filename: "index.ts",
-            source,
+            file: "index.ts",
+            code,
         });
 
         const { isImported, namespaces, specifiers } = collect({

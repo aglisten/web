@@ -59,7 +59,7 @@ type BundleResult = {
     /**
      * Source map.
      */
-    map: SourceMap | null;
+    map: SourceMap | undefined;
 };
 
 const bundle = async (options: BundleOptions): Promise<BundleResult> => {
@@ -94,9 +94,14 @@ const bundle = async (options: BundleOptions): Promise<BundleResult> => {
 
     return {
         code: output.code,
-        map: output.map,
+        map: output.map ?? void 0,
     };
 };
 
-export type { BundleOptions };
+export type {
+    PresetBundleOptions,
+    UserBundleOptions,
+    BundleOptions,
+    BundleResult,
+};
 export { bundle };
