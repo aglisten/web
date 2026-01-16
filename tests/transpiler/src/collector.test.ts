@@ -5,7 +5,7 @@ import { collect } from "@aglisten/transpiler/collector";
 import { describe, expect, it } from "vitest";
 
 describe("collector tests", (): void => {
-    it("should collect the default namespace information", async (): Promise<void> => {
+    it("should collect the default namespace information", (): void => {
         const source = `
             import x from "p";
 
@@ -14,12 +14,12 @@ describe("collector tests", (): void => {
             });
         ` as const;
 
-        const { program } = await parse({
+        const { program } = parse({
             filename: "index.ts",
             source,
         });
 
-        const { isImported, namespaces, specifiers } = await collect({
+        const { isImported, namespaces, specifiers } = collect({
             program,
             packageName: "p",
             includedFunctions: [
@@ -34,7 +34,7 @@ describe("collector tests", (): void => {
         expect(specifiers).toEqual([] satisfies Specifier[]);
     });
 
-    it("should collect the namespace information", async (): Promise<void> => {
+    it("should collect the namespace information", (): void => {
         const source = `
             import * as x from "p";
 
@@ -43,12 +43,12 @@ describe("collector tests", (): void => {
             });
         ` as const;
 
-        const { program } = await parse({
+        const { program } = parse({
             filename: "index.ts",
             source,
         });
 
-        const { isImported, namespaces, specifiers } = await collect({
+        const { isImported, namespaces, specifiers } = collect({
             program,
             packageName: "p",
             includedFunctions: [
@@ -63,7 +63,7 @@ describe("collector tests", (): void => {
         expect(specifiers).toEqual([] satisfies Specifier[]);
     });
 
-    it("should collect the specifier information", async (): Promise<void> => {
+    it("should collect the specifier information", (): void => {
         const source = `
             import { x } from "p";
 
@@ -72,12 +72,12 @@ describe("collector tests", (): void => {
             });
         ` as const;
 
-        const { program } = await parse({
+        const { program } = parse({
             filename: "index.ts",
             source,
         });
 
-        const { isImported, namespaces, specifiers } = await collect({
+        const { isImported, namespaces, specifiers } = collect({
             program,
             packageName: "p",
             includedFunctions: [

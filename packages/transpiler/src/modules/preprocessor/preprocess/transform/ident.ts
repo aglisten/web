@@ -19,9 +19,9 @@ type TransformIdentResult = {
     object: ObjectExpression;
 };
 
-const transformIdent = async (
+const transformIdent = (
     options: TransformIdentOptions,
-): Promise<TransformIdentResult> => {
+): TransformIdentResult => {
     const ident: IdentifierReference = cloneDeep(options.ident);
 
     const object: ObjectExpression = {
@@ -31,28 +31,28 @@ const transformIdent = async (
         properties: [],
     };
 
-    const { property: signature } = await createObjectKeyValue({
+    const { property: signature } = createObjectKeyValue({
         key: SIGNATURE,
         value: true,
     });
 
     object.properties.push(signature);
 
-    const { property: id } = await createObjectKeyValue({
+    const { property: id } = createObjectKeyValue({
         key: ID,
         value: options.id,
     });
 
     object.properties.push(id);
 
-    const { property: kind } = await createObjectKeyValue({
+    const { property: kind } = createObjectKeyValue({
         key: KIND,
         value: options.ident.name,
     });
 
     object.properties.push(kind);
 
-    const { property: args } = await createObjectKeyValue({
+    const { property: args } = createObjectKeyValue({
         key: ARGS,
         value: options.arguments,
     });

@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { minify } from "#/functions/minify";
 
 describe("preprocessor tests", (): void => {
-    it("should preprocess the call expression", async (): Promise<void> => {
+    it("should preprocess the call expression", (): void => {
         const filename = "index.ts" as const;
 
         const source = `
@@ -34,12 +34,12 @@ describe("preprocessor tests", (): void => {
             };
         ` as const;
 
-        const { program } = await parse({
+        const { program } = parse({
             filename,
             source,
         });
 
-        const { program: preprocessed } = await preprocess({
+        const { program: preprocessed } = preprocess({
             program,
             namespaces: [],
             includedFunctions: [
@@ -53,7 +53,7 @@ describe("preprocessor tests", (): void => {
             ],
         });
 
-        const preprocessedMinify: MinifyResult = await minify(
+        const preprocessedMinify: MinifyResult = minify(
             filename,
             codegen({
                 filename,
@@ -61,12 +61,12 @@ describe("preprocessor tests", (): void => {
             }).code,
         );
 
-        const outputMinify: MinifyResult = await minify(filename, output);
+        const outputMinify: MinifyResult = minify(filename, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });
 
-    it("should preprocess the variable declaration", async (): Promise<void> => {
+    it("should preprocess the variable declaration", (): void => {
         const filename = "index.ts" as const;
 
         const source = `
@@ -92,12 +92,12 @@ describe("preprocessor tests", (): void => {
             };
         ` as const;
 
-        const { program } = await parse({
+        const { program } = parse({
             filename,
             source,
         });
 
-        const { program: preprocessed } = await preprocess({
+        const { program: preprocessed } = preprocess({
             program,
             namespaces: [],
             includedFunctions: [
@@ -111,7 +111,7 @@ describe("preprocessor tests", (): void => {
             ],
         });
 
-        const preprocessedMinify: MinifyResult = await minify(
+        const preprocessedMinify: MinifyResult = minify(
             filename,
             codegen({
                 filename,
@@ -119,7 +119,7 @@ describe("preprocessor tests", (): void => {
             }).code,
         );
 
-        const outputMinify: MinifyResult = await minify(filename, output);
+        const outputMinify: MinifyResult = minify(filename, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });

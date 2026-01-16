@@ -18,17 +18,15 @@ type PreprocessResult = {
     program: Program;
 };
 
-const preprocess = async (
-    options: PreprocessOptions,
-): Promise<PreprocessResult> => {
-    const resultCallExpr: PreprocessCallExprResult = await preprocessCallExpr({
+const preprocess = (options: PreprocessOptions): PreprocessResult => {
+    const resultCallExpr: PreprocessCallExprResult = preprocessCallExpr({
         program: options.program,
         namespaces: options.namespaces,
         includedFunctions: options.includedFunctions,
         specifiers: options.specifiers,
     });
 
-    const resultVarDecl: PreprocessVarDeclResult = await preprocessVarDecl({
+    const resultVarDecl: PreprocessVarDeclResult = preprocessVarDecl({
         program: resultCallExpr.program,
         namespaces: options.namespaces,
         includedFunctions: options.includedFunctions,

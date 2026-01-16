@@ -15,9 +15,9 @@ type TransformMemberExprResult = {
     object: ObjectExpression;
 };
 
-const transformMemberExpr = async (
+const transformMemberExpr = (
     options: TransformMemberExprOptions,
-): Promise<TransformMemberExprResult> => {
+): TransformMemberExprResult => {
     const member: MemberExpression = cloneDeep(options.member);
 
     const object: ObjectExpression = {
@@ -27,14 +27,14 @@ const transformMemberExpr = async (
         properties: [],
     };
 
-    const { property: signature } = await createObjectKeyValue({
+    const { property: signature } = createObjectKeyValue({
         key: SIGNATURE,
         value: true,
     });
 
     object.properties.push(signature);
 
-    const { property: id } = await createObjectKeyValue({
+    const { property: id } = createObjectKeyValue({
         key: ID,
         value: options.id,
     });
@@ -61,14 +61,14 @@ const transformMemberExpr = async (
         );
     }
 
-    const { property: kind } = await createObjectKeyValue({
+    const { property: kind } = createObjectKeyValue({
         key: KIND,
         value: kindName,
     });
 
     object.properties.push(kind);
 
-    const { property: args } = await createObjectKeyValue({
+    const { property: args } = createObjectKeyValue({
         key: ARGS,
         value: options.arguments,
     });

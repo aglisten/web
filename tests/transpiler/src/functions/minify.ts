@@ -1,7 +1,9 @@
-import { minify as oxcMinify } from "oxc-minify";
+import type { MinifyResult } from "oxc-minify";
 
-const minify = async (filename: string, source: string) => {
-    return await oxcMinify(filename, source, {
+import { minifySync } from "oxc-minify";
+
+const minify = (filename: string, source: string): MinifyResult => {
+    return minifySync(filename, source, {
         mangle: false,
         compress: false,
     });

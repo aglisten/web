@@ -29,9 +29,9 @@ type PreprocessVarDeclResult = {
     program: Program;
 };
 
-const preprocessVarDecl = async (
+const preprocessVarDecl = (
     options: PreprocessVarDeclOptions,
-): Promise<PreprocessVarDeclResult> => {
+): PreprocessVarDeclResult => {
     const result: Program = cloneDeep(options.program);
 
     for (let i: number = 0; i < result.body.length; i++) {
@@ -71,7 +71,7 @@ const preprocessVarDecl = async (
                     continue;
 
                 const resultTransform: TransformMemberExprResult =
-                    await transformMemberExpr({
+                    transformMemberExpr({
                         id,
                         member,
                         arguments: call.arguments,
@@ -86,12 +86,11 @@ const preprocessVarDecl = async (
 
                 if (!options.includedFunctions.includes(ident.name)) continue;
 
-                const resultTransform: TransformIdentResult =
-                    await transformIdent({
-                        id,
-                        ident,
-                        arguments: call.arguments,
-                    });
+                const resultTransform: TransformIdentResult = transformIdent({
+                    id,
+                    ident,
+                    arguments: call.arguments,
+                });
 
                 decl.init = resultTransform.object;
             }

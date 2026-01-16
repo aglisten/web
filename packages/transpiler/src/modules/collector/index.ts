@@ -22,7 +22,7 @@ type CollectResult = {
     specifiers: Specifier[];
 };
 
-const collect = async (options: CollectOptions): Promise<CollectResult> => {
+const collect = (options: CollectOptions): CollectResult => {
     const result: Program = cloneDeep(options.program);
 
     let isImported: boolean = false;
@@ -31,7 +31,7 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
 
     const visitor: Visitor = new Visitor({
         // ESM
-        ImportDeclaration: async (node: ImportDeclaration): Promise<void> => {
+        ImportDeclaration: (node: ImportDeclaration): void => {
             if (node.source.value !== options.packageName) return void 0;
 
             isImported = true;
@@ -74,9 +74,7 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
             }
         },
         // CJS
-        VariableDeclaration: async (
-            node: VariableDeclaration,
-        ): Promise<void> => {
+        VariableDeclaration: (node: VariableDeclaration): void => {
             for (const decl of node.declarations) {
                 if (!decl.init) continue;
                 if (decl.init.type !== "CallExpression") continue;

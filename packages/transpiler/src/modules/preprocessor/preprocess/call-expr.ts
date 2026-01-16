@@ -29,9 +29,9 @@ type PreprocessCallExprResult = {
     program: Program;
 };
 
-const preprocessCallExpr = async (
+const preprocessCallExpr = (
     options: PreprocessCallExprOptions,
-): Promise<PreprocessCallExprResult> => {
+): PreprocessCallExprResult => {
     const result: Program = cloneDeep(options.program);
 
     for (let i: number = 0; i < result.body.length; i++) {
@@ -77,7 +77,7 @@ const preprocessCallExpr = async (
             }
 
             const resultTransform: TransformMemberExprResult =
-                await transformMemberExpr({
+                transformMemberExpr({
                     id,
                     member,
                     arguments: call.arguments,
@@ -111,7 +111,7 @@ const preprocessCallExpr = async (
 
             if (!options.includedFunctions.includes(ident.name)) continue;
 
-            const resultTransform: TransformIdentResult = await transformIdent({
+            const resultTransform: TransformIdentResult = transformIdent({
                 id,
                 ident,
                 arguments: call.arguments,

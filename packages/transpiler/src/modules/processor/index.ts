@@ -11,7 +11,7 @@ type ProcessResult = {
     program: Program;
 };
 
-const process = async (options: ProcessOptions): Promise<ProcessResult> => {
+const process = (options: ProcessOptions): ProcessResult => {
     const result: Program = cloneDeep(options.program);
 
     const visitor: Visitor = new Visitor({});

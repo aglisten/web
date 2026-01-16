@@ -9,9 +9,9 @@ type CreateObjectKeyValueResult = {
     property: ObjectPropertyKind;
 };
 
-const createObjectKeyValue = async (
+const createObjectKeyValue = (
     options: CreateObjectKeyValueOptions,
-): Promise<CreateObjectKeyValueResult> => {
+): CreateObjectKeyValueResult => {
     let value: Expression;
 
     if (Array.isArray(options.value)) {
