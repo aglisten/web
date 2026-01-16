@@ -5,6 +5,18 @@
         "paths": {
             "#/*": [
                 "./src/*"
+            ],
+            "##/processor/css/*": [
+                "./src/modules/processor/modules/css/*"
+            ],
+            "##/processor/variables/*": [
+                "./src/modules/processor/modules/variables/*"
+            ],
+            "##/processor/keyframes/*": [
+                "./src/modules/processor/modules/keyframes/*"
+            ],
+            "##/processor/style/*": [
+                "./src/modules/processor/modules/style/*"
             ]
         }
     },
