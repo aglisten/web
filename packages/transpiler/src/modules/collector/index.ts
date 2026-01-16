@@ -56,7 +56,7 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
                                 specifier.imported.name,
                             )
                         )
-                            return void 0;
+                            continue;
 
                         specifiers.push({
                             imported: specifier.imported.name,
@@ -78,17 +78,17 @@ const collect = async (options: CollectOptions): Promise<CollectResult> => {
             node: VariableDeclaration,
         ): Promise<void> => {
             for (const decl of node.declarations) {
-                if (!decl.init) return void 0;
-                if (decl.init.type !== "CallExpression") return void 0;
-                if (decl.init.callee.type !== "Identifier") return void 0;
-                if (decl.init.callee.name !== "require") return void 0;
-                if (decl.init.arguments.length !== 1) return void 0;
+                if (!decl.init) continue;
+                if (decl.init.type !== "CallExpression") continue;
+                if (decl.init.callee.type !== "Identifier") continue;
+                if (decl.init.callee.name !== "require") continue;
+                if (decl.init.arguments.length !== 1) continue;
 
                 const arg: Argument | undefined = decl.init.arguments[0];
 
-                if (!arg) return void 0;
-                if (arg.type !== "Literal") return void 0;
-                if (arg.value !== options.packageName) return void 0;
+                if (!arg) continue;
+                if (arg.type !== "Literal") continue;
+                if (arg.value !== options.packageName) continue;
 
                 isImported = true;
 
