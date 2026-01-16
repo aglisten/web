@@ -5,16 +5,17 @@ import { parse } from "@aglisten/transpiler/ast/parse";
 import { preprocess } from "@aglisten/transpiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
+import { SIGNATURE } from "#/consts";
 import { minify } from "#/functions/minify";
 
-describe("preprocessor tests", (): void => {
-    it("should preprocess the call expression", (): void => {
+describe("preprocessor variable declaration tests (specifier)", (): void => {
+    it("should preprocess the function", (): void => {
         const file = "index.ts" as const;
 
         const code = `
             import { x } from "p";
 
-            x({
+            const block = x({
                 display: "block",
             });
         ` as const;
@@ -22,9 +23,9 @@ describe("preprocessor tests", (): void => {
         const output = `
             import { x } from "p";
 
-            const _aglisten_ce_1 = {
-                _aglisten: true,
-                id: "_aglisten_ce_1",
+            const block = {
+                ${SIGNATURE}: true,
+                id: "block",
                 kind: "x",
                 arguments: [
                     {
@@ -66,13 +67,13 @@ describe("preprocessor tests", (): void => {
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });
 
-    it("should preprocess the variable declaration", (): void => {
+    it("should preprocess the function with multiple arguments", (): void => {
         const file = "index.ts" as const;
 
         const code = `
             import { x } from "p";
 
-            const block = x({
+            const block = x("html", {
                 display: "block",
             });
         ` as const;
@@ -81,10 +82,11 @@ describe("preprocessor tests", (): void => {
             import { x } from "p";
 
             const block = {
-                _aglisten: true,
+                ${SIGNATURE}: true,
                 id: "block",
                 kind: "x",
                 arguments: [
+                    "html",
                     {
                         display: "block",
                     },

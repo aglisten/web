@@ -4,70 +4,16 @@ import { parse } from "@aglisten/transpiler/ast/parse";
 import { collect } from "@aglisten/transpiler/collector";
 import { describe, expect, it } from "vitest";
 
-describe("collector tests", (): void => {
-    it("should collect the default namespace information", (): void => {
+describe("collector tests (specifier, cjs)", (): void => {
+    it("should collect the information", (): void => {
         const code = `
-            import x from "p";
-
-            x.y({
-                display: "block",
-            });
-        ` as const;
-
-        const { program } = parse({
-            file: "index.ts",
-            code,
-        });
-
-        const { isImported, namespaces, specifiers } = collect({
-            program,
-            packageName: "p",
-            includedFunctions: [
-                "y",
-            ],
-        });
-
-        expect(isImported).toBe(true);
-        expect(namespaces).toEqual([
-            "x",
-        ]);
-        expect(specifiers).toEqual([] satisfies Specifier[]);
-    });
-
-    it("should collect the namespace information", (): void => {
-        const code = `
-            import * as x from "p";
-
-            x.y({
-                display: "block",
-            });
-        ` as const;
-
-        const { program } = parse({
-            file: "index.ts",
-            code,
-        });
-
-        const { isImported, namespaces, specifiers } = collect({
-            program,
-            packageName: "p",
-            includedFunctions: [
-                "y",
-            ],
-        });
-
-        expect(isImported).toBe(true);
-        expect(namespaces).toEqual([
-            "x",
-        ]);
-        expect(specifiers).toEqual([] satisfies Specifier[]);
-    });
-
-    it("should collect the specifier information", (): void => {
-        const code = `
-            import { x } from "p";
+            const { x, y } = require("p");
 
             x({
+                display: "block",
+            });
+
+            y({
                 display: "block",
             });
         ` as const;
@@ -82,11 +28,96 @@ describe("collector tests", (): void => {
             packageName: "p",
             includedFunctions: [
                 "x",
+                "y",
             ],
         });
 
         expect(isImported).toBe(true);
         expect(namespaces).toEqual([]);
+        expect(specifiers).toEqual([
+            {
+                imported: "x",
+                local: "x",
+            },
+            {
+                imported: "y",
+                local: "y",
+            },
+        ] satisfies Specifier[]);
+    });
+
+    it("should collect the information with alias", (): void => {
+        const code = `
+            const { x, y: z } = require("p");
+
+            x({
+                display: "block",
+            });
+
+            z({
+                display: "block",
+            });
+        ` as const;
+
+        const { program } = parse({
+            file: "index.ts",
+            code,
+        });
+
+        const { isImported, namespaces, specifiers } = collect({
+            program,
+            packageName: "p",
+            includedFunctions: [
+                "x",
+                "y",
+            ],
+        });
+
+        expect(isImported).toBe(true);
+        expect(namespaces).toEqual([]);
+        expect(specifiers).toEqual([
+            {
+                imported: "x",
+                local: "x",
+            },
+            {
+                imported: "y",
+                local: "z",
+            },
+        ] satisfies Specifier[]);
+    });
+
+    it("should collect the spread information", (): void => {
+        const code = `
+            const { x, ...y } = require("p");
+
+            x.y({
+                display: "block",
+            });
+
+            y.z({
+                display: "block",
+            });
+        ` as const;
+
+        const { program } = parse({
+            file: "index.ts",
+            code,
+        });
+
+        const { isImported, namespaces, specifiers } = collect({
+            program,
+            packageName: "p",
+            includedFunctions: [
+                "y",
+                "z",
+            ],
+        });
+
+        expect(isImported).toBe(true);
+        expect(namespaces).toEqual([
+            "y",
+        ]);
         expect(specifiers).toEqual([
             {
                 imported: "x",
