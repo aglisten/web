@@ -2,6 +2,8 @@ import type {
     Expression,
     Program,
     SpreadElement,
+    TemplateElement,
+    TemplateLiteral,
     VariableDeclaration,
     VariableDeclarator,
 } from "oxc-parser";
@@ -11,7 +13,87 @@ import type { GetInfoResult } from "#/modules/processor/functions/get-info";
 import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
+import { findInlineExpression } from "#/ast/expr";
 import { getInfo } from "#/modules/processor/functions/get-info";
+
+type ExpressionToStringOptions = {
+    program: Program;
+    expression: Expression;
+};
+
+const expressionToString = (options: ExpressionToStringOptions): string => {
+    const expr: Expression = options.expression;
+
+    // to string
+    if (expr.type === "Literal") {
+        if (expr.value === null) return "";
+        return expr.value.toString();
+    }
+    // find inline expression
+    else if (expr.type === "Identifier") {
+        const inlineExpr: Expression | undefined = findInlineExpression({
+            program: options.program,
+            name: expr.name,
+        });
+
+        if (!inlineExpr) {
+            throw new TypeError(`css: no inline expression found`);
+        }
+
+        const result: string = expressionToString({
+            program: options.program,
+            expression: inlineExpr,
+        });
+
+        return result;
+    }
+    // unsupported
+    else {
+        throw new TypeError(`css: ${expr.type} is not supported`);
+    }
+};
+
+type CollectTemplateCssOptions = {
+    program: Program;
+    template: TemplateLiteral;
+};
+
+type CollectTemplateCssResult = {
+    css: string;
+};
+
+const collectTemplateCss = (
+    options: CollectTemplateCssOptions,
+): CollectTemplateCssResult => {
+    let css: string = "";
+
+    const template: TemplateLiteral = options.template;
+
+    for (let k: number = 0; k < template.quasis.length; k++) {
+        // append quasi
+
+        const quasi: TemplateElement | undefined = template.quasis[k];
+
+        if (!quasi) continue;
+
+        css += quasi.value.cooked ?? quasi.value.raw;
+
+        // append expression
+
+        const expression: Expression | undefined = template.expressions[k];
+
+        if (!expression) continue;
+
+        css += expressionToString({
+            program: options.program,
+            expression,
+        });
+    }
+
+    return {
+        css,
+    };
+};
 
 type CollectCssOptions = {
     program: Program;
@@ -53,8 +135,15 @@ const collectCss = (options: CollectCssOptions): CollectCssResult => {
                     }
 
                     // x(`abc`);
+                    // x(`abc ${x} efg`);
                     else if (arg.type === "TemplateLiteral") {
-                        // TODO
+                        const collected: CollectTemplateCssResult =
+                            collectTemplateCss({
+                                program,
+                                template: arg,
+                            });
+
+                        cssList.push(collected.css);
                     }
                 }
             }

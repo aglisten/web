@@ -1,7 +1,12 @@
 import type { Program } from "oxc-parser";
 
+import type { CollectCssResult } from "##/processor/css/collector";
+import type { MutateCssResult } from "##/processor/css/mutator";
+
 import { cloneDeep } from "es-toolkit";
-import { Visitor } from "oxc-parser";
+
+import { collectCss } from "##/processor/css/collector";
+import { mutateCss } from "##/processor/css/mutator";
 
 type ProcessOptions = {
     program: Program;
@@ -10,17 +15,27 @@ type ProcessOptions = {
 
 type ProcessResult = {
     program: Program;
+    css: string;
 };
 
 const process = (options: ProcessOptions): ProcessResult => {
     const result: Program = cloneDeep(options.program);
 
-    const visitor: Visitor = new Visitor({});
+    let css: string = "";
 
-    visitor.visit(result);
+    const collectedCss: CollectCssResult = collectCss({
+        program: result,
+    });
+
+    css += collectedCss.cssList.join("");
+
+    const mutatedCss: MutateCssResult = mutateCss({
+        program: result,
+    });
 
     return {
-        program: result,
+        program: mutatedCss.program,
+        css,
     };
 };
 
