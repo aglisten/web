@@ -78,6 +78,7 @@ const transpile = async (
     const processed: ProcessResult = process({
         program: preprocessed.program,
         programRef: parsedbundle.program,
+        classNamePrefix: options.classNamePrefix,
     });
 
     const codegenResult: CodegenResult = codegen({

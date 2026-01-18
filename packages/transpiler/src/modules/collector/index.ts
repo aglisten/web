@@ -7,7 +7,6 @@ import type {
 
 import type { Specifier } from "#/@types/specifier";
 
-import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
 type CollectOptions = {
@@ -23,7 +22,7 @@ type CollectResult = {
 };
 
 const collect = (options: CollectOptions): CollectResult => {
-    const result: Program = cloneDeep(options.program);
+    const result: Program = options.program;
 
     let isImported: boolean = false;
     const namespaces: string[] = [];

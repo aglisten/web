@@ -10,7 +10,6 @@ import type {
 
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
 
-import { cloneDeep } from "es-toolkit";
 import { Visitor } from "oxc-parser";
 
 import { findInlineExpression } from "#/ast/expr";
@@ -104,7 +103,7 @@ type CollectCssResult = {
 };
 
 const collectCss = (options: CollectCssOptions): CollectCssResult => {
-    const program: Program = cloneDeep(options.program);
+    const program: Program = options.program;
 
     const cssList: string[] = [];
 

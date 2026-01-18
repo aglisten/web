@@ -11,6 +11,7 @@ import { mutateCss } from "##/processor/css/mutator";
 type ProcessOptions = {
     program: Program;
     programRef: Program;
+    classNamePrefix: string;
 };
 
 type ProcessResult = {
