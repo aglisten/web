@@ -2,19 +2,21 @@ import type { Expression, Program } from "oxc-parser";
 
 import { findInlineExpression } from "#/ast/expr";
 
-type HandleKeyExprOptions = {
+type HandleExpressionOptions = {
     program: Program;
     expr: Expression;
 };
 
-type HandleKeyExprResult = {
+type HandleExpressionResult = {
     key: string;
 };
 
-const handleKeyExpr = (options: HandleKeyExprOptions): HandleKeyExprResult => {
+const handleExpression = (
+    options: HandleExpressionOptions,
+): HandleExpressionResult => {
     const expr: Expression = options.expr;
 
-    // [blue]
+    // [xxx]
     if (expr.type === "Identifier") {
         const result: Expression | undefined = findInlineExpression({
             program: options.program,
@@ -22,29 +24,36 @@ const handleKeyExpr = (options: HandleKeyExprOptions): HandleKeyExprResult => {
         });
 
         if (!result) {
-            throw new TypeError(`variables: failed to find key expression`);
+            throw new TypeError(`variables: failed to find expression`);
         }
 
-        return handleKeyExpr({
+        return handleExpression({
             program: options.program,
             expr: result,
         });
     }
-    // ["blue"]
+    // ["xxx"]
     else if (expr.type === "Literal") {
         if (expr.value === null) {
-            throw new TypeError(`variables: key expression is null`);
+            throw new TypeError(`variables: expression is null`);
         }
 
         return {
             key: expr.value.toString(),
         };
+    }
+    // xxx as xxx
+    else if (expr.type === "TSAsExpression") {
+        return handleExpression({
+            program: options.program,
+            expr: expr.expression,
+        });
     } else {
         throw new TypeError(
-            `variables: ${expr.type} is not supported as a key expression`,
+            `variables: ${expr.type} is not supported as a expression`,
         );
     }
 };
 
-export type { HandleKeyExprOptions, HandleKeyExprResult };
-export { handleKeyExpr };
+export type { HandleExpressionOptions, HandleExpressionResult };
+export { handleExpression };

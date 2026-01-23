@@ -1,10 +1,10 @@
 import type { ObjectExpression, Program } from "oxc-parser";
 
+import type { HandleExpressionResult } from "#/modules/processor/modules/variables/collector/expr";
 import type { VariableKeyValue } from "##/processor/variables/@types";
-import type { HandleKeyExprResult } from "##/processor/variables/collector/key/expr";
 import type { HandleKeyValueResult } from "##/processor/variables/collector/key-value";
 
-import { handleKeyExpr } from "##/processor/variables/collector/key/expr";
+import { handleExpression } from "#/modules/processor/modules/variables/collector/expr";
 import { handleKeyValue } from "##/processor/variables/collector/key-value";
 
 type HandleObjectValueOptions = {
@@ -30,24 +30,22 @@ const handleObjectValue = (
             throw new TypeError(`variables: spread element is not supported`);
         }
 
-        let selector: string = ":root";
+        let selector: string = "";
 
         // { [xxx]: "xxx" }
         if (prop.computed === true) {
-            if (prop.key.type !== "Literal") {
+            if (prop.key.type !== "Literal" && prop.key.type !== "Identifier") {
                 throw new TypeError(
                     `variables: computed property key is not supported`,
                 );
             }
 
-            const result: HandleKeyExprResult = handleKeyExpr({
+            const result: HandleExpressionResult = handleExpression({
                 program: options.program,
                 expr: prop.key,
             });
 
-            if (result.key !== "default") {
-                selector = result.key;
-            }
+            selector = result.key;
         }
 
         // { "xxxx": "xxx" }
@@ -64,9 +62,11 @@ const handleObjectValue = (
 
         // unsupported
         else {
-            throw new TypeError(
-                `variables: computed property key is not supported`,
-            );
+            throw new TypeError(`variables: ${prop.key.type} is not supported`);
+        }
+
+        if (selector === "default") {
+            selector = ":root";
         }
 
         const result: HandleKeyValueResult = handleKeyValue({

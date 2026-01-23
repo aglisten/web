@@ -1,4 +1,4 @@
-import type { MinifyResult } from "oxc-minify";
+import type { MinifyCodeResult } from "#/functions/minify/code";
 
 import { codegen } from "@aglisten/transpiler/ast/codegen";
 import { parse } from "@aglisten/transpiler/ast/parse";
@@ -6,7 +6,7 @@ import { preprocess } from "@aglisten/transpiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
-import { minify } from "#/functions/minify";
+import { minifyCode } from "#/functions/minify/code";
 
 describe("preprocessor variable declaration tests (namespace)", (): void => {
     it("should preprocess the function", (): void => {
@@ -51,7 +51,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
             specifiers: [],
         });
 
-        const preprocessedMinify: MinifyResult = minify(
+        const preprocessedMinify: MinifyCodeResult = minifyCode(
             file,
             codegen({
                 file,
@@ -59,7 +59,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
             }).code,
         );
 
-        const outputMinify: MinifyResult = minify(file, output);
+        const outputMinify: MinifyCodeResult = minifyCode(file, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });
@@ -107,7 +107,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
             specifiers: [],
         });
 
-        const preprocessedMinify: MinifyResult = minify(
+        const preprocessedMinify: MinifyCodeResult = minifyCode(
             file,
             codegen({
                 file,
@@ -115,7 +115,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
             }).code,
         );
 
-        const outputMinify: MinifyResult = minify(file, output);
+        const outputMinify: MinifyCodeResult = minifyCode(file, output);
 
         expect(preprocessedMinify.code).toBe(outputMinify.code);
     });

@@ -70,6 +70,9 @@ importers:
       '@aglisten/transpiler':
         specifier: workspace:*
         version: link:../../packages/transpiler
+      lightningcss:
+        specifier: ^1.30.2
+        version: 1.30.2
       oxc-minify:
         specifier: ~0.108.0
         version: 0.108.0

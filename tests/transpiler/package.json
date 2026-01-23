@@ -3,6 +3,7 @@
     "private": true,
     "dependencies": {
         "@aglisten/transpiler": "workspace:*",
+        "lightningcss": "^1.30.2",
         "oxc-minify": "~0.108.0",
         "vitest": "^4.0.17"
     },

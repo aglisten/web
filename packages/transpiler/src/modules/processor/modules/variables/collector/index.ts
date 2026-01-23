@@ -10,18 +10,18 @@ import type {
 } from "oxc-parser";
 
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { HandleExpressionResult } from "#/modules/processor/modules/variables/collector/expr";
 import type {
     VariableKeyValue,
     Variables,
 } from "##/processor/variables/@types";
-import type { HandleKeyExprResult } from "##/processor/variables/collector/key/expr";
 import type { HandleKeyValueResult } from "##/processor/variables/collector/key-value";
 import type { HandleIdentValueResult } from "##/processor/variables/collector/value/ident";
 
 import { Visitor } from "oxc-parser";
 
 import { getInfo } from "#/modules/processor/functions/get-info";
-import { handleKeyExpr } from "##/processor/variables/collector/key/expr";
+import { handleExpression } from "#/modules/processor/modules/variables/collector/expr";
 import { handleKeyValue } from "##/processor/variables/collector/key-value";
 import { handleIdentValue } from "##/processor/variables/collector/value/ident";
 
@@ -73,7 +73,7 @@ const collectPropVariables = (
             );
         }
 
-        const result: HandleKeyExprResult = handleKeyExpr({
+        const result: HandleExpressionResult = handleExpression({
             program: options.program,
             expr: prop.key,
         });
