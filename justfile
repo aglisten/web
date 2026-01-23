@@ -12,6 +12,7 @@ web_runtime := "packages/web-runtime"
 web := "packages/web"
 
 test_transpiler := "tests/transpiler"
+test_web := "tests/web"
 
 # Default action
 _:
@@ -50,6 +51,7 @@ build:
 # Run tests
 test:
     cd ./{{test_transpiler}} && ./{{vitest}} run
+    cd ./{{test_web}} && ./{{vitest}} run
 
 # Clean builds
 clean:

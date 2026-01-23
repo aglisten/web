@@ -17,7 +17,6 @@ import { mutateVariables } from "##/processor/variables/mutator";
 type ProcessOptions = {
     program: Program;
     programRef: Program;
-    classNamePrefix: string;
 };
 
 type ProcessResult = {

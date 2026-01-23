@@ -1,0 +1,11 @@
+{
+    "name": "test-web",
+    "private": true,
+    "dependencies": {
+        "@aglisten/web": "workspace:*",
+        "vitest": "^4.0.17"
+    },
+    "devDependencies": {
+        "vite-tsconfig-paths": "^6.0.4"
+    }
+}

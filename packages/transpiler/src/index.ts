@@ -17,16 +17,7 @@ import { collect } from "#/modules/collector";
 import { preprocess } from "#/modules/preprocessor";
 import { process } from "#/modules/processor";
 
-type UserTranspileOptions = {
-    /**
-     * Prefix to be used for the generated class names.
-     */
-    classNamePrefix: string;
-};
-
-type TranspileOptions = Format<
-    PresetBundleOptions & UserTranspileOptions & UserBundleOptions
->;
+type TranspileOptions = Format<PresetBundleOptions & UserBundleOptions>;
 
 type TranspileResult = {
     /**
@@ -78,7 +69,6 @@ const transpile = async (
     const processed: ProcessResult = process({
         program: preprocessed.program,
         programRef: parsedbundle.program,
-        classNamePrefix: options.classNamePrefix,
     });
 
     const codegenResult: CodegenResult = codegen({
@@ -91,5 +81,5 @@ const transpile = async (
     };
 };
 
-export type { UserTranspileOptions, TranspileOptions, TranspileResult };
+export type { TranspileOptions, TranspileResult };
 export { transpile };
