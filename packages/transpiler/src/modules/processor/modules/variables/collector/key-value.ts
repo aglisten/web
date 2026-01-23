@@ -67,6 +67,13 @@ const handleKeyValue = (
             keyValues: result.keyValues,
         };
     }
+    // blue: "xxx" as const
+    else if (value.type === "TSAsExpression") {
+        return handleKeyValue({
+            ...options,
+            value: value.expression,
+        });
+    }
 
     throw new TypeError(
         `variables: ${value.type} is not supported as a value expression`,

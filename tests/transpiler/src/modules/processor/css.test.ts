@@ -69,4 +69,76 @@ describe("processor css tests", (): void => {
 
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
+
+    it("should process the css function in literal template with variable", (): void => {
+        const file = "index.ts" as const;
+
+        const code = `
+            const bgColor = "red";
+
+            const ${SIGNATURE}_ce_1 = {
+                ${SIGNATURE}: true,
+                id: "${SIGNATURE}_ce_1",
+                kind: "css",
+                arguments: [
+                    \`
+                        html {
+                            background-color: \${bgColor};    
+                        }
+                    \`,
+                ],
+            };
+        ` as const;
+
+        const output = `html{background-color:red}` as const;
+
+        const { program } = parse({
+            file,
+            code,
+        });
+
+        const { css } = process({
+            program,
+            programRef: program,
+            classNamePrefix: "",
+        });
+
+        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+    });
+
+    it("should process the css function in literal template with variable as const", (): void => {
+        const file = "index.ts" as const;
+
+        const code = `
+            const bgColor = "red" as const;
+
+            const ${SIGNATURE}_ce_1 = {
+                ${SIGNATURE}: true,
+                id: "${SIGNATURE}_ce_1",
+                kind: "css",
+                arguments: [
+                    \`
+                        html {
+                            background-color: \${bgColor};    
+                        }
+                    \`,
+                ],
+            };
+        ` as const;
+
+        const output = `html{background-color:red}` as const;
+
+        const { program } = parse({
+            file,
+            code,
+        });
+
+        const { css } = process({
+            program,
+            programRef: program,
+            classNamePrefix: "",
+        });
+
+        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+    });
 });

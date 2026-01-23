@@ -45,7 +45,7 @@ const handleObjectValue = (
                 expr: prop.key,
             });
 
-            selector = result.key;
+            selector = result.str;
         }
 
         // { "xxxx": "xxx" }

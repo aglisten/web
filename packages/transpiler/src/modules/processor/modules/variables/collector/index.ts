@@ -78,7 +78,7 @@ const collectPropVariables = (
             expr: prop.key,
         });
 
-        key = result.key;
+        key = result.str;
     }
     // "blue"
     else if (prop.key.type === "Literal") {

@@ -1,6 +1,9 @@
 import type { Expression, Program } from "oxc-parser";
 
+import type { CollectTemplateLiteralResult } from "#/modules/processor/functions/template";
+
 import { findInlineExpression } from "#/ast/expr";
+import { collectTemplateLiteral } from "#/modules/processor/functions/template";
 
 type HandleExpressionOptions = {
     program: Program;
@@ -8,7 +11,7 @@ type HandleExpressionOptions = {
 };
 
 type HandleExpressionResult = {
-    key: string;
+    str: string;
 };
 
 const handleExpression = (
@@ -39,7 +42,18 @@ const handleExpression = (
         }
 
         return {
-            key: expr.value.toString(),
+            str: expr.value.toString(),
+        };
+    }
+    // `xxx`
+    else if (expr.type === "TemplateLiteral") {
+        const collected: CollectTemplateLiteralResult = collectTemplateLiteral({
+            program: options.program,
+            template: expr,
+        });
+
+        return {
+            str: collected.str,
         };
     }
     // xxx as xxx
