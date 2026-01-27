@@ -4,6 +4,8 @@ import { TranspileError } from "#/error";
 
 /**
  * Create a style for an element.
+ * 
+ * ### Example
  *
  * ```ts
  * import { style } from "@aglisten/web";

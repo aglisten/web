@@ -46,6 +46,8 @@ const getClassFromKeyValues = (keyValues: KeyValues): string => {
 
 /**
  * Merge multiple styles.
+ * 
+ * ### Example
  *
  * ```ts
  * import { style, merge } from "@aglisten/web";

@@ -13,7 +13,7 @@ type VariablesSetter = {
  *
  * For setting a different values from the `variables` function.
  *
- * ## Example
+ * ### Example
  *
  * ```ts
  * import type { VariablesSetter } from "@aglisten/web";

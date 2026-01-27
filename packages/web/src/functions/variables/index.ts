@@ -13,7 +13,7 @@ type VariablesObject = Record<
 /**
  * Function to create variables.
  *
- * ## Example
+ * ### Example
  *
  * ```ts
  * import { variables } from "@aglisten/web";
