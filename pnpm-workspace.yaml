@@ -2,6 +2,15 @@ packages:
     - ./packages/*
     - ./tests/*
 
+catalogs:
+    oxc:
+        oxc-parser: ~0.111.0
+        oxc-minify: ~0.111.0
+        rolldown: 1.0.0-rc.1
+    vite:
+        vitest: ^4
+        vite-tsconfig-paths: ^6
+
 minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude:

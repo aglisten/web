@@ -18,7 +18,7 @@
     ],
     "dependencies": {
         "csstype": "^3.2.3",
-        "html-tag-types": "^0.0.1",
+        "html-tag-types": "~0.0.1",
         "ts-vista": "~0.2.3"
     }
 }

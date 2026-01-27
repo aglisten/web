@@ -3,9 +3,9 @@
     "private": true,
     "dependencies": {
         "@aglisten/web": "workspace:*",
-        "vitest": "^4.0.17"
+        "vitest": "catalog:vite"
     },
     "devDependencies": {
-        "vite-tsconfig-paths": "^6.0.4"
+        "vite-tsconfig-paths": "catalog:vite"
     }
 }

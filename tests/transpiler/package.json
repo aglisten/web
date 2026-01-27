@@ -4,10 +4,10 @@
     "dependencies": {
         "@aglisten/transpiler": "workspace:*",
         "lightningcss": "^1.31.1",
-        "oxc-minify": "~0.110.0",
-        "vitest": "^4.0.17"
+        "oxc-minify": "catalog:oxc",
+        "vitest": "catalog:vite"
     },
     "devDependencies": {
-        "vite-tsconfig-paths": "^6.0.4"
+        "vite-tsconfig-paths": "catalog:vite"
     }
 }
