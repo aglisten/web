@@ -65,20 +65,31 @@ const collectPropVariables = (
 
     let key: string;
 
-    // [blue]
+    // [...]
     if (prop.computed === true) {
-        if (prop.key.type !== "Identifier") {
+        // ["blue"]
+        if (prop.key.type === "Literal") {
+            if (prop.key.value === null) {
+                throw new TypeError(`variables: key is null`);
+            }
+
+            key = prop.key.value.toString();
+        }
+        // [blue]
+        else if (prop.key.type === "Identifier") {
+            const result: HandleExpressionResult = handleExpression({
+                program: options.program,
+                expr: prop.key,
+            });
+
+            key = result.str;
+        }
+        // unsupported
+        else {
             throw new TypeError(
                 `variables: ${prop.key.type} is not supported as a key shorthand`,
             );
         }
-
-        const result: HandleExpressionResult = handleExpression({
-            program: options.program,
-            expr: prop.key,
-        });
-
-        key = result.str;
     }
     // "blue"
     else if (prop.key.type === "Literal") {
