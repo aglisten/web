@@ -14,14 +14,6 @@ import { filePreprocessor } from "#/modules/bundler/plugins/preprocess";
 
 type PresetBundleOptions = {
     /**
-     * File to be bundled.
-     */
-    file: string;
-    /**
-     * preprocessed entry code.
-     */
-    code: string;
-    /**
      * Name of the CSS-in-JS package.
      */
     packageName: string;
@@ -49,7 +41,20 @@ type UserBundleOptions = {
     exclude: string[];
 };
 
-type BundleOptions = Format<PresetBundleOptions & UserBundleOptions>;
+type DynamicBundleOptions = {
+    /**
+     * File to be bundled.
+     */
+    file: string;
+    /**
+     * preprocessed entry code.
+     */
+    code: string;
+};
+
+type BundleOptions = Format<
+    PresetBundleOptions & UserBundleOptions & DynamicBundleOptions
+>;
 
 type BundleResult = {
     /**
@@ -101,6 +106,7 @@ const bundle = async (options: BundleOptions): Promise<BundleResult> => {
 export type {
     PresetBundleOptions,
     UserBundleOptions,
+    DynamicBundleOptions,
     BundleOptions,
     BundleResult,
 };

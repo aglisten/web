@@ -8,7 +8,7 @@ vitest := node_bin + "vitest"
 typedoc := node_bin + "typedoc"
 
 transpiler := "packages/transpiler"
-web_runtime := "packages/web-runtime"
+runtime := "packages/runtime"
 web := "packages/web"
 
 test_transpiler := "tests/transpiler"
@@ -29,7 +29,7 @@ i:
 # Lint with TypeScript Compiler
 tsc:
     cd ./{{transpiler}} && ../../{{tsc}} --noEmit
-    cd ./{{web_runtime}} && ../../{{tsc}} --noEmit
+    cd ./{{runtime}} && ../../{{tsc}} --noEmit
     cd ./{{web}} && ../../{{tsc}} --noEmit
 
 # Lint code
@@ -45,7 +45,7 @@ fmt:
 # Build packages
 build:
     cd ./{{transpiler}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{web_runtime}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{runtime}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{web}} && ../../{{tsdown}} -c tsdown.config.ts
 
 # Run tests
@@ -56,7 +56,7 @@ test:
 # Clean builds
 clean:
     cd ./{{web}} && rm -rf ./dist
-    cd ./{{web_runtime}} && rm -rf ./dist
+    cd ./{{runtime}} && rm -rf ./dist
     cd ./{{transpiler}} && rm -rf ./dist
 
 # Clean everything
@@ -66,7 +66,7 @@ clean-all:
     cd ./{{test_transpiler}} && rm -rf ./node_modules
 
     cd ./{{web}} && rm -rf ./node_modules
-    cd ./{{web_runtime}} && rm -rf ./node_modules
+    cd ./{{runtime}} && rm -rf ./node_modules
     cd ./{{transpiler}} && rm -rf ./node_modules
 
     rm -rf ./node_modules

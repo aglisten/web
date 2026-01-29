@@ -4,6 +4,7 @@ import type { CodegenResult } from "#/ast/codegen";
 import type { ParseResult } from "#/ast/parse";
 import type {
     BundleResult,
+    DynamicBundleOptions,
     PresetBundleOptions,
     UserBundleOptions,
 } from "#/modules/bundler";
@@ -17,7 +18,15 @@ import { collect } from "#/modules/collector";
 import { preprocess } from "#/modules/preprocessor";
 import { process } from "#/modules/processor";
 
-type TranspileOptions = Format<PresetBundleOptions & UserBundleOptions>;
+type PresetTranspileOptions = PresetBundleOptions;
+
+type UserTranspileOptions = UserBundleOptions;
+
+type DynamicTranspileOptions = DynamicBundleOptions;
+
+type TranspileOptions = Format<
+    PresetTranspileOptions & UserTranspileOptions & DynamicTranspileOptions
+>;
 
 type TranspileResult = {
     /**
@@ -86,5 +95,11 @@ const transpile = async (
     };
 };
 
-export type { TranspileOptions, TranspileResult };
+export type {
+    PresetTranspileOptions,
+    UserTranspileOptions,
+    DynamicTranspileOptions,
+    TranspileOptions,
+    TranspileResult,
+};
 export { transpile };
