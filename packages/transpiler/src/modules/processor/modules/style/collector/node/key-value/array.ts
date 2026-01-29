@@ -5,6 +5,7 @@ import type {
 } from "oxc-parser";
 
 import type { StyleNode } from "##/processor/style/@types";
+import type { HandleKeyValueResult } from "##/processor/style/collector/node/key-value";
 
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 
@@ -35,14 +36,14 @@ const handleArrayValue = (
             throw new TypeError(`style: spread element is not supported`);
         }
 
-        const { styleNodes } = handleKeyValue({
+        const result: HandleKeyValueResult = handleKeyValue({
             program: options.program,
             selectors: options.selectors,
             key: options.key,
             value: element,
         });
 
-        styleNodes.push(...styleNodes);
+        styleNodes.push(...result.styleNodes);
     }
 
     return {

@@ -7,24 +7,24 @@ import { minifyCSS } from "#/functions/minify/css";
 
 const file = "index.ts" as const;
 
-describe("processor variables tests", (): void => {
-    it("should process the variables function", (): void => {
+describe("processor style tests", (): void => {
+    it("should process the style function", (): void => {
         const code = `
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                kind: "style",
                 arguments: [
                     {
-                        blue: "#0000ff",
+                        display: "block",
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            :root{
-                --vg71dl:#00f;
+            .djcd17uu {
+                display: block;
             }
         ` as const;
 
@@ -41,38 +41,28 @@ describe("processor variables tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the variables function with multiple type of selectors", (): void => {
+    it("should process the style function with multiple nodes", (): void => {
         const code = `
-            const htmlMax = "html[theme=max]";
-            const htmlDark = "html[theme=dark]" as const;
-
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                kind: "style",
                 arguments: [
                     {
-                        blue: {
-                            default: "#90d5ff",
-                            [htmlMax]: "#0000ff",
-                            [htmlDark]: "#111184",
-                        },
+                        display: "block",
+                        color: "blue",
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            :root {
-                --vg71dl: #90d5ff;
+            .djcd17uu {
+                display: block;
             }
-                
-            html[theme=max] {
-                --vg71dl:#0000ff;
-            }
-                
-            html[theme=dark] {
-                --vg71dl:#111184;
+
+            .ch8s1cdl {
+                color: #0000ff;
             }
         ` as const;
 
@@ -89,32 +79,24 @@ describe("processor variables tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the variables function with multiple type of selectors as const", (): void => {
+    it("should process the style function with shorthand", (): void => {
         const code = `
-            const htmlDark = "html[theme=dark]";
-
+            const display = "block" as const;
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                kind: "style",
                 arguments: [
                     {
-                        blue: {
-                            default: "#90d5ff",
-                            [htmlDark]: "#111184" as const,
-                        },
+                        display,
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            :root{
-                --vg71dl:#90d5ff;
-            }
-            
-            html[theme=dark] {
-                --vg71dl:#111184;
+            .djcd17uu {
+                display: block;
             }
         ` as const;
 
@@ -131,33 +113,30 @@ describe("processor variables tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the variables function with multiple type of selectors and nesting ", (): void => {
+    it("should process the style function with fallback value", (): void => {
         const code = `
-            const themeName = "dark" as const;
-            const htmlDark = \`html[theme=\${themeName}]\`;
-
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                kind: "style",
                 arguments: [
                     {
-                        blue: {
-                            default: "#90d5ff",
-                            [htmlDark]: "#111184",
-                        },
+                        display: [
+                            "block",
+                            "flex",
+                        ],
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            :root{
-                --vg71dl: #90d5ff;
+            .djcd17uu {
+                display: block;
             }
-                
-            html[theme=dark] {
-                --vg71dl:#111184;
+
+            .djcd1agm {
+                display: flex;
             }
         ` as const;
 

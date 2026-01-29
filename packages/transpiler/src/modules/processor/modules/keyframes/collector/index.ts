@@ -1,7 +1,6 @@
 import type {
     Expression,
     ObjectExpression,
-    ObjectPropertyKind,
     Program,
     SpreadElement,
     VariableDeclaration,
@@ -9,11 +8,12 @@ import type {
 } from "oxc-parser";
 
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
-import type { KeyframeNode, Keyframes } from "##/processor/keyframes/@types";
+import type { Keyframes } from "##/processor/keyframes/@types";
 
 import { Visitor } from "oxc-parser";
 
 import { getInfo } from "#/modules/processor/functions/get-info";
+import { collectKeyframesNodes } from "##/processor/keyframes/collector/node";
 import { createKeyframesTitle } from "##/processor/keyframes/collector/title";
 
 type CollectKeyframesOptions = {
@@ -29,30 +29,20 @@ type CollectKeyframesResult = {
 const collectKeyframes = (
     options: CollectKeyframesOptions,
 ): CollectKeyframesResult => {
-    const children: KeyframeNode[] = [];
-
-    for (let i: number = 0; i < options.object.properties.length; i++) {
-        const prop: ObjectPropertyKind | undefined =
-            options.object.properties[i];
-
-        if (!prop) continue;
-
-        if (prop.type === "SpreadElement") {
-            throw new TypeError(`keyframes: spread element is not supported`);
-        }
-
-        prop;
-    }
+    const { keyframeNodes } = collectKeyframesNodes({
+        program: options.program,
+        object: options.object,
+    });
 
     const { title } = createKeyframesTitle({
-        children,
+        children: keyframeNodes,
     });
 
     return {
         keyframes: {
             id: options.id,
             title,
-            children,
+            children: keyframeNodes,
         },
     };
 };
@@ -86,7 +76,7 @@ const collectAllKeyframes = (
 
                 if (info.kind !== "keyframes") continue;
 
-                // variables function suppose to have 1 argument only
+                // keyframes function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
                     info.args[0];
 
@@ -95,7 +85,7 @@ const collectAllKeyframes = (
                 // the argument suppose to be an object
                 if (arg.type !== "ObjectExpression") {
                     throw new TypeError(
-                        `variables: ${arg.type} is not supported`,
+                        `keyframes: ${arg.type} is not supported`,
                     );
                 }
 

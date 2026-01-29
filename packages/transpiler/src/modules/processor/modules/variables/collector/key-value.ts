@@ -1,8 +1,6 @@
 import type { Expression, Program } from "oxc-parser";
 
 import type { VariableKeyValue } from "##/processor/variables/@types";
-import type { HandleIdentValueResult } from "##/processor/variables/collector/value/ident";
-import type { HandleObjectValueResult } from "##/processor/variables/collector/value/object";
 
 import { handleIdentValue } from "##/processor/variables/collector/value/ident";
 import { handleLiteralValue } from "##/processor/variables/collector/value/lit";
@@ -27,45 +25,24 @@ const handleKeyValue = (
 
     // blue: "xxx"
     if (value.type === "Literal") {
-        const reulst = handleLiteralValue({
-            program: options.program,
-            id: options.id,
-            selector: options.selector,
-            key: options.key,
+        return handleLiteralValue({
+            ...options,
             lit: value,
         });
-
-        return {
-            keyValues: reulst.keyValues,
-        };
     }
     // blue: x,
     else if (value.type === "Identifier") {
-        const result: HandleIdentValueResult = handleIdentValue({
-            program: options.program,
-            id: options.id,
-            selector: options.selector,
-            key: options.key,
+        return handleIdentValue({
+            ...options,
             ident: value,
         });
-
-        return {
-            keyValues: result.keyValues,
-        };
     }
     // blue: { default: "xxx" },
     else if (value.type === "ObjectExpression") {
-        const result: HandleObjectValueResult = handleObjectValue({
-            program: options.program,
-            id: options.id,
-            selector: options.selector,
-            key: options.key,
+        return handleObjectValue({
+            ...options,
             object: value,
         });
-
-        return {
-            keyValues: result.keyValues,
-        };
     }
     // blue: "xxx" as const
     else if (value.type === "TSAsExpression") {

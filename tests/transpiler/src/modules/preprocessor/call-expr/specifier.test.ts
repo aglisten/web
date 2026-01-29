@@ -8,10 +8,10 @@ import { describe, expect, it } from "vitest";
 import { SIGNATURE } from "#/consts";
 import { minifyCode } from "#/functions/minify/code";
 
+const file = "index.ts" as const;
+
 describe("preprocessor call expression tests (specifier)", (): void => {
     it("should preprocess the function", (): void => {
-        const file = "index.ts" as const;
-
         const code = `
             import { x } from "p";
 
@@ -68,8 +68,6 @@ describe("preprocessor call expression tests (specifier)", (): void => {
     });
 
     it("should preprocess the function with multiple arguments", (): void => {
-        const file = "index.ts" as const;
-
         const code = `
             import { x } from "p";
 

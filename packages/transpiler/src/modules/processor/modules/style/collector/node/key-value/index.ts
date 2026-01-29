@@ -65,6 +65,15 @@ const handleKeyValue = (
             key: options.key,
             ident: options.value,
         });
+    }
+    // as ...
+    else if (options.value.type === "TSAsExpression") {
+        return handleKeyValue({
+            program: options.program,
+            selectors: options.selectors,
+            key: options.key,
+            value: options.value.expression,
+        });
     } else {
         throw new TypeError(`style: ${options.value.type} is not supported`);
     }

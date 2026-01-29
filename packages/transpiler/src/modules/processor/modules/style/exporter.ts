@@ -28,6 +28,10 @@ const styleNodeToCss = (node: StyleNode): string => {
     return result;
 };
 
+const styleNodeToCssWithClass = (node: StyleNode): string => {
+    return `.${node.title}{${styleNodeToCss(node)}}`;
+};
+
 type ExportStylesOptions = {
     styles: Style[];
 };
@@ -49,7 +53,7 @@ const exportStyles = (options: ExportStylesOptions): ExportStylesResult => {
 
             if (!node) continue;
 
-            css += styleNodeToCss(node);
+            css += styleNodeToCssWithClass(node);
         }
     }
 

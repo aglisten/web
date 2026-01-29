@@ -30,7 +30,7 @@ const collectPropKeyframeNodes = (
         title = prop.key.name;
     }
     // "0%": {} // 0: {}
-    if (prop.key.type === "Literal") {
+    else if (prop.key.type === "Literal") {
         const value: string | number | bigint | boolean | RegExp | null =
             prop.key.value;
 

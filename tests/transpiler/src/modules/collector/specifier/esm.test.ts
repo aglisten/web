@@ -4,6 +4,8 @@ import { parse } from "@aglisten/transpiler/ast/parse";
 import { collect } from "@aglisten/transpiler/collector";
 import { describe, expect, it } from "vitest";
 
+const file = "index.ts" as const;
+
 describe("collector tests (specifier, esm)", (): void => {
     it("should collect the information", (): void => {
         const code = `
@@ -19,7 +21,7 @@ describe("collector tests (specifier, esm)", (): void => {
         ` as const;
 
         const { program } = parse({
-            file: "index.ts",
+            file,
             code,
         });
 
@@ -60,7 +62,7 @@ describe("collector tests (specifier, esm)", (): void => {
         ` as const;
 
         const { program } = parse({
-            file: "index.ts",
+            file,
             code,
         });
 
