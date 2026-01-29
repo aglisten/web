@@ -3,7 +3,7 @@
  *
  * Include: *.js | *.cjs | *.mjs | *.ts | *.cts | *.mts | *.jsx | *.tsx
  */
-const JS_FILTER: RegExp = /.*\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)(\?.*)?(#.*)?$/;
+const FILTER_JS: RegExp = /.*\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)(\?.*)?(#.*)?$/;
 
 /**
  * Advanced JavaScript file filter.
@@ -12,7 +12,7 @@ const JS_FILTER: RegExp = /.*\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)(\?.*)?(#.*)?$/;
  *
  * Exclude: *.d.ts
  */
-const JS_FILTER_ADVANCED: RegExp =
+const FILTER_JS_ADVANCED: RegExp =
     /^(?!.*\.d\.ts$).*\.(js|cjs|mjs|ts|cts|mts|jsx|tsx)(\?.*)?(#.*)?$/;
 
 /**
@@ -20,6 +20,6 @@ const JS_FILTER_ADVANCED: RegExp =
  *
  * Include: *.css | *.sass | *.scss | *.less
  */
-const CSS_FILTER: RegExp = /.*\.(css|sass|scss|less)(\?.*)?(#.*)?$/;
+const FILTER_CSS: RegExp = /.*\.(css|sass|scss|less)(\?.*)?(#.*)?$/;
 
-export { JS_FILTER, JS_FILTER_ADVANCED, CSS_FILTER };
+export { FILTER_JS, FILTER_JS_ADVANCED, FILTER_CSS };

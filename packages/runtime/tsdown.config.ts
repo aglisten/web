@@ -5,7 +5,9 @@ export default defineConfig(
     {
         entry: {
             index: "./src/index.ts",
+            helper: "./src/helper.ts",
         },
+        unbundle: false,
     },
     [
         esmPreset(),

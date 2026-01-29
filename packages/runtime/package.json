@@ -8,6 +8,11 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         },
+        "./helper": {
+            "types": "./dist/helper.d.ts",
+            "import": "./dist/helper.mjs",
+            "require": "./dist/helper.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",
