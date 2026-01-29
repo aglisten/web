@@ -1,15 +1,17 @@
 import type { Program } from "oxc-parser";
 
-import type { CollectCssResult } from "##/processor/css/collector";
-import type { MutateCssResult } from "##/processor/css/mutator";
+import type { CollectStylesResult } from "##/processor/style/collector";
+import type { ExportStylesResult } from "##/processor/style/exporter";
+import type { MutateStylesResult } from "##/processor/style/mutator";
 import type { CollectVariablesResult } from "##/processor/variables/collector";
 import type { ExportVariablesResult } from "##/processor/variables/exporter";
 import type { MutateVariablesResult } from "##/processor/variables/mutator";
 
 import { cloneDeep } from "es-toolkit";
 
-import { collectCss } from "##/processor/css/collector";
-import { mutateCss } from "##/processor/css/mutator";
+import { collectStyles } from "##/processor/style/collector";
+import { exportStyles } from "##/processor/style/exporter";
+import { mutateStyles } from "##/processor/style/mutator";
 import { collectVariables } from "##/processor/variables/collector";
 import { exportVariables } from "##/processor/variables/exporter";
 import { mutateVariables } from "##/processor/variables/mutator";
@@ -25,34 +27,39 @@ type ProcessResult = {
 };
 
 const process = (options: ProcessOptions): ProcessResult => {
-    const result: Program = cloneDeep(options.program);
-
-    // CSS
-
-    const resultCss: CollectCssResult = collectCss({
-        program: result,
-    });
-
-    const resultCssMut: MutateCssResult = mutateCss({
-        program: result,
-    });
+    const programRef: Program = cloneDeep(options.programRef);
+    const program: Program = cloneDeep(options.program);
 
     // Variables
 
     const resultVar: CollectVariablesResult = collectVariables({
-        program: resultCssMut.program,
+        program: programRef,
     });
 
     const resultVarMut: MutateVariablesResult = mutateVariables({
-        program: resultCssMut.program,
+        program,
         variablesList: resultVar.variablesList,
+    });
+
+    const resultVarMutRef: MutateVariablesResult = mutateVariables({
+        program: programRef,
+        variablesList: resultVar.variablesList,
+    });
+
+    // Styles
+
+    const resultStyles: CollectStylesResult = collectStyles({
+        program: resultVarMutRef.program,
+    });
+
+    const resultStylesMut: MutateStylesResult = mutateStyles({
+        program: resultVarMut.program,
+        styles: resultStyles.styles,
     });
 
     // Export
 
     let css: string = "";
-
-    css += resultCss.cssList.join("");
 
     const resultVarExport: ExportVariablesResult = exportVariables({
         variablesList: resultVar.variablesList,
@@ -60,8 +67,14 @@ const process = (options: ProcessOptions): ProcessResult => {
 
     css += resultVarExport.css;
 
+    const resultStylesExport: ExportStylesResult = exportStyles({
+        styles: resultStyles.styles,
+    });
+
+    css += resultStylesExport.css;
+
     return {
-        program: resultVarMut.program,
+        program: resultStylesMut.program,
         css,
     };
 };
