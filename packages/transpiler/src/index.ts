@@ -24,6 +24,10 @@ type TranspileResult = {
      * The transpiled code.
      */
     code: string;
+    /**
+     * The CSS of the transpiled code.
+     */
+    css: string;
 };
 
 const transpile = async (
@@ -78,6 +82,7 @@ const transpile = async (
 
     return {
         code: codegenResult.code,
+        css: processed.css,
     };
 };
 
