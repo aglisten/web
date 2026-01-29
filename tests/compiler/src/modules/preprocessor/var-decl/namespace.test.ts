@@ -1,32 +1,32 @@
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/transpiler/ast/codegen";
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { preprocess } from "@aglisten/transpiler/preprocessor";
+import { codegen } from "@aglisten/compiler/ast/codegen";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
 import { minifyCode } from "#/functions/minify/code";
 
-describe("preprocessor variable declaration tests (specifier)", (): void => {
+describe("preprocessor variable declaration tests (namespace)", (): void => {
     it("should preprocess the function", (): void => {
         const file = "index.ts" as const;
 
         const code = `
-            import { x } from "p";
+            import * as x from "p";
 
-            const block = x({
+            const block = x.y({
                 display: "block",
             });
         ` as const;
 
         const output = `
-            import { x } from "p";
+            import * as x from "p";
 
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "x",
+                kind: "y",
                 arguments: [
                     {
                         display: "block",
@@ -42,16 +42,13 @@ describe("preprocessor variable declaration tests (specifier)", (): void => {
 
         const { program: preprocessed } = preprocess({
             program,
-            namespaces: [],
-            includedFunctions: [
+            namespaces: [
                 "x",
             ],
-            specifiers: [
-                {
-                    imported: "x",
-                    local: "x",
-                },
+            includedFunctions: [
+                "y",
             ],
+            specifiers: [],
         });
 
         const preprocessedMinify: MinifyCodeResult = minifyCode(
@@ -71,20 +68,20 @@ describe("preprocessor variable declaration tests (specifier)", (): void => {
         const file = "index.ts" as const;
 
         const code = `
-            import { x } from "p";
+            import * as x from "p";
 
-            const block = x("html", {
+            const block = x.y("html", {
                 display: "block",
             });
         ` as const;
 
         const output = `
-            import { x } from "p";
+            import * as x from "p";
 
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "x",
+                kind: "y",
                 arguments: [
                     "html",
                     {
@@ -101,16 +98,13 @@ describe("preprocessor variable declaration tests (specifier)", (): void => {
 
         const { program: preprocessed } = preprocess({
             program,
-            namespaces: [],
-            includedFunctions: [
+            namespaces: [
                 "x",
             ],
-            specifiers: [
-                {
-                    imported: "x",
-                    local: "x",
-                },
+            includedFunctions: [
+                "y",
             ],
+            specifiers: [],
         });
 
         const preprocessedMinify: MinifyCodeResult = minifyCode(

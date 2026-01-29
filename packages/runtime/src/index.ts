@@ -1,7 +1,7 @@
 export type {
+    CompileOptions,
     CreateRuntimeOptions,
     Runtime,
-    TranspileOptions,
 } from "#/runtime";
 
 export {

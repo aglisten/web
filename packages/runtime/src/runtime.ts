@@ -1,21 +1,21 @@
 import type {
-    DynamicTranspileOptions,
-    PresetTranspileOptions,
-    TranspileResult,
-    UserTranspileOptions,
-} from "@aglisten/transpiler";
+    CompileResult,
+    DynamicCompileOptions,
+    PresetCompileOptions,
+    UserCompileOptions,
+} from "@aglisten/compiler";
 import type { Targets } from "lightningcss";
 
-import { transpile } from "@aglisten/transpiler";
+import { compile } from "@aglisten/compiler";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
 
-type CreateRuntimeOptions = PresetTranspileOptions &
-    UserTranspileOptions & {
+type CreateRuntimeOptions = PresetCompileOptions &
+    UserCompileOptions & {
         targets?: string | Targets;
     };
 
-type TranspileOptions = DynamicTranspileOptions;
+type CompileOptions = DynamicCompileOptions;
 
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
     const targets: Targets | undefined =
@@ -23,15 +23,15 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             ? browserslistToTargets(browserslist(coreOptions.targets))
             : coreOptions.targets;
 
-    const cache: Map<string, TranspileResult> = new Map();
+    const cache: Map<string, CompileResult> = new Map();
 
     let isTransformed: boolean = false;
 
     let cssCache: string = "";
 
     return {
-        isImported: async (options: TranspileOptions): Promise<boolean> => {
-            const result: TranspileResult | undefined = await transpile({
+        isImported: async (options: CompileOptions): Promise<boolean> => {
+            const result: CompileResult | undefined = await compile({
                 ...coreOptions,
                 ...options,
             });
@@ -43,13 +43,11 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             return true;
         },
-        transpile: async (
-            options: TranspileOptions,
-        ): Promise<TranspileResult> => {
+        compile: async (options: CompileOptions): Promise<CompileResult> => {
             if (cache.has(options.file))
-                return cache.get(options.file) as TranspileResult;
+                return cache.get(options.file) as CompileResult;
 
-            const result: TranspileResult | undefined = await transpile({
+            const result: CompileResult | undefined = await compile({
                 ...coreOptions,
                 ...options,
             });
@@ -74,7 +72,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             let css: string = "";
 
-            cache.forEach((result: TranspileResult): void => {
+            cache.forEach((result: CompileResult): void => {
                 css += result.css;
             });
 
@@ -97,5 +95,5 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
 type Runtime = ReturnType<typeof createRuntime>;
 
-export type { CreateRuntimeOptions, TranspileOptions, Runtime };
+export type { CreateRuntimeOptions, CompileOptions, Runtime };
 export { createRuntime };

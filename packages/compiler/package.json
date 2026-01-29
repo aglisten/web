@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/transpiler",
+    "name": "@aglisten/compiler",
     "version": "0.1.0",
-    "description": "A transpiler for Aglisten",
+    "description": "A compiler for Aglisten",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",

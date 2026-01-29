@@ -1,5 +1,5 @@
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { process } from "@aglisten/transpiler/processor";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { process } from "@aglisten/compiler/processor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
@@ -7,24 +7,24 @@ import { minifyCSS } from "#/functions/minify/css";
 
 const file = "index.ts" as const;
 
-describe("processor style tests", (): void => {
-    it("should process the style function", (): void => {
+describe("processor variables tests", (): void => {
+    it("should process the variables function", (): void => {
         const code = `
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                kind: "variables",
                 arguments: [
                     {
-                        display: "block",
+                        blue: "#0000ff",
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
+            :root{
+                --vg71dl:#00f;
             }
         ` as const;
 
@@ -41,28 +41,38 @@ describe("processor style tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the style function with multiple nodes", (): void => {
+    it("should process the variables function with multiple type of selectors", (): void => {
         const code = `
+            const htmlMax = "html[theme=max]";
+            const htmlDark = "html[theme=dark]" as const;
+
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                kind: "variables",
                 arguments: [
                     {
-                        display: "block",
-                        color: "blue",
+                        blue: {
+                            default: "#90d5ff",
+                            [htmlMax]: "#0000ff",
+                            [htmlDark]: "#111184",
+                        },
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
+            :root {
+                --vg71dl: #90d5ff;
             }
-
-            .ch8s1cdl {
-                color: #0000ff;
+                
+            html[theme=max] {
+                --vg71dl:#0000ff;
+            }
+                
+            html[theme=dark] {
+                --vg71dl:#111184;
             }
         ` as const;
 
@@ -79,24 +89,32 @@ describe("processor style tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the style function with shorthand", (): void => {
+    it("should process the variables function with multiple type of selectors as const", (): void => {
         const code = `
-            const display = "block" as const;
+            const htmlDark = "html[theme=dark]";
+
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                kind: "variables",
                 arguments: [
                     {
-                        display,
+                        blue: {
+                            default: "#90d5ff",
+                            [htmlDark]: "#111184" as const,
+                        },
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
+            :root{
+                --vg71dl:#90d5ff;
+            }
+            
+            html[theme=dark] {
+                --vg71dl:#111184;
             }
         ` as const;
 
@@ -113,30 +131,33 @@ describe("processor style tests", (): void => {
         expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
     });
 
-    it("should process the style function with fallback value", (): void => {
+    it("should process the variables function with multiple type of selectors and nesting ", (): void => {
         const code = `
+            const themeName = "dark" as const;
+            const htmlDark = \`html[theme=\${themeName}]\`;
+
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                kind: "variables",
                 arguments: [
                     {
-                        display: [
-                            "block",
-                            "flex",
-                        ],
+                        blue: {
+                            default: "#90d5ff",
+                            [htmlDark]: "#111184",
+                        },
                     },
                 ],
             };
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
+            :root{
+                --vg71dl: #90d5ff;
             }
-
-            .djcd1agm {
-                display: flex;
+                
+            html[theme=dark] {
+                --vg71dl:#111184;
             }
         ` as const;
 

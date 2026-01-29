@@ -1,5 +1,5 @@
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { process } from "@aglisten/transpiler/processor";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { process } from "@aglisten/compiler/processor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";

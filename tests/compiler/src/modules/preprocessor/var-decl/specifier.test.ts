@@ -1,21 +1,21 @@
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/transpiler/ast/codegen";
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { preprocess } from "@aglisten/transpiler/preprocessor";
+import { codegen } from "@aglisten/compiler/ast/codegen";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
 import { minifyCode } from "#/functions/minify/code";
 
-const file = "index.ts" as const;
-
-describe("preprocessor call expression tests (specifier)", (): void => {
+describe("preprocessor variable declaration tests (specifier)", (): void => {
     it("should preprocess the function", (): void => {
+        const file = "index.ts" as const;
+
         const code = `
             import { x } from "p";
 
-            x({
+            const block = x({
                 display: "block",
             });
         ` as const;
@@ -23,9 +23,9 @@ describe("preprocessor call expression tests (specifier)", (): void => {
         const output = `
             import { x } from "p";
 
-            const ${SIGNATURE}_ce_1 = {
+            const block = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
+                id: "block",
                 kind: "x",
                 arguments: [
                     {
@@ -68,10 +68,12 @@ describe("preprocessor call expression tests (specifier)", (): void => {
     });
 
     it("should preprocess the function with multiple arguments", (): void => {
+        const file = "index.ts" as const;
+
         const code = `
             import { x } from "p";
 
-            x("html", {
+            const block = x("html", {
                 display: "block",
             });
         ` as const;
@@ -79,9 +81,9 @@ describe("preprocessor call expression tests (specifier)", (): void => {
         const output = `
             import { x } from "p";
 
-            const ${SIGNATURE}_ce_1 = {
+            const block = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
+                id: "block",
                 kind: "x",
                 arguments: [
                     "html",

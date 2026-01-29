@@ -1,7 +1,7 @@
-import type { Specifier } from "@aglisten/transpiler/collector";
+import type { Specifier } from "@aglisten/compiler/collector";
 
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { collect } from "@aglisten/transpiler/collector";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { collect } from "@aglisten/compiler/collector";
 import { describe, expect, it } from "vitest";
 
 const file = "index.ts" as const;

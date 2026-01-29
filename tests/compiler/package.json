@@ -1,8 +1,8 @@
 {
-    "name": "test-transpiler",
+    "name": "test-compiler",
     "private": true,
     "dependencies": {
-        "@aglisten/transpiler": "workspace:*",
+        "@aglisten/compiler": "workspace:*",
         "lightningcss": "^1.31.1",
         "oxc-minify": "catalog:oxc",
         "vitest": "catalog:vite"

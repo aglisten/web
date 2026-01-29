@@ -7,11 +7,11 @@ tsdown := node_bin + "tsdown"
 vitest := node_bin + "vitest"
 typedoc := node_bin + "typedoc"
 
-transpiler := "packages/transpiler"
+compiler := "packages/compiler"
 runtime := "packages/runtime"
 web := "packages/web"
 
-test_transpiler := "tests/transpiler"
+test_compiler := "tests/compiler"
 test_web := "tests/web"
 
 # Default action
@@ -28,7 +28,7 @@ i:
 
 # Lint with TypeScript Compiler
 tsc:
-    cd ./{{transpiler}} && ../../{{tsc}} --noEmit
+    cd ./{{compiler}} && ../../{{tsc}} --noEmit
     cd ./{{runtime}} && ../../{{tsc}} --noEmit
     cd ./{{web}} && ../../{{tsc}} --noEmit
 
@@ -44,29 +44,29 @@ fmt:
 
 # Build packages
 build:
-    cd ./{{transpiler}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{compiler}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{runtime}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{web}} && ../../{{tsdown}} -c tsdown.config.ts
 
 # Run tests
 test:
-    cd ./{{test_transpiler}} && ./{{vitest}} run
+    cd ./{{test_compiler}} && ./{{vitest}} run
     cd ./{{test_web}} && ./{{vitest}} run
 
 # Clean builds
 clean:
     cd ./{{web}} && rm -rf ./dist
     cd ./{{runtime}} && rm -rf ./dist
-    cd ./{{transpiler}} && rm -rf ./dist
+    cd ./{{compiler}} && rm -rf ./dist
 
 # Clean everything
 clean-all:
     just clean
 
-    cd ./{{test_transpiler}} && rm -rf ./node_modules
+    cd ./{{test_compiler}} && rm -rf ./node_modules
 
     cd ./{{web}} && rm -rf ./node_modules
     cd ./{{runtime}} && rm -rf ./node_modules
-    cd ./{{transpiler}} && rm -rf ./node_modules
+    cd ./{{compiler}} && rm -rf ./node_modules
 
     rm -rf ./node_modules

@@ -18,17 +18,23 @@ import { collect } from "#/modules/collector";
 import { preprocess } from "#/modules/preprocessor";
 import { process } from "#/modules/processor";
 
-type PresetTranspileOptions = PresetBundleOptions;
+type PresetCompileOptions = PresetBundleOptions;
 
-type UserTranspileOptions = UserBundleOptions;
+type UserCompileOptions = UserBundleOptions;
 
-type DynamicTranspileOptions = DynamicBundleOptions;
+type DynamicCompileOptions = DynamicBundleOptions;
 
-type TranspileOptions = Format<
-    PresetTranspileOptions & UserTranspileOptions & DynamicTranspileOptions
+/**
+ * The options for the `compile` function.
+ */
+type CompileOptions = Format<
+    PresetCompileOptions & UserCompileOptions & DynamicCompileOptions
 >;
 
-type TranspileResult = {
+/**
+ * The result of the `compile` function.
+ */
+type CompileResult = {
     /**
      * The transpiled code.
      */
@@ -39,9 +45,9 @@ type TranspileResult = {
     css: string;
 };
 
-const transpile = async (
-    options: TranspileOptions,
-): Promise<TranspileResult | undefined> => {
+const compile = async (
+    options: CompileOptions,
+): Promise<CompileResult | undefined> => {
     const parsed: ParseResult = parse({
         file: options.file,
         code: options.code,
@@ -96,10 +102,10 @@ const transpile = async (
 };
 
 export type {
-    PresetTranspileOptions,
-    UserTranspileOptions,
-    DynamicTranspileOptions,
-    TranspileOptions,
-    TranspileResult,
+    PresetCompileOptions,
+    UserCompileOptions,
+    DynamicCompileOptions,
+    CompileOptions,
+    CompileResult,
 };
-export { transpile };
+export { compile };

@@ -1,8 +1,8 @@
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/transpiler/ast/codegen";
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { preprocess } from "@aglisten/transpiler/preprocessor";
+import { codegen } from "@aglisten/compiler/ast/codegen";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
@@ -10,23 +10,23 @@ import { minifyCode } from "#/functions/minify/code";
 
 const file = "index.ts" as const;
 
-describe("preprocessor call expression tests (namespace)", (): void => {
+describe("preprocessor call expression tests (specifier)", (): void => {
     it("should preprocess the function", (): void => {
         const code = `
-            import * as x from "p";
+            import { x } from "p";
 
-            x.y({
+            x({
                 display: "block",
             });
         ` as const;
 
         const output = `
-            import * as x from "p";
+            import { x } from "p";
 
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "y",
+                kind: "x",
                 arguments: [
                     {
                         display: "block",
@@ -42,13 +42,16 @@ describe("preprocessor call expression tests (namespace)", (): void => {
 
         const { program: preprocessed } = preprocess({
             program,
-            namespaces: [
+            namespaces: [],
+            includedFunctions: [
                 "x",
             ],
-            includedFunctions: [
-                "y",
+            specifiers: [
+                {
+                    imported: "x",
+                    local: "x",
+                },
             ],
-            specifiers: [],
         });
 
         const preprocessedMinify: MinifyCodeResult = minifyCode(
@@ -66,20 +69,20 @@ describe("preprocessor call expression tests (namespace)", (): void => {
 
     it("should preprocess the function with multiple arguments", (): void => {
         const code = `
-            import * as x from "p";
+            import { x } from "p";
 
-            x.y("html", {
+            x("html", {
                 display: "block",
             });
         ` as const;
 
         const output = `
-            import * as x from "p";
+            import { x } from "p";
 
             const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
                 id: "${SIGNATURE}_ce_1",
-                kind: "y",
+                kind: "x",
                 arguments: [
                     "html",
                     {
@@ -96,13 +99,16 @@ describe("preprocessor call expression tests (namespace)", (): void => {
 
         const { program: preprocessed } = preprocess({
             program,
-            namespaces: [
+            namespaces: [],
+            includedFunctions: [
                 "x",
             ],
-            includedFunctions: [
-                "y",
+            specifiers: [
+                {
+                    imported: "x",
+                    local: "x",
+                },
             ],
-            specifiers: [],
         });
 
         const preprocessedMinify: MinifyCodeResult = minifyCode(

@@ -1,21 +1,21 @@
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/transpiler/ast/codegen";
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { preprocess } from "@aglisten/transpiler/preprocessor";
+import { codegen } from "@aglisten/compiler/ast/codegen";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";
 import { minifyCode } from "#/functions/minify/code";
 
-describe("preprocessor variable declaration tests (namespace)", (): void => {
-    it("should preprocess the function", (): void => {
-        const file = "index.ts" as const;
+const file = "index.ts" as const;
 
+describe("preprocessor call expression tests (namespace)", (): void => {
+    it("should preprocess the function", (): void => {
         const code = `
             import * as x from "p";
 
-            const block = x.y({
+            x.y({
                 display: "block",
             });
         ` as const;
@@ -23,9 +23,9 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
         const output = `
             import * as x from "p";
 
-            const block = {
+            const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
-                id: "block",
+                id: "${SIGNATURE}_ce_1",
                 kind: "y",
                 arguments: [
                     {
@@ -65,12 +65,10 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
     });
 
     it("should preprocess the function with multiple arguments", (): void => {
-        const file = "index.ts" as const;
-
         const code = `
             import * as x from "p";
 
-            const block = x.y("html", {
+            x.y("html", {
                 display: "block",
             });
         ` as const;
@@ -78,9 +76,9 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
         const output = `
             import * as x from "p";
 
-            const block = {
+            const ${SIGNATURE}_ce_1 = {
                 ${SIGNATURE}: true,
-                id: "block",
+                id: "${SIGNATURE}_ce_1",
                 kind: "y",
                 arguments: [
                     "html",

@@ -1,8 +1,8 @@
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/transpiler/ast/codegen";
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { preprocess } from "@aglisten/transpiler/preprocessor";
+import { codegen } from "@aglisten/compiler/ast/codegen";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";

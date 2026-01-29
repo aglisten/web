@@ -1,15 +1,15 @@
-import type { Specifier } from "@aglisten/transpiler/collector";
+import type { Specifier } from "@aglisten/compiler/collector";
 
-import { parse } from "@aglisten/transpiler/ast/parse";
-import { collect } from "@aglisten/transpiler/collector";
+import { parse } from "@aglisten/compiler/ast/parse";
+import { collect } from "@aglisten/compiler/collector";
 import { describe, expect, it } from "vitest";
 
 const file = "index.ts" as const;
 
-describe("collector tests (default namespace, cjs)", (): void => {
+describe("collector tests (namespace, esm)", (): void => {
     it("should collect the information", (): void => {
         const code = `
-            const x = require("p");
+            import * as x from "p";
 
             x.y({
                 display: "block",

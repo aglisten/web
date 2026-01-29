@@ -52,19 +52,7 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/runtime:
-    dependencies:
-      '@aglisten/transpiler':
-        specifier: workspace:*
-        version: link:../transpiler
-      browserslist:
-        specifier: ^4.28.1
-        version: 4.28.1
-      lightningcss:
-        specifier: ^1.30.0
-        version: 1.31.1
-
-  packages/transpiler:
+  packages/compiler:
     dependencies:
       es-toolkit:
         specifier: ^1.40.0
@@ -85,6 +73,18 @@ importers:
         specifier: ~0.2.3
         version: 0.2.3
 
+  packages/runtime:
+    dependencies:
+      '@aglisten/compiler':
+        specifier: workspace:*
+        version: link:../compiler
+      browserslist:
+        specifier: ^4.28.1
+        version: 4.28.1
+      lightningcss:
+        specifier: ^1.30.0
+        version: 1.31.1
+
   packages/web:
     dependencies:
       csstype:
@@ -97,20 +97,11 @@ importers:
         specifier: ~0.2.3
         version: 0.2.3
 
-  packages/web-runtime:
+  tests/compiler:
     dependencies:
-      '@aglisten/transpiler':
+      '@aglisten/compiler':
         specifier: workspace:*
-        version: link:../transpiler
-      lightningcss:
-        specifier: ^1.30.0
-        version: 1.31.1
-
-  tests/transpiler:
-    dependencies:
-      '@aglisten/transpiler':
-        specifier: workspace:*
-        version: link:../../packages/transpiler
+        version: link:../../packages/compiler
       lightningcss:
         specifier: ^1.31.1
         version: 1.31.1
