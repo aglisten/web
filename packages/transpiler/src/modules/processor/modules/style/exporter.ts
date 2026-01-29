@@ -59,4 +59,4 @@ const exportStyles = (options: ExportStylesOptions): ExportStylesResult => {
 };
 
 export type { ExportStylesOptions, ExportStylesResult };
-export { exportStyles };
+export { styleNodeToCss, exportStyles };

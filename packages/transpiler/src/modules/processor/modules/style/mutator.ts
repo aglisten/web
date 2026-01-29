@@ -6,23 +6,21 @@ import type {
 } from "oxc-parser";
 
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
-import type { Style } from "##/processor/style/@types";
+import type { Style, StyleNode } from "##/processor/style/@types";
 
 import { cloneDeep } from "es-toolkit";
 
 import { getInfo } from "#/modules/processor/functions/get-info";
 
-type TransformStylesOptions = {
+type MutateStyleOptions = {
     decl: VariableDeclarator;
     id: string;
-    styles: Style[];
+    style: Style;
 };
 
-const transformStyles = (
-    options: TransformStylesOptions,
-): VariableDeclarator => {
-    const classNames: string[] = options.styles.map(
-        (style: Style): string => style.id,
+const mutateStyle = (options: MutateStyleOptions): VariableDeclarator => {
+    const classNames: string[] = options.style.children.map(
+        (node: StyleNode): string => node.title,
     );
 
     return {
@@ -69,10 +67,16 @@ const mutateStyles = (options: MutateStylesOptions): MutateStylesResult => {
 
             if (info.kind !== "style") continue;
 
-            body.declarations[j] = transformStyles({
+            const style: Style | undefined = options.styles.find(
+                (style: Style): boolean => style.id === info.id,
+            );
+
+            if (!style) continue;
+
+            body.declarations[j] = mutateStyle({
                 decl,
                 id: info.id,
-                styles: options.styles,
+                style,
             });
         }
     }

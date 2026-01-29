@@ -66,6 +66,8 @@ const collectStyles = (options: CollectStylesOptions): CollectStylesResult => {
 
                 if (!info) continue;
 
+                if (info.kind !== "style") continue;
+
                 // style function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
                     info.args[0];
