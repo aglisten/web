@@ -1,5 +1,6 @@
 import type { Program } from "oxc-parser";
 
+import type { CollectAllKeyframesResult } from "##/processor/keyframes/collector";
 import type { CollectStylesResult } from "##/processor/style/collector";
 import type { ExportStylesResult } from "##/processor/style/exporter";
 import type { MutateStylesResult } from "##/processor/style/mutator";
@@ -9,6 +10,9 @@ import type { MutateAllVariablesResult } from "##/processor/variables/mutator";
 
 import { cloneDeep } from "es-toolkit";
 
+import { collectAllKeyframes } from "##/processor/keyframes/collector";
+import { exportAllKeyframes } from "##/processor/keyframes/exporter";
+import { mutateAllKeyframes } from "##/processor/keyframes/mutator";
 import { collectStyles } from "##/processor/style/collector";
 import { exportStyles } from "##/processor/style/exporter";
 import { mutateStyles } from "##/processor/style/mutator";
@@ -46,14 +50,30 @@ const process = (options: ProcessOptions): ProcessResult => {
         variablesList: resultVar.variablesList,
     });
 
-    // Styles
+    // Keyframes
 
-    const resultStyles: CollectStylesResult = collectStyles({
+    const resultKf: CollectAllKeyframesResult = collectAllKeyframes({
         program: resultVarMutRef.program,
     });
 
-    const resultStylesMut: MutateStylesResult = mutateStyles({
+    const resultKfMut: MutateAllVariablesResult = mutateAllKeyframes({
         program: resultVarMut.program,
+        keyframesList: resultKf.keyframesList,
+    });
+
+    const resultKfMutRef: MutateAllVariablesResult = mutateAllKeyframes({
+        program: resultVarMutRef.program,
+        keyframesList: resultKf.keyframesList,
+    });
+
+    // Styles
+
+    const resultStyles: CollectStylesResult = collectStyles({
+        program: resultKfMutRef.program,
+    });
+
+    const resultStylesMut: MutateStylesResult = mutateStyles({
+        program: resultKfMut.program,
         styles: resultStyles.styles,
     });
 
@@ -66,6 +86,12 @@ const process = (options: ProcessOptions): ProcessResult => {
     });
 
     css += resultVarExport.css;
+
+    const resultKfExport: ExportStylesResult = exportAllKeyframes({
+        keyframesList: resultKf.keyframesList,
+    });
+
+    css += resultKfExport.css;
 
     const resultStylesExport: ExportStylesResult = exportStyles({
         styles: resultStyles.styles,
