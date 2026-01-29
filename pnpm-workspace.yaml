@@ -6,7 +6,7 @@ catalogs:
     oxc:
         oxc-parser: ~0.111.0
         oxc-minify: ~0.111.0
-        rolldown: 1.0.0-rc.1
+        rolldown: 1.0.0-rc.2
     vite:
         vitest: ^4
         vite-tsconfig-paths: ^6
