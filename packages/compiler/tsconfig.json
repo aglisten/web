@@ -8,7 +8,7 @@
             ],
             "##/processor/*": [
                 "./src/modules/processor/modules/*"
-            ],
+            ]
         }
     },
     "include": [

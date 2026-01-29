@@ -84,6 +84,9 @@ importers:
       lightningcss:
         specifier: ^1.30.0
         version: 1.31.1
+      ts-vista:
+        specifier: ~0.2.3
+        version: 0.2.3
 
   packages/web:
     dependencies:

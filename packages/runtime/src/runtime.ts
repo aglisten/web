@@ -5,15 +5,18 @@ import type {
     UserCompileOptions,
 } from "@aglisten/compiler";
 import type { Targets } from "lightningcss";
+import type { Format } from "ts-vista";
 
 import { compile } from "@aglisten/compiler";
 import browserslist from "browserslist";
 import { browserslistToTargets, transform } from "lightningcss";
 
-type CreateRuntimeOptions = PresetCompileOptions &
-    UserCompileOptions & {
-        targets?: string | Targets;
-    };
+type CreateRuntimeOptions = Format<
+    PresetCompileOptions &
+        UserCompileOptions & {
+            targets?: string | Targets;
+        }
+>;
 
 type CompileOptions = DynamicCompileOptions;
 
