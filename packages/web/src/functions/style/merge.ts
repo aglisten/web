@@ -46,7 +46,7 @@ const getClassFromKeyValues = (keyValues: KeyValues): string => {
 
 /**
  * Merge multiple styles.
- * 
+ *
  * ### Example
  *
  * ```ts

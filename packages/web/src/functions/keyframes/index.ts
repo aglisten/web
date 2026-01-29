@@ -4,7 +4,7 @@ import { TranspileError } from "#/error";
 
 /**
  * Create a keyframes.
- * 
+ *
  * ### Example
  *
  * ```ts
