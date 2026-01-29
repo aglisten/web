@@ -16,32 +16,24 @@ import { cloneDeep } from "es-toolkit";
 
 import { getInfo } from "#/modules/processor/functions/get-info";
 
-type TransformVariablesOptions = {
+type MutateVariablesOptions = {
     decl: VariableDeclarator;
     id: string;
-    variablesList: Variables[];
+    variables: Variables;
 };
 
-const transformVariables = (
-    options: TransformVariablesOptions,
+const mutateVariables = (
+    options: MutateVariablesOptions,
 ): VariableDeclarator => {
     const kvs: VariableKeyValue[] = [];
 
-    for (let i: number = 0; i < options.variablesList.length; i++) {
-        const variables: Variables | undefined = options.variablesList[i];
+    for (let i: number = 0; i < options.variables.keyValues.length; i++) {
+        const variable: VariableKeyValue | undefined =
+            options.variables.keyValues[i];
 
-        if (!variables) continue;
+        if (!variable) continue;
 
-        if (variables.id !== options.id) continue;
-
-        for (let j: number = 0; j < variables.keyValues.length; j++) {
-            const variable: VariableKeyValue | undefined =
-                variables.keyValues[j];
-
-            if (!variable) continue;
-
-            kvs.push(variable);
-        }
+        kvs.push(variable);
     }
 
     const object: ObjectExpression = {
@@ -94,18 +86,18 @@ const transformVariables = (
     };
 };
 
-type MutateVariablesOptions = {
+type MutateAllVariablesOptions = {
     program: Program;
     variablesList: Variables[];
 };
 
-type MutateVariablesResult = {
+type MutateAllVariablesResult = {
     program: Program;
 };
 
-const mutateVariables = (
-    options: MutateVariablesOptions,
-): MutateVariablesResult => {
+const mutateAllVariables = (
+    options: MutateAllVariablesOptions,
+): MutateAllVariablesResult => {
     const program: Program = cloneDeep(options.program);
 
     for (let i: number = 0; i < program.body.length; i++) {
@@ -128,10 +120,16 @@ const mutateVariables = (
 
             if (info.kind !== "variables") continue;
 
-            body.declarations[j] = transformVariables({
+            const variables: Variables | undefined = options.variablesList.find(
+                (variables: Variables): boolean => variables.id === info.id,
+            );
+
+            if (!variables) continue;
+
+            body.declarations[j] = mutateVariables({
                 decl,
                 id: info.id,
-                variablesList: options.variablesList,
+                variables,
             });
         }
     }
@@ -141,5 +139,5 @@ const mutateVariables = (
     };
 };
 
-export type { MutateVariablesOptions, MutateVariablesResult };
-export { mutateVariables };
+export type { MutateAllVariablesOptions, MutateAllVariablesResult };
+export { mutateAllVariables };

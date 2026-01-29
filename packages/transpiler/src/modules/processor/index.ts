@@ -3,18 +3,18 @@ import type { Program } from "oxc-parser";
 import type { CollectStylesResult } from "##/processor/style/collector";
 import type { ExportStylesResult } from "##/processor/style/exporter";
 import type { MutateStylesResult } from "##/processor/style/mutator";
-import type { CollectVariablesResult } from "##/processor/variables/collector";
-import type { ExportVariablesResult } from "##/processor/variables/exporter";
-import type { MutateVariablesResult } from "##/processor/variables/mutator";
+import type { CollectAllVariablesResult } from "##/processor/variables/collector";
+import type { ExportAllVariablesResult } from "##/processor/variables/exporter";
+import type { MutateAllVariablesResult } from "##/processor/variables/mutator";
 
 import { cloneDeep } from "es-toolkit";
 
 import { collectStyles } from "##/processor/style/collector";
 import { exportStyles } from "##/processor/style/exporter";
 import { mutateStyles } from "##/processor/style/mutator";
-import { collectVariables } from "##/processor/variables/collector";
-import { exportVariables } from "##/processor/variables/exporter";
-import { mutateVariables } from "##/processor/variables/mutator";
+import { collectAllVariables } from "##/processor/variables/collector";
+import { exportAllVariables } from "##/processor/variables/exporter";
+import { mutateAllVariables } from "##/processor/variables/mutator";
 
 type ProcessOptions = {
     program: Program;
@@ -32,16 +32,16 @@ const process = (options: ProcessOptions): ProcessResult => {
 
     // Variables
 
-    const resultVar: CollectVariablesResult = collectVariables({
+    const resultVar: CollectAllVariablesResult = collectAllVariables({
         program: programRef,
     });
 
-    const resultVarMut: MutateVariablesResult = mutateVariables({
+    const resultVarMut: MutateAllVariablesResult = mutateAllVariables({
         program,
         variablesList: resultVar.variablesList,
     });
 
-    const resultVarMutRef: MutateVariablesResult = mutateVariables({
+    const resultVarMutRef: MutateAllVariablesResult = mutateAllVariables({
         program: programRef,
         variablesList: resultVar.variablesList,
     });
@@ -61,7 +61,7 @@ const process = (options: ProcessOptions): ProcessResult => {
 
     let css: string = "";
 
-    const resultVarExport: ExportVariablesResult = exportVariables({
+    const resultVarExport: ExportAllVariablesResult = exportAllVariables({
         variablesList: resultVar.variablesList,
     });
 

@@ -123,19 +123,19 @@ const collectPropVariables = (
     };
 };
 
-type _CollectVariablesOptions = {
+type CollectVariablesOptions = {
     program: Program;
     id: string;
     object: ObjectExpression;
 };
 
-type _CollectVariablesResult = {
+type CollectVariablesResult = {
     variables: Variables;
 };
 
-const _collectVariables = (
-    options: _CollectVariablesOptions,
-): _CollectVariablesResult => {
+const collectVariables = (
+    options: CollectVariablesOptions,
+): CollectVariablesResult => {
     const keyValues: VariableKeyValue[] = [];
 
     for (let i: number = 0; i < options.object.properties.length; i++) {
@@ -171,17 +171,17 @@ const _collectVariables = (
     };
 };
 
-type CollectVariablesOptions = {
+type CollectAllVariablesOptions = {
     program: Program;
 };
 
-type CollectVariablesResult = {
+type CollectAllVariablesResult = {
     variablesList: Variables[];
 };
 
-const collectVariables = (
-    options: CollectVariablesOptions,
-): CollectVariablesResult => {
+const collectAllVariables = (
+    options: CollectAllVariablesOptions,
+): CollectAllVariablesResult => {
     const variablesList: Variables[] = [];
 
     const visitor: Visitor = new Visitor({
@@ -198,6 +198,8 @@ const collectVariables = (
 
                 if (!info) continue;
 
+                if (info.kind !== "variables") continue;
+
                 // variables function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
                     info.args[0];
@@ -211,7 +213,7 @@ const collectVariables = (
                     );
                 }
 
-                const result: _CollectVariablesResult = _collectVariables({
+                const result: CollectVariablesResult = collectVariables({
                     program: options.program,
                     id: info.id,
                     object: arg,
@@ -229,5 +231,5 @@ const collectVariables = (
     };
 };
 
-export type { CollectVariablesOptions, CollectVariablesResult };
-export { collectVariables };
+export type { CollectAllVariablesOptions, CollectAllVariablesResult };
+export { collectAllVariables };

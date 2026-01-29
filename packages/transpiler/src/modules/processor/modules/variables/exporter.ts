@@ -3,17 +3,17 @@ import type {
     Variables,
 } from "##/processor/variables/@types";
 
-type ExportVariablesOptions = {
+type ExportAllVariablesOptions = {
     variablesList: Variables[];
 };
 
-type ExportVariablesResult = {
+type ExportAllVariablesResult = {
     css: string;
 };
 
-const exportVariables = (
-    options: ExportVariablesOptions,
-): ExportVariablesResult => {
+const exportAllVariables = (
+    options: ExportAllVariablesOptions,
+): ExportAllVariablesResult => {
     let css: string = "";
 
     for (let i: number = 0; i < options.variablesList.length; i++) {
@@ -35,5 +35,5 @@ const exportVariables = (
     };
 };
 
-export type { ExportVariablesOptions, ExportVariablesResult };
-export { exportVariables };
+export type { ExportAllVariablesOptions, ExportAllVariablesResult };
+export { exportAllVariables };
