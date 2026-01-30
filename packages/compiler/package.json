@@ -47,11 +47,12 @@
         "dist"
     ],
     "dependencies": {
-        "es-toolkit": "^1.40.0",
+        "es-toolkit": "catalog:dep",
         "esrap": "^2.2.0",
         "fdir": "^6.5.0",
-        "oxc-parser": "catalog:oxc",
-        "rolldown": "catalog:oxc",
-        "ts-vista": "~0.2.3"
+        "oxc-parser": "catalog:dep",
+        "rolldown": "catalog:dep",
+        "ts-vista": "catalog:dep",
+        "uuid": "^13.0.0"
     }
 }

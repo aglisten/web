@@ -8,7 +8,6 @@ class TranspileError extends Error {
         super(message);
 
         if ("captureStackTrace" in Error) {
-            // @ts-expect-error
             Error.captureStackTrace(this, TranspileError);
         }
     }

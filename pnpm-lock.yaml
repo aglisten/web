@@ -5,7 +5,13 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
-  oxc:
+  dep:
+    es-toolkit:
+      specifier: ^1.40.0
+      version: 1.43.0
+    lightningcss:
+      specifier: ^1.30.0
+      version: 1.31.1
     oxc-minify:
       specifier: ~0.111.0
       version: 0.111.0
@@ -15,12 +21,14 @@ catalogs:
     rolldown:
       specifier: 1.0.0-rc.2
       version: 1.0.0-rc.2
-  vite:
+    ts-vista:
+      specifier: ~0.2.3
+      version: 0.2.3
     vite-tsconfig-paths:
-      specifier: ^6
+      specifier: ^6.0.0
       version: 6.0.4
     vitest:
-      specifier: ^4
+      specifier: ^4.0.0
       version: 4.0.17
 
 importers:
@@ -39,6 +47,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.3.13
         version: 2.3.13
+      '@types/node':
+        specifier: ^25.1.0
+        version: 25.1.0
       tsdown:
         specifier: ~0.20.1
         version: 0.20.1(typescript@5.9.3)
@@ -55,7 +66,7 @@ importers:
   packages/compiler:
     dependencies:
       es-toolkit:
-        specifier: ^1.40.0
+        specifier: catalog:dep
         version: 1.43.0
       esrap:
         specifier: ^2.2.0
@@ -64,14 +75,17 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(picomatch@4.0.3)
       oxc-parser:
-        specifier: catalog:oxc
+        specifier: catalog:dep
         version: 0.111.0
       rolldown:
-        specifier: catalog:oxc
+        specifier: catalog:dep
         version: 1.0.0-rc.2
       ts-vista:
-        specifier: ~0.2.3
+        specifier: catalog:dep
         version: 0.2.3
+      uuid:
+        specifier: ^13.0.0
+        version: 13.0.0
 
   packages/runtime:
     dependencies:
@@ -81,11 +95,14 @@ importers:
       browserslist:
         specifier: ^4.28.1
         version: 4.28.1
+      es-toolkit:
+        specifier: catalog:dep
+        version: 1.43.0
       lightningcss:
-        specifier: ^1.30.0
+        specifier: catalog:dep
         version: 1.31.1
       ts-vista:
-        specifier: ~0.2.3
+        specifier: catalog:dep
         version: 0.2.3
 
   packages/web:
@@ -97,7 +114,7 @@ importers:
         specifier: ~0.0.1
         version: 0.0.1
       ts-vista:
-        specifier: ~0.2.3
+        specifier: catalog:dep
         version: 0.2.3
 
   tests/compiler:
@@ -106,18 +123,18 @@ importers:
         specifier: workspace:*
         version: link:../../packages/compiler
       lightningcss:
-        specifier: ^1.31.1
+        specifier: catalog:dep
         version: 1.31.1
       oxc-minify:
-        specifier: catalog:oxc
+        specifier: catalog:dep
         version: 0.111.0
       vitest:
-        specifier: catalog:vite
-        version: 4.0.17(lightningcss@1.31.1)(yaml@2.8.1)
+        specifier: catalog:dep
+        version: 4.0.17(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
-        specifier: catalog:vite
-        version: 6.0.4(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1)
+        specifier: catalog:dep
+        version: 6.0.4(@types/node@25.1.0)(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1)
 
   tests/web:
     dependencies:
@@ -125,12 +142,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/web
       vitest:
-        specifier: catalog:vite
-        version: 4.0.17(lightningcss@1.31.1)(yaml@2.8.1)
+        specifier: catalog:dep
+        version: 4.0.17(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
-        specifier: catalog:vite
-        version: 6.0.4(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1)
+        specifier: catalog:dep
+        version: 6.0.4(@types/node@25.1.0)(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1)
 
 packages:
 
@@ -1025,6 +1042,9 @@ packages:
   '@types/jsesc@2.5.1':
     resolution: {integrity: sha512-9VN+6yxLOPLOav+7PwjZbxiID2bVaeq0ED4qSQmdQTdjnXJSaCVKTR58t15oqH1H5t8Ng2ZX1SabJVoN9Q34bw==}
 
+  '@types/node@25.1.0':
+    resolution: {integrity: sha512-t7frlewr6+cbx+9Ohpl0NOTKXZNV9xHRmNOvql47BFJKcEG1CxtxlPEEe+gR9uhVWM4DwhnvTF110mIL4yP9RA==}
+
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
@@ -1476,6 +1496,9 @@ packages:
   unconfig-core@7.4.2:
     resolution: {integrity: sha512-VgPCvLWugINbXvMQDf8Jh0mlbvNjNC6eSUziHsBCMpxR05OPrNrvDnyatdMjRgcHaaNsCqz+wjNXxNw1kRLHUg==}
 
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
+
   unrun@0.2.26:
     resolution: {integrity: sha512-A3DQLBcDyTui4Hlaoojkldg+8x+CIR+tcSHY0wzW+CgB4X/DNyH58jJpXp1B/EkE+yG6tU8iH1mWsLtwFU3IQg==}
     engines: {node: '>=20.19.0'}
@@ -1491,6 +1514,10 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
+
+  uuid@13.0.0:
+    resolution: {integrity: sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==}
+    hasBin: true
 
   vite-tsconfig-paths@6.0.4:
     resolution: {integrity: sha512-iIsEJ+ek5KqRTK17pmxtgIxXtqr3qDdE6OxrP9mVeGhVDNXRJTKN/l9oMbujTQNzMLe6XZ8qmpztfbkPu2TiFQ==}
@@ -2110,6 +2137,10 @@ snapshots:
 
   '@types/jsesc@2.5.1': {}
 
+  '@types/node@25.1.0':
+    dependencies:
+      undici-types: 7.16.0
+
   '@types/unist@3.0.3': {}
 
   '@vitest/expect@4.0.17':
@@ -2121,13 +2152,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.17(vite@7.3.1(lightningcss@1.31.1)(yaml@2.8.1))':
+  '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 4.0.17
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(lightningcss@1.31.1)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1)
 
   '@vitest/pretty-format@4.0.17':
     dependencies:
@@ -2585,6 +2616,8 @@ snapshots:
       '@quansync/fs': 1.0.0
       quansync: 1.0.0
 
+  undici-types@7.16.0: {}
+
   unrun@0.2.26:
     dependencies:
       rolldown: 1.0.0-rc.1
@@ -2595,12 +2628,14 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  vite-tsconfig-paths@6.0.4(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1):
+  uuid@13.0.0: {}
+
+  vite-tsconfig-paths@6.0.4(@types/node@25.1.0)(lightningcss@1.31.1)(typescript@5.9.3)(yaml@2.8.1):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.3)
-      vite: 7.3.1(lightningcss@1.31.1)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -2616,7 +2651,7 @@ snapshots:
       - typescript
       - yaml
 
-  vite@7.3.1(lightningcss@1.31.1)(yaml@2.8.1):
+  vite@7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1):
     dependencies:
       esbuild: 0.27.2
       fdir: 6.5.0(picomatch@4.0.3)
@@ -2625,14 +2660,15 @@ snapshots:
       rollup: 4.55.1
       tinyglobby: 0.2.15
     optionalDependencies:
+      '@types/node': 25.1.0
       fsevents: 2.3.3
       lightningcss: 1.31.1
       yaml: 2.8.1
 
-  vitest@4.0.17(lightningcss@1.31.1)(yaml@2.8.1):
+  vitest@4.0.17(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1):
     dependencies:
       '@vitest/expect': 4.0.17
-      '@vitest/mocker': 4.0.17(vite@7.3.1(lightningcss@1.31.1)(yaml@2.8.1))
+      '@vitest/mocker': 4.0.17(vite@7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1))
       '@vitest/pretty-format': 4.0.17
       '@vitest/runner': 4.0.17
       '@vitest/snapshot': 4.0.17
@@ -2649,8 +2685,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(lightningcss@1.31.1)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.1.0)(lightningcss@1.31.1)(yaml@2.8.1)
       why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@types/node': 25.1.0
     transitivePeerDependencies:
       - jiti
       - less

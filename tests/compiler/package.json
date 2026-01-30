@@ -3,11 +3,11 @@
     "private": true,
     "dependencies": {
         "@aglisten/compiler": "workspace:*",
-        "lightningcss": "^1.31.1",
-        "oxc-minify": "catalog:oxc",
-        "vitest": "catalog:vite"
+        "lightningcss": "catalog:dep",
+        "oxc-minify": "catalog:dep",
+        "vitest": "catalog:dep"
     },
     "devDependencies": {
-        "vite-tsconfig-paths": "catalog:vite"
+        "vite-tsconfig-paths": "catalog:dep"
     }
 }
