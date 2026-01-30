@@ -106,7 +106,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             const { code: cssCode } = transform({
                 filename: "index.css",
                 code: new TextEncoder().encode(css),
-                minify: true,
+                minify: coreOpts.minify,
                 targets,
             });
 
