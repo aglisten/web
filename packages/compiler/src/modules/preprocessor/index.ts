@@ -9,9 +9,9 @@ import { preprocessVarDecl } from "#/modules/preprocessor/preprocess/var-decl";
 
 type PreprocessOptions = {
     program: Program;
-    namespaces: string[];
-    includedFunctions: string[];
-    specifiers: Specifier[];
+    namespaces: readonly string[];
+    includedFunctions: readonly string[];
+    specifiers: readonly Specifier[];
 };
 
 type PreprocessResult = {

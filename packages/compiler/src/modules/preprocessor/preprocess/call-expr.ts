@@ -20,9 +20,9 @@ import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform
 
 type PreprocessCallExprOptions = {
     program: Program;
-    namespaces: string[];
-    includedFunctions: string[];
-    specifiers: Specifier[];
+    namespaces: readonly string[];
+    includedFunctions: readonly string[];
+    specifiers: readonly Specifier[];
 };
 
 type PreprocessCallExprResult = {

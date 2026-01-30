@@ -20,7 +20,7 @@ type PresetBundleOptions = {
     /**
      * List of functions to be preprocessed.
      */
-    includedFunctions: string[];
+    includedFunctions: readonly string[];
 };
 
 type UserBundleOptions = {
@@ -34,11 +34,11 @@ type UserBundleOptions = {
      * Packages/paths in `include` option will be
      * overwritten by `exclude` option.
      */
-    include: string[];
+    include: readonly string[];
     /**
      * Array of packages/paths to exclude.
      */
-    exclude: string[];
+    exclude: readonly string[];
 };
 
 type DynamicBundleOptions = {

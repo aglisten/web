@@ -5,26 +5,52 @@ import type {
     UserCompileOptions,
 } from "@aglisten/compiler";
 import type { Targets } from "lightningcss";
-import type { Format } from "ts-vista";
+import type { Format, Partial } from "ts-vista";
 
 import { compile } from "@aglisten/compiler";
 import browserslist from "browserslist";
+import { toMerged } from "es-toolkit";
 import { browserslistToTargets, transform } from "lightningcss";
 
-type CreateRuntimeOptions = Format<
+import { INCLUDED_FUNCTIONS_DEFAULT, PACKAGE_NAME_DEFAULT } from "#/helper";
+
+const OPTIONS_DEFAULT: ResolvedOptions = {
+    packageName: PACKAGE_NAME_DEFAULT,
+    includedFunctions: INCLUDED_FUNCTIONS_DEFAULT,
+    cwd: process.cwd(),
+    include: [],
+    exclude: [],
+    targets: void 0,
+    minify: false,
+};
+
+type CompleteCreateRuntimeOptions = Format<
     PresetCompileOptions &
         UserCompileOptions & {
-            targets?: string | Targets;
+            /**
+             * Browserslist targets for the CSS output.
+             */
+            targets: string | Targets;
+            /**
+             * Whether minify the CSS output.
+             */
+            minify: boolean;
         }
 >;
+
+type ResolvedOptions = Format<Partial<CompleteCreateRuntimeOptions, "targets">>;
+
+type CreateRuntimeOptions = Format<Partial<CompleteCreateRuntimeOptions>>;
 
 type CompileOptions = DynamicCompileOptions;
 
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
+    const coreOpts: ResolvedOptions = toMerged(OPTIONS_DEFAULT, coreOptions);
+
     const targets: Targets | undefined =
-        typeof coreOptions.targets === "string"
-            ? browserslistToTargets(browserslist(coreOptions.targets))
-            : coreOptions.targets;
+        typeof coreOpts.targets === "string"
+            ? browserslistToTargets(browserslist(coreOpts.targets))
+            : coreOpts.targets;
 
     const cache: Map<string, CompileResult> = new Map();
 
@@ -34,10 +60,9 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
     return {
         isImported: async (options: CompileOptions): Promise<boolean> => {
-            const result: CompileResult | undefined = await compile({
-                ...coreOptions,
-                ...options,
-            });
+            const result: CompileResult | undefined = await compile(
+                toMerged(coreOpts, options),
+            );
 
             if (!result) return false;
 
@@ -50,14 +75,13 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             if (cache.has(options.file))
                 return cache.get(options.file) as CompileResult;
 
-            const result: CompileResult | undefined = await compile({
-                ...coreOptions,
-                ...options,
-            });
+            const result: CompileResult | undefined = await compile(
+                toMerged(coreOpts, options),
+            );
 
             if (!result) {
                 return {
-                    code: "",
+                    code: options.code,
                     css: "",
                 };
             }
@@ -98,5 +122,5 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
 type Runtime = ReturnType<typeof createRuntime>;
 
-export type { CreateRuntimeOptions, CompileOptions, Runtime };
+export type { CreateRuntimeOptions, CompileOptions, CompileResult, Runtime };
 export { createRuntime };

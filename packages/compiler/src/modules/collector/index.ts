@@ -12,7 +12,7 @@ import { Visitor } from "oxc-parser";
 type CollectOptions = {
     program: Program;
     packageName: string;
-    includedFunctions: string[];
+    includedFunctions: readonly string[];
 };
 
 type CollectResult = {

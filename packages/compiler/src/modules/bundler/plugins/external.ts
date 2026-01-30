@@ -6,13 +6,13 @@ const isThisPath = (id: string): boolean =>
     id.startsWith(".") || id.startsWith("/");
 
 type GetIncludeExcludeOptions = {
-    include: string[];
-    exclude: string[];
+    include: readonly string[];
+    exclude: readonly string[];
 };
 
 type PathsAndPackages = {
-    paths: string[];
-    packages: string[];
+    paths: readonly string[];
+    packages: readonly string[];
 };
 
 type GetIncludeExcludeResult = {
@@ -21,7 +21,7 @@ type GetIncludeExcludeResult = {
 };
 
 const managePackagesAndPaths = (
-    packagesOrPaths: string[],
+    packagesOrPaths: readonly string[],
 ): PathsAndPackages => {
     const paths: string[] = [];
     const packages: string[] = [];
@@ -74,8 +74,8 @@ const isJsFile = (id: string): boolean =>
 
 type ExternalResolverOptions = {
     packageName: string;
-    exclude: string[];
-    include: string[];
+    exclude: readonly string[];
+    include: readonly string[];
 };
 
 const externalResolver = (options: ExternalResolverOptions): Plugin => {
