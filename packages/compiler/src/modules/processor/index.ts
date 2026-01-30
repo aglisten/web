@@ -20,16 +20,37 @@ import { collectAllVariables } from "##/processor/variables/collector";
 import { exportAllVariables } from "##/processor/variables/exporter";
 import { mutateAllVariables } from "##/processor/variables/mutator";
 
+/**
+ * Options for the `process` function.
+ */
 type ProcessOptions = {
+    /**
+     * The program to be processed.
+     */
     program: Program;
+    /**
+     * The reference program.
+     */
     programRef: Program;
 };
 
+/**
+ * Result of the `process` function.
+ */
 type ProcessResult = {
+    /**
+     * The processed program.
+     */
     program: Program;
+    /**
+     * The processed CSS.
+     */
     css: string;
 };
 
+/**
+ * Process function.
+ */
 const process = (options: ProcessOptions): ProcessResult => {
     const programRef: Program = cloneDeep(options.programRef);
     const program: Program = cloneDeep(options.program);

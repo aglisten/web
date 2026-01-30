@@ -165,7 +165,7 @@ const collectVariables = (
 
     return {
         variables: {
-            id: "",
+            id: options.id,
             keyValues,
         },
     };

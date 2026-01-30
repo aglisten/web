@@ -13,12 +13,13 @@ import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/tra
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
 import { cloneDeep } from "es-toolkit";
+import { v7 as uuid } from "uuid";
 
-import { SIGNATURE } from "#/consts";
 import { transformIdent } from "#/modules/preprocessor/preprocess/transform/ident";
 import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform/member";
 
 type PreprocessCallExprOptions = {
+    test: boolean;
     program: Program;
     namespaces: readonly string[];
     includedFunctions: readonly string[];
@@ -45,7 +46,9 @@ const preprocessCallExpr = (
 
         const call: CallExpression = body.expression;
 
-        const id: string = `${SIGNATURE}_ce_${i}`;
+        const id: string = options.test
+            ? `call_${i}`
+            : `call_${uuid().replaceAll("-", "_")}`;
 
         // x.y();
         if (call.callee.type === "MemberExpression") {

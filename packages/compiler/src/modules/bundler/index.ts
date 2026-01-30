@@ -12,6 +12,9 @@ import { entryOverrider } from "#/modules/bundler/plugins/entry";
 import { externalResolver } from "#/modules/bundler/plugins/external";
 import { filePreprocessor } from "#/modules/bundler/plugins/preprocess";
 
+/**
+ * Preset options for `bundle` function.
+ */
 type PresetBundleOptions = {
     /**
      * Name of the CSS-in-JS package.
@@ -23,6 +26,9 @@ type PresetBundleOptions = {
     includedFunctions: readonly string[];
 };
 
+/**
+ * User defined options for `bundle` function.
+ */
 type UserBundleOptions = {
     /**
      * Current working directory.
@@ -41,6 +47,9 @@ type UserBundleOptions = {
     exclude: readonly string[];
 };
 
+/**
+ * Dynamic options for `bundle` function to bundle file.
+ */
 type DynamicBundleOptions = {
     /**
      * File to be bundled.
@@ -52,10 +61,16 @@ type DynamicBundleOptions = {
     code: string;
 };
 
+/**
+ * Options for `bundle` function.
+ */
 type BundleOptions = Format<
     PresetBundleOptions & UserBundleOptions & DynamicBundleOptions
 >;
 
+/**
+ * Result of `bundle` function.
+ */
 type BundleResult = {
     /**
      * Bundled code.
@@ -67,6 +82,9 @@ type BundleResult = {
     map: SourceMap | undefined;
 };
 
+/**
+ * Bundle function to bundle entry file for reference.
+ */
 const bundle = async (options: BundleOptions): Promise<BundleResult> => {
     const bundled: RolldownBuild = await rolldown({
         input: options.file,

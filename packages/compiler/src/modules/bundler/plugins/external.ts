@@ -1,5 +1,7 @@
 import type { Plugin, ResolveIdResult } from "rolldown";
 
+import * as Path from "node:path";
+
 import { fdir } from "fdir";
 
 const isThisPath = (id: string): boolean =>
@@ -62,15 +64,24 @@ const getIncludeAndExclude = (
 
 const isPackage = (id: string): boolean => /^[^./]/.test(id);
 
-const isJsFile = (id: string): boolean =>
-    id.endsWith(".ts") ||
-    id.endsWith(".tsx") ||
-    id.endsWith(".js") ||
-    id.endsWith(".jsx") ||
-    id.endsWith(".cjs") ||
-    id.endsWith(".mjs") ||
-    id.endsWith(".cts") ||
-    id.endsWith(".mts");
+const isJsFile = (id: string): boolean => {
+    // check if the file have extension
+    const hasExtension: boolean = Path.extname(id) !== "";
+
+    // treat file without extension as js
+    if (!hasExtension) return true;
+
+    return (
+        id.endsWith(".ts") ||
+        id.endsWith(".tsx") ||
+        id.endsWith(".js") ||
+        id.endsWith(".jsx") ||
+        id.endsWith(".cjs") ||
+        id.endsWith(".mjs") ||
+        id.endsWith(".cts") ||
+        id.endsWith(".mts")
+    );
+};
 
 type ExternalResolverOptions = {
     packageName: string;

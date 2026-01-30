@@ -9,18 +9,45 @@ import type { Specifier } from "#/@types/specifier";
 
 import { Visitor } from "oxc-parser";
 
+/**
+ * Options for the `collect` function.
+ */
 type CollectOptions = {
+    /**
+     * Program to be collected.
+     */
     program: Program;
+    /**
+     * Package name of the CSS-in-JS package.
+     */
     packageName: string;
+    /**
+     * CSS-in-JS package functions to be preprocessed.
+     */
     includedFunctions: readonly string[];
 };
 
+/**
+ * Result of the `collect` function.
+ */
 type CollectResult = {
+    /**
+     * Whether the CSS-in-JS package is imported.
+     */
     isImported: boolean;
+    /**
+     * Namespaces used by the CSS-in-JS package.
+     */
     namespaces: string[];
+    /**
+     * Specifiers used by the CSS-in-JS package.
+     */
     specifiers: Specifier[];
 };
 
+/**
+ * Collect the information of the file.
+ */
 const collect = (options: CollectOptions): CollectResult => {
     const result: Program = options.program;
 

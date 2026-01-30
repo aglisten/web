@@ -12,7 +12,7 @@ import { preprocess } from "#/modules/preprocessor";
 type FilePreprocessorOptions = {
     packageName: string;
     file: string;
-    includedFunctions: readonly string[];
+    includedFunctions: string[] | readonly string[];
 };
 
 const filePreprocessor = (options: FilePreprocessorOptions): Plugin => {

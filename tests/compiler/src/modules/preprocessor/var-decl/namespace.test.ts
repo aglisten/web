@@ -41,6 +41,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
         });
 
         const { program: preprocessed } = preprocess({
+            test: true,
             program,
             namespaces: [
                 "x",
@@ -97,6 +98,7 @@ describe("preprocessor variable declaration tests (namespace)", (): void => {
         });
 
         const { program: preprocessed } = preprocess({
+            test: true,
             program,
             namespaces: [
                 "x",

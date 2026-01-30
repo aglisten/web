@@ -14,6 +14,7 @@ export default defineConfig(
             "modules/bundler/index": "./src/modules/bundler/index.ts",
             "modules/processor/index": "./src/modules/processor/index.ts",
         },
+        platform: "node",
     },
     [
         esmPreset(),

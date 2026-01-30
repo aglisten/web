@@ -68,10 +68,15 @@ const compile = async (
         specifiers,
     });
 
+    const codegenPreprocessed: CodegenResult = codegen({
+        file: options.file,
+        program: preprocessed.program,
+    });
+
     const bundled: BundleResult = await bundle({
         // preset
         file: options.file,
-        code: options.code,
+        code: codegenPreprocessed.code,
         packageName: options.packageName,
         includedFunctions: options.includedFunctions,
         // user

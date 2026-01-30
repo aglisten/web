@@ -52,11 +52,11 @@ const mutateVariables = (
 
         if (recorded.includes(kv.key)) continue;
 
-        const value: string = `var(--${kv.value})`;
+        const value: string = `var(--${kv.title})`;
 
         object.properties.push({
             type: "Property",
-            kind: "get",
+            kind: "init",
             computed: false,
             method: false,
             shorthand: false,

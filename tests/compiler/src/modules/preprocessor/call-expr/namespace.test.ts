@@ -23,9 +23,9 @@ describe("preprocessor call expression tests (namespace)", (): void => {
         const output = `
             import * as x from "p";
 
-            const ${SIGNATURE}_ce_1 = {
+            const call_1 = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
+                id: "call_1",
                 kind: "y",
                 arguments: [
                     {
@@ -41,6 +41,7 @@ describe("preprocessor call expression tests (namespace)", (): void => {
         });
 
         const { program: preprocessed } = preprocess({
+            test: true,
             program,
             namespaces: [
                 "x",
@@ -76,9 +77,9 @@ describe("preprocessor call expression tests (namespace)", (): void => {
         const output = `
             import * as x from "p";
 
-            const ${SIGNATURE}_ce_1 = {
+            const call_1 = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
+                id: "call_1",
                 kind: "y",
                 arguments: [
                     "html",
@@ -95,6 +96,7 @@ describe("preprocessor call expression tests (namespace)", (): void => {
         });
 
         const { program: preprocessed } = preprocess({
+            test: true,
             program,
             namespaces: [
                 "x",
