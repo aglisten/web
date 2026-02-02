@@ -7,16 +7,19 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
 import type { Keyframes } from "##/processor/keyframes/@types";
 
 import { Visitor } from "oxc-parser";
 
+import { CompileError } from "#/errors/compile";
 import { getInfo } from "#/modules/processor/functions/get-info";
 import { collectKeyframesNodes } from "##/processor/keyframes/collector/node";
 import { createKeyframesTitle } from "##/processor/keyframes/collector/title";
 
 type CollectKeyframesOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     object: ObjectExpression;
@@ -30,6 +33,7 @@ const collectKeyframes = (
     options: CollectKeyframesOptions,
 ): CollectKeyframesResult => {
     const { keyframeNodes } = collectKeyframesNodes({
+        context: options.context,
         program: options.program,
         object: options.object,
     });
@@ -48,6 +52,7 @@ const collectKeyframes = (
 };
 
 type CollectAllKeyframesOptions = {
+    context: CompilerContext;
     program: Program;
 };
 
@@ -84,12 +89,18 @@ const collectAllKeyframes = (
 
                 // the argument suppose to be an object
                 if (arg.type !== "ObjectExpression") {
-                    throw new TypeError(
-                        `keyframes: ${arg.type} is not supported`,
-                    );
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: arg.start,
+                            end: arg.end,
+                        },
+                        message: `Unsupported argument type: ${arg.type}`,
+                    });
                 }
 
                 const result: CollectKeyframesResult = collectKeyframes({
+                    context: options.context,
                     program: options.program,
                     id: info.id,
                     object: arg,

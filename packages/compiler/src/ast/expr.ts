@@ -6,9 +6,14 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
+
 import { Visitor } from "oxc-parser";
 
+import { CompileError } from "#/errors/compile";
+
 type FindInlineExpressionOptions = {
+    context: CompilerContext;
     program: Program;
     name: string;
 };
@@ -45,7 +50,14 @@ const findInlineExpression = (
                 // TODO: support more id type
                 // unsupported
                 else {
-                    throw new TypeError(`Unsupported id type: ${decl.id.type}`);
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: decl.id.start,
+                            end: decl.id.end,
+                        },
+                        message: `Unsupported id type: ${decl.id.type}`,
+                    });
                 }
             }
         },

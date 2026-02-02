@@ -7,16 +7,19 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
 import type { Style } from "##/processor/style/@types";
 import type { CollectStyleNodesResult } from "##/processor/style/collector/node";
 
 import { Visitor } from "oxc-parser";
 
+import { CompileError } from "#/errors/compile";
 import { getInfo } from "#/modules/processor/functions/get-info";
 import { collectStyleNodes } from "##/processor/style/collector/node";
 
 type CollectStyleOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     object: ObjectExpression;
@@ -28,6 +31,7 @@ type CollectStyleResult = {
 
 const collectStyle = (options: CollectStyleOptions): CollectStyleResult => {
     const result: CollectStyleNodesResult = collectStyleNodes({
+        context: options.context,
         program: options.program,
         selectors: [],
         object: options.object,
@@ -42,6 +46,7 @@ const collectStyle = (options: CollectStyleOptions): CollectStyleResult => {
 };
 
 type CollectStylesOptions = {
+    context: CompilerContext;
     program: Program;
 };
 
@@ -76,10 +81,18 @@ const collectStyles = (options: CollectStylesOptions): CollectStylesResult => {
 
                 // the argument suppose to be an object
                 if (arg.type !== "ObjectExpression") {
-                    throw new TypeError(`style: ${arg.type} is not supported`);
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: arg.start,
+                            end: arg.end,
+                        },
+                        message: `Unsupported argument type: ${arg.type}`,
+                    });
                 }
 
                 const result: CollectStyleResult = collectStyle({
+                    context: options.context,
                     program: options.program,
                     id: info.id,
                     object: arg,

@@ -5,9 +5,13 @@ import type {
     TemplateLiteral,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
+
 import { findInlineExpression } from "#/ast/expr";
+import { CompileError } from "#/errors/compile";
 
 type ExpressionToStringOptions = {
+    context: CompilerContext;
     program: Program;
     expression: Expression;
 };
@@ -23,15 +27,24 @@ const expressionToString = (options: ExpressionToStringOptions): string => {
     // find inline expression
     else if (expr.type === "Identifier") {
         const inlineExpr: Expression | undefined = findInlineExpression({
+            context: options.context,
             program: options.program,
             name: expr.name,
         });
 
         if (!inlineExpr) {
-            throw new Error(`no inline expression found`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: expr.start,
+                    end: expr.end,
+                },
+                message: `Inline expression not found: ${expr.name}`,
+            });
         }
 
         const result: string = expressionToString({
+            context: options.context,
             program: options.program,
             expression: inlineExpr,
         });
@@ -41,17 +54,26 @@ const expressionToString = (options: ExpressionToStringOptions): string => {
     // as const
     else if (expr.type === "TSAsExpression") {
         return expressionToString({
+            context: options.context,
             program: options.program,
             expression: expr.expression,
         });
     }
     // unsupported
     else {
-        throw new TypeError(`css: ${expr.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: expr.start,
+                end: expr.end,
+            },
+            message: `Unsupported expression type: ${expr.type}`,
+        });
     }
 };
 
 type CollectTemplateLiteralOptions = {
+    context: CompilerContext;
     program: Program;
     template: TemplateLiteral;
 };
@@ -83,6 +105,7 @@ const collectTemplateLiteral = (
         if (!expression) continue;
 
         str += expressionToString({
+            context: options.context,
             program: options.program,
             expression,
         });

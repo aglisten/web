@@ -1,12 +1,15 @@
 import type { Expression, Program } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 
+import { CompileError } from "#/errors/compile";
 import { handleIdentValue } from "##/processor/variables/collector/value/ident";
 import { handleLiteralValue } from "##/processor/variables/collector/value/lit";
 import { handleObjectValue } from "##/processor/variables/collector/value/object";
 
 type HandleKeyValueOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     selector: string;
@@ -52,9 +55,14 @@ const handleKeyValue = (
         });
     }
 
-    throw new TypeError(
-        `variables: ${value.type} is not supported as a value expression`,
-    );
+    throw new CompileError({
+        context: options.context,
+        span: {
+            start: value.start,
+            end: value.end,
+        },
+        message: `Unsupported value type: ${value.type}`,
+    });
 };
 
 export type { HandleKeyValueOptions, HandleKeyValueResult };

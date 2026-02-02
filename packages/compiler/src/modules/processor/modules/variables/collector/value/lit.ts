@@ -1,10 +1,13 @@
 import type { Expression, Program } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 
+import { CompileError } from "#/errors/compile";
 import { fixedFnv1a } from "#/modules/processor/functions/hash";
 
 type HandleLiteralValueOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     selector: string;
@@ -22,7 +25,14 @@ const handleLiteralValue = (
     const keyValues: VariableKeyValue[] = [];
 
     if (options.lit.type !== "Literal") {
-        throw new TypeError(`variables: ${options.lit.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.lit.start,
+                end: options.lit.end,
+            },
+            message: `Unsupported value type: ${options.lit.type}`,
+        });
     }
 
     // blue: "xxx"

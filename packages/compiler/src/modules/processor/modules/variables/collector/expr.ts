@@ -1,11 +1,14 @@
 import type { Expression, Program } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { CollectTemplateLiteralResult } from "#/modules/processor/functions/template";
 
 import { findInlineExpression } from "#/ast/expr";
+import { CompileError } from "#/errors/compile";
 import { collectTemplateLiteral } from "#/modules/processor/functions/template";
 
 type HandleExpressionOptions = {
+    context: CompilerContext;
     program: Program;
     expr: Expression;
 };
@@ -22,15 +25,24 @@ const handleExpression = (
     // [xxx]
     if (expr.type === "Identifier") {
         const result: Expression | undefined = findInlineExpression({
+            context: options.context,
             program: options.program,
             name: expr.name,
         });
 
         if (!result) {
-            throw new TypeError(`variables: failed to find expression`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: expr.start,
+                    end: expr.end,
+                },
+                message: `Inline expression not found: ${expr.name}`,
+            });
         }
 
         return handleExpression({
+            context: options.context,
             program: options.program,
             expr: result,
         });
@@ -38,7 +50,14 @@ const handleExpression = (
     // ["xxx"]
     else if (expr.type === "Literal") {
         if (expr.value === null) {
-            throw new TypeError(`variables: expression is null`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: expr.start,
+                    end: expr.end,
+                },
+                message: `Unsupported expression value: null`,
+            });
         }
 
         return {
@@ -48,6 +67,7 @@ const handleExpression = (
     // `xxx`
     else if (expr.type === "TemplateLiteral") {
         const collected: CollectTemplateLiteralResult = collectTemplateLiteral({
+            context: options.context,
             program: options.program,
             template: expr,
         });
@@ -59,13 +79,19 @@ const handleExpression = (
     // xxx as xxx
     else if (expr.type === "TSAsExpression") {
         return handleExpression({
+            context: options.context,
             program: options.program,
             expr: expr.expression,
         });
     } else {
-        throw new TypeError(
-            `variables: ${expr.type} is not supported as a expression`,
-        );
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: expr.start,
+                end: expr.end,
+            },
+            message: `Unsupported expression type: ${expr.type}`,
+        });
     }
 };
 

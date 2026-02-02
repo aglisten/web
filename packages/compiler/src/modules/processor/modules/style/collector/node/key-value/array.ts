@@ -4,12 +4,15 @@ import type {
     Program,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { StyleNode } from "##/processor/style/@types";
 import type { HandleKeyValueResult } from "##/processor/style/collector/node/key-value";
 
+import { CompileError } from "#/errors/compile";
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 
 type HandleArrayValueOptions = {
+    context: CompilerContext;
     program: Program;
     selectors: string[];
     key: string;
@@ -33,10 +36,18 @@ const handleArrayValue = (
 
         if (element.type === "SpreadElement") {
             // TODO: support spread element
-            throw new TypeError(`style: spread element is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: element.start,
+                    end: element.end,
+                },
+                message: `Unsupported element type: ${element.type}`,
+            });
         }
 
         const result: HandleKeyValueResult = handleKeyValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,

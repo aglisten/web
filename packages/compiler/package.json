@@ -18,6 +18,16 @@
             "import": "./dist/ast/codegen.mjs",
             "require": "./dist/ast/codegen.js"
         },
+        "./contexts/compiler": {
+            "types": "./dist/contexts/compiler.d.ts",
+            "import": "./dist/contexts/compiler.mjs",
+            "require": "./dist/contexts/compiler.js"
+        },
+        "./errors/compile": {
+            "types": "./dist/errors/compile/index.d.ts",
+            "import": "./dist/errors/compile/index.mjs",
+            "require": "./dist/errors/compile/index.js"
+        },
         "./collector": {
             "types": "./dist/modules/collector/index.d.ts",
             "import": "./dist/modules/collector/index.mjs",

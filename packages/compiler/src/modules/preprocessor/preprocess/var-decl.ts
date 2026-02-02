@@ -9,6 +9,7 @@ import type {
 } from "oxc-parser";
 
 import type { Specifier } from "#/@types/specifier";
+import type { CompilerContext } from "#/contexts/compiler";
 import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/transform/ident";
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
@@ -19,7 +20,7 @@ import { transformIdent } from "#/modules/preprocessor/preprocess/transform/iden
 import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform/member";
 
 type PreprocessVarDeclOptions = {
-    test: boolean;
+    context: CompilerContext;
     program: Program;
     namespaces: readonly string[];
     includedFunctions: readonly string[];
@@ -55,10 +56,10 @@ const preprocessVarDecl = (
 
             const id: string =
                 decl.id.type === "Identifier"
-                    ? options.test
+                    ? options.context.isTest
                         ? decl.id.name
                         : `${decl.id.name}_${uuid().replaceAll("-", "_")}`
-                    : options.test
+                    : options.context.isTest
                       ? `var_${i}_${j}`
                       : `var_${uuid().replaceAll("-", "_")}`;
 
@@ -77,6 +78,7 @@ const preprocessVarDecl = (
 
                 const resultTransform: TransformMemberExprResult =
                     transformMemberExpr({
+                        context: options.context,
                         id,
                         member,
                         arguments: call.arguments,

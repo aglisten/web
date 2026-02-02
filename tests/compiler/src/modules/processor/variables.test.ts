@@ -1,4 +1,7 @@
+import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
+
 import { parse } from "@aglisten/compiler/ast/parse";
+import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
 import { process } from "@aglisten/compiler/processor";
 import { describe, expect, it } from "vitest";
 
@@ -33,7 +36,14 @@ describe("processor variables tests", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { css } = process({
+            context,
             program,
             programRef: program,
         });
@@ -81,7 +91,14 @@ describe("processor variables tests", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { css } = process({
+            context,
             program,
             programRef: program,
         });
@@ -123,7 +140,14 @@ describe("processor variables tests", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { css } = process({
+            context,
             program,
             programRef: program,
         });
@@ -166,7 +190,14 @@ describe("processor variables tests", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { css } = process({
+            context,
             program,
             programRef: program,
         });

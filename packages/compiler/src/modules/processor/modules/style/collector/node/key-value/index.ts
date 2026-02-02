@@ -1,7 +1,9 @@
 import type { Expression, Program } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { StyleNode } from "##/processor/style/@types";
 
+import { CompileError } from "#/errors/compile";
 import { handleArrayValue } from "##/processor/style/collector/node/key-value/array";
 import { handleIdentValue } from "##/processor/style/collector/node/key-value/ident";
 import { handleLiteralValue } from "##/processor/style/collector/node/key-value/literal";
@@ -9,6 +11,7 @@ import { handleMemberValue } from "##/processor/style/collector/node/key-value/m
 import { handleObjectValue } from "##/processor/style/collector/node/key-value/object";
 
 type HandleKeyValueOptions = {
+    context: CompilerContext;
     program: Program;
     selectors: string[];
     key: string;
@@ -25,6 +28,7 @@ const handleKeyValue = (
     // display: "block";
     if (options.value.type === "Literal") {
         return handleLiteralValue({
+            context: options.context,
             selectors: options.selectors,
             key: options.key,
             literal: options.value,
@@ -33,6 +37,7 @@ const handleKeyValue = (
     // ".children": { ... }
     else if (options.value.type === "ObjectExpression") {
         return handleObjectValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,
@@ -42,6 +47,7 @@ const handleKeyValue = (
     // display: ["grid", "flex"] => display: "flex"; display: "grid";
     else if (options.value.type === "ArrayExpression") {
         return handleArrayValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,
@@ -51,6 +57,7 @@ const handleKeyValue = (
     // abc.efg.xyz
     else if (options.value.type === "MemberExpression") {
         return handleMemberValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,
@@ -60,6 +67,7 @@ const handleKeyValue = (
     // external variable
     else if (options.value.type === "Identifier") {
         return handleIdentValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,
@@ -69,13 +77,21 @@ const handleKeyValue = (
     // as ...
     else if (options.value.type === "TSAsExpression") {
         return handleKeyValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: options.key,
             value: options.value.expression,
         });
     } else {
-        throw new TypeError(`style: ${options.value.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.value.start,
+                end: options.value.end,
+            },
+            message: `Unsupported property value type: ${options.value.type}`,
+        });
     }
 };
 

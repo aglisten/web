@@ -8,15 +8,22 @@ import type {
     Program,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { StyleNode } from "##/processor/style/@types";
 
 import { findInlineExpression } from "#/ast/expr";
+import { CompileError } from "#/errors/compile";
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 
-const walkObject = (member: MemberExpression): string[] => {
+type WalkObjectOptions = {
+    context: CompilerContext;
+    member: MemberExpression;
+};
+
+const walkObject = (options: WalkObjectOptions): string[] => {
     const result: string[] = [];
 
-    const object: Expression = member.object;
+    const object: Expression = options.member.object;
 
     // abc.efg
     if (object.type === "Identifier") {
@@ -24,17 +31,30 @@ const walkObject = (member: MemberExpression): string[] => {
     }
     // abc.efg.xyz
     else if (object.type === "MemberExpression") {
-        result.push(...walkObject(object));
+        result.push(
+            ...walkObject({
+                context: options.context,
+                member: object,
+            }),
+        );
     }
     // unsupported
     else {
-        throw new TypeError(`style: ${object.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: object.start,
+                end: object.end,
+            },
+            message: `Unsupported object type: ${object.type}`,
+        });
     }
 
     return result;
 };
 
 type ColelctMemberPathOptions = {
+    context: CompilerContext;
     program: Program;
     member: MemberExpression;
 };
@@ -50,7 +70,10 @@ const collectMemberPath = (
     const property: Expression | IdentifierName | PrivateIdentifier =
         member.property;
 
-    const path: string[] = walkObject(member);
+    const path: string[] = walkObject({
+        context: options.context,
+        member,
+    });
 
     let last: string;
 
@@ -60,7 +83,14 @@ const collectMemberPath = (
     // TODO: support more property type
     // unsupported
     else {
-        throw new TypeError(`style: ${property.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: property.start,
+                end: property.end,
+            },
+            message: `Unsupported property type: ${property.type}`,
+        });
     }
 
     path.push(last);
@@ -71,6 +101,7 @@ const collectMemberPath = (
 };
 
 type FindInObjectOptions = {
+    context: CompilerContext;
     key: string;
     object: ObjectExpression;
 };
@@ -84,7 +115,14 @@ const findInObject = (options: FindInObjectOptions): Expression => {
 
         if (prop.type === "SpreadElement") {
             // TODO: support spread element
-            throw new TypeError(`keyframes: spread element is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.start,
+                    end: prop.end,
+                },
+                message: `Unsupported property type: ${prop.type}`,
+            });
         }
 
         let isMatched: boolean = false;
@@ -102,11 +140,20 @@ const findInObject = (options: FindInObjectOptions): Expression => {
         if (isMatched) return prop.value;
     }
 
-    throw new Error("style: missing property in object for the style");
+    throw new CompileError({
+        context: options.context,
+        span: {
+            start: options.object.start,
+            end: options.object.end,
+        },
+        message: `Missing property in object`,
+    });
 };
 
 type ResolvePathToExprOptions = {
+    context: CompilerContext;
     program: Program;
+    member: MemberExpression;
     path: string[];
 };
 
@@ -118,22 +165,44 @@ const resolvePathToExpr = (
     options: ResolvePathToExprOptions,
 ): ResolvePathToExprResult => {
     if (options.path.length === 0) {
-        throw new Error("style: empty member path in the style");
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.member.start,
+                end: options.member.end,
+            },
+            message: `Empty member path`,
+        });
     }
 
     const name: string | undefined = options.path[0];
 
     if (!name) {
-        throw new Error("style: empty member path in the style");
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.member.start,
+                end: options.member.end,
+            },
+            message: `Empty member path`,
+        });
     }
 
     let currentExpr: Expression | undefined = findInlineExpression({
+        context: options.context,
         program: options.program,
         name,
     });
 
     if (!currentExpr) {
-        throw new Error(`style: no inline expression found for ${name}`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.member.start,
+                end: options.member.end,
+            },
+            message: `Inline expression not found: ${name}`,
+        });
     }
 
     let current: number = 1;
@@ -145,6 +214,7 @@ const resolvePathToExpr = (
 
         if (currentExpr.type === "ObjectExpression") {
             currentExpr = findInObject({
+                context: options.context,
                 object: currentExpr,
                 key: segment,
             });
@@ -154,17 +224,24 @@ const resolvePathToExpr = (
             const name: string = currentExpr.name;
 
             currentExpr = findInlineExpression({
+                context: options.context,
                 program: options.program,
                 name,
             });
 
             if (!currentExpr) {
-                throw new Error(
-                    `style: no inline expression found for ${name}`,
-                );
+                throw new CompileError({
+                    context: options.context,
+                    span: {
+                        start: options.member.start,
+                        end: options.member.end,
+                    },
+                    message: `Inline expression not found: ${name}`,
+                });
             }
         } else if (currentExpr.type === "MemberExpression") {
             const { path: innerPath } = collectMemberPath({
+                context: options.context,
                 program: options.program,
                 member: currentExpr,
             });
@@ -174,13 +251,22 @@ const resolvePathToExpr = (
             newPath.push(...options.path.slice(current));
 
             return resolvePathToExpr({
+                context: options.context,
                 program: options.program,
+                member: currentExpr,
                 path: newPath,
             });
         }
         // unsupported
         else {
-            throw new TypeError(`style: ${currentExpr.type} is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: options.member.start,
+                    end: options.member.end,
+                },
+                message: `Unsupported expression type: ${currentExpr.type}`,
+            });
         }
     }
 
@@ -190,6 +276,7 @@ const resolvePathToExpr = (
 };
 
 type HandleMemberValueOptions = {
+    context: CompilerContext;
     program: Program;
     selectors: string[];
     key: string;
@@ -204,16 +291,20 @@ const handleMemberValue = (
     options: HandleMemberValueOptions,
 ): HandleMemberValueResult => {
     const { path } = collectMemberPath({
+        context: options.context,
         program: options.program,
         member: options.member,
     });
 
     const { expr } = resolvePathToExpr({
+        context: options.context,
         program: options.program,
+        member: options.member,
         path,
     });
 
     return handleKeyValue({
+        context: options.context,
         program: options.program,
         selectors: options.selectors,
         key: options.key,

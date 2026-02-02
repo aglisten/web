@@ -9,6 +9,7 @@ import type {
 } from "oxc-parser";
 
 import type { Specifier } from "#/@types/specifier";
+import type { CompilerContext } from "#/contexts/compiler";
 import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/transform/ident";
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
@@ -19,7 +20,7 @@ import { transformIdent } from "#/modules/preprocessor/preprocess/transform/iden
 import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform/member";
 
 type PreprocessCallExprOptions = {
-    test: boolean;
+    context: CompilerContext;
     program: Program;
     namespaces: readonly string[];
     includedFunctions: readonly string[];
@@ -46,7 +47,7 @@ const preprocessCallExpr = (
 
         const call: CallExpression = body.expression;
 
-        const id: string = options.test
+        const id: string = options.context.isTest
             ? `call_${i}`
             : `call_${uuid().replaceAll("-", "_")}`;
 
@@ -81,6 +82,7 @@ const preprocessCallExpr = (
 
             const resultTransform: TransformMemberExprResult =
                 transformMemberExpr({
+                    context: options.context,
                     id,
                     member,
                     arguments: call.arguments,

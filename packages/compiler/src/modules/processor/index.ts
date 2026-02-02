@@ -1,5 +1,6 @@
 import type { Program } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { CollectAllKeyframesResult } from "##/processor/keyframes/collector";
 import type { CollectStylesResult } from "##/processor/style/collector";
 import type { ExportStylesResult } from "##/processor/style/exporter";
@@ -24,6 +25,10 @@ import { mutateAllVariables } from "##/processor/variables/mutator";
  * Options for the `process` function.
  */
 type ProcessOptions = {
+    /**
+     * The compiler context.
+     */
+    context: CompilerContext;
     /**
      * The program to be processed.
      */
@@ -58,6 +63,7 @@ const process = (options: ProcessOptions): ProcessResult => {
     // Variables
 
     const resultVar: CollectAllVariablesResult = collectAllVariables({
+        context: options.context,
         program: programRef,
     });
 
@@ -74,6 +80,7 @@ const process = (options: ProcessOptions): ProcessResult => {
     // Keyframes
 
     const resultKf: CollectAllKeyframesResult = collectAllKeyframes({
+        context: options.context,
         program: resultVarMutRef.program,
     });
 
@@ -90,6 +97,7 @@ const process = (options: ProcessOptions): ProcessResult => {
     // Styles
 
     const resultStyles: CollectStylesResult = collectStyles({
+        context: options.context,
         program: resultKfMutRef.program,
     });
 

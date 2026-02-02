@@ -9,6 +9,7 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { GetInfoResult } from "#/modules/processor/functions/get-info";
 import type { HandleExpressionResult } from "#/modules/processor/modules/variables/collector/expr";
 import type {
@@ -20,12 +21,14 @@ import type { HandleIdentValueResult } from "##/processor/variables/collector/va
 
 import { Visitor } from "oxc-parser";
 
+import { CompileError } from "#/errors/compile";
 import { getInfo } from "#/modules/processor/functions/get-info";
 import { handleExpression } from "#/modules/processor/modules/variables/collector/expr";
 import { handleKeyValue } from "##/processor/variables/collector/key-value";
 import { handleIdentValue } from "##/processor/variables/collector/value/ident";
 
 type CollectPropVariablesOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     prop: ObjectProperty;
@@ -45,12 +48,18 @@ const collectPropVariables = (
     // blue,
     if (prop.shorthand === true) {
         if (prop.key.type !== "Identifier") {
-            throw new TypeError(
-                `variables: ${prop.key.type} is not supported as a key shorthand`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key type: ${prop.key.type}`,
+            });
         }
 
         const result: HandleIdentValueResult = handleIdentValue({
+            context: options.context,
             program: options.program,
             id: options.id,
             selector,
@@ -70,7 +79,14 @@ const collectPropVariables = (
         // ["blue"]
         if (prop.key.type === "Literal") {
             if (prop.key.value === null) {
-                throw new TypeError(`variables: key is null`);
+                throw new CompileError({
+                    context: options.context,
+                    span: {
+                        start: prop.key.start,
+                        end: prop.key.end,
+                    },
+                    message: `Unsupported property key type: ${prop.key.type}`,
+                });
             }
 
             key = prop.key.value.toString();
@@ -78,6 +94,7 @@ const collectPropVariables = (
         // [blue]
         else if (prop.key.type === "Identifier") {
             const result: HandleExpressionResult = handleExpression({
+                context: options.context,
                 program: options.program,
                 expr: prop.key,
             });
@@ -86,15 +103,27 @@ const collectPropVariables = (
         }
         // unsupported
         else {
-            throw new TypeError(
-                `variables: ${prop.key.type} is not supported as a key shorthand`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key type: ${prop.key.type}`,
+            });
         }
     }
     // "blue"
     else if (prop.key.type === "Literal") {
         if (prop.key.value === null) {
-            throw new TypeError(`variables: key is null`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key value: null`,
+            });
         }
 
         key = prop.key.value.toString();
@@ -105,12 +134,18 @@ const collectPropVariables = (
     }
     // unsupported
     else {
-        throw new TypeError(
-            `variables: ${prop.key.type} is not supported as a key`,
-        );
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: prop.key.start,
+                end: prop.key.end,
+            },
+            message: `Unsupported property key type: ${prop.key.type}`,
+        });
     }
 
     const result: HandleKeyValueResult = handleKeyValue({
+        context: options.context,
         program: options.program,
         id: options.id,
         selector,
@@ -124,6 +159,7 @@ const collectPropVariables = (
 };
 
 type CollectVariablesOptions = {
+    context: CompilerContext;
     program: Program;
     id: string;
     object: ObjectExpression;
@@ -148,6 +184,7 @@ const collectVariables = (
             // { blue: "#1591ea" }
 
             const result: CollectPropVariablesResult = collectPropVariables({
+                context: options.context,
                 program: options.program,
                 id: options.id,
                 prop,
@@ -159,7 +196,14 @@ const collectVariables = (
 
             // TODO: support spread element
 
-            throw new TypeError(`variables: spread element is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.start,
+                    end: prop.end,
+                },
+                message: `Unsupported property type: ${prop.type}`,
+            });
         }
     }
 
@@ -172,6 +216,7 @@ const collectVariables = (
 };
 
 type CollectAllVariablesOptions = {
+    context: CompilerContext;
     program: Program;
 };
 
@@ -208,12 +253,18 @@ const collectAllVariables = (
 
                 // the argument suppose to be an object
                 if (arg.type !== "ObjectExpression") {
-                    throw new TypeError(
-                        `variables: ${arg.type} is not supported`,
-                    );
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: arg.start,
+                            end: arg.end,
+                        },
+                        message: `Unsupported argument type: ${arg.type}`,
+                    });
                 }
 
                 const result: CollectVariablesResult = collectVariables({
+                    context: options.context,
                     program: options.program,
                     id: info.id,
                     object: arg,

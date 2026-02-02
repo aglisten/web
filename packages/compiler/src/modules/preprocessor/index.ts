@@ -1,18 +1,21 @@
 import type { Program } from "oxc-parser";
-import type { Format, Partial } from "ts-vista";
 
 import type { Specifier } from "#/@types/specifier";
+import type { CompilerContext } from "#/contexts/compiler";
 import type { PreprocessCallExprResult } from "#/modules/preprocessor/preprocess/call-expr";
 import type { PreprocessVarDeclResult } from "#/modules/preprocessor/preprocess/var-decl";
 
 import { preprocessCallExpr } from "#/modules/preprocessor/preprocess/call-expr";
 import { preprocessVarDecl } from "#/modules/preprocessor/preprocess/var-decl";
 
-type CompletePreprocessOptions = {
+/**
+ * Options for the `preprocess` function.
+ */
+type PreprocessOptions = {
     /**
-     * Whether enabling test mode.
+     * Compiler context.
      */
-    test: boolean;
+    context: CompilerContext;
     /**
      * Program to preprocess.
      */
@@ -32,11 +35,6 @@ type CompletePreprocessOptions = {
 };
 
 /**
- * Options for the `preprocess` function.
- */
-type PreprocessOptions = Format<Partial<CompletePreprocessOptions, "test">>;
-
-/**
  * Result of the `preprocess` function.
  */
 type PreprocessResult = {
@@ -47,11 +45,8 @@ type PreprocessResult = {
  * Preprocess function.
  */
 const preprocess = (options: PreprocessOptions): PreprocessResult => {
-    const test: boolean =
-        typeof options.test === "boolean" ? options.test : false;
-
     const resultCallExpr: PreprocessCallExprResult = preprocessCallExpr({
-        test,
+        context: options.context,
         program: options.program,
         namespaces: options.namespaces,
         includedFunctions: options.includedFunctions,
@@ -59,7 +54,7 @@ const preprocess = (options: PreprocessOptions): PreprocessResult => {
     });
 
     const resultVarDecl: PreprocessVarDeclResult = preprocessVarDecl({
-        test,
+        context: options.context,
         program: resultCallExpr.program,
         namespaces: options.namespaces,
         includedFunctions: options.includedFunctions,

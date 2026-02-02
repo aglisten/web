@@ -7,11 +7,14 @@ import type {
     StringLiteral,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { StyleNode } from "##/processor/style/@types";
 
+import { CompileError } from "#/errors/compile";
 import { createStyleNodeTitle } from "##/processor/style/collector/title";
 
 type HandleLiteralValueOptions = {
+    context: CompilerContext;
     selectors: string[];
     key: string;
     literal:
@@ -31,7 +34,14 @@ const handleLiteralValue = (
     options: HandleLiteralValueOptions,
 ): HandleLiteralValueResult => {
     if (options.literal.value === null) {
-        throw new TypeError(`style: null is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: options.literal.start,
+                end: options.literal.end,
+            },
+            message: `Unsupported literal value: null`,
+        });
     }
 
     const { title } = createStyleNodeTitle({

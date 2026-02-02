@@ -6,10 +6,12 @@ import type {
     Program,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { StyleNode } from "##/processor/style/@types";
 import type { HandleKeyValueResult } from "##/processor/style/collector/node/key-value";
 
 import { findInlineExpression } from "#/ast/expr";
+import { CompileError } from "#/errors/compile";
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 
 const normalizeCssKey = (key: string): string => {
@@ -31,6 +33,7 @@ const normalizeCssKey = (key: string): string => {
 };
 
 type ColelctPropStyleNodesOptions = {
+    context: CompilerContext;
     program: Program;
     selectors: string[];
     prop: ObjectProperty;
@@ -48,23 +51,35 @@ const collectPropStyleNodes = (
     // display,
     if (prop.shorthand === true) {
         if (prop.key.type !== "Identifier") {
-            throw new TypeError(
-                `style: ${prop.key.type} is not supported as a key shorthand`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key type: ${prop.key.type}`,
+            });
         }
 
         const value: Expression | undefined = findInlineExpression({
+            context: options.context,
             program: options.program,
             name: prop.key.name,
         });
 
         if (!value) {
-            throw new Error(
-                `style: no inline expression found for ${prop.key.name}`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Inline expression not found: ${prop.key.name}`,
+            });
         }
 
         const result: HandleKeyValueResult = handleKeyValue({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: prop.key.name,
@@ -83,7 +98,14 @@ const collectPropStyleNodes = (
         // ["display"]
         if (prop.key.type === "Literal") {
             if (prop.key.value === null) {
-                throw new TypeError(`style: key is null`);
+                throw new CompileError({
+                    context: options.context,
+                    span: {
+                        start: prop.key.start,
+                        end: prop.key.end,
+                    },
+                    message: `Unsupported property key value: ${prop.key.value}`,
+                });
             }
 
             key = prop.key.value.toString();
@@ -91,41 +113,71 @@ const collectPropStyleNodes = (
         // [display]
         else if (prop.key.type === "Identifier") {
             const value: Expression | undefined = findInlineExpression({
+                context: options.context,
                 program: options.program,
                 name: prop.key.name,
             });
 
             if (!value) {
-                throw new Error(
-                    `style: no inline expression found for ${prop.key.name}`,
-                );
+                throw new CompileError({
+                    context: options.context,
+                    span: {
+                        start: prop.key.start,
+                        end: prop.key.end,
+                    },
+                    message: `Inline expression not found: ${prop.key.name}`,
+                });
             }
 
             if (value.type === "Literal") {
                 if (value.value === null) {
-                    throw new TypeError(`style: expression is null`);
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: value.start,
+                            end: value.end,
+                        },
+                        message: `Unsupported expression value: ${value.value}`,
+                    });
                 }
 
                 key = value.value.toString();
             }
             // unsupported
             else {
-                throw new TypeError(
-                    `style: ${prop.key.type} is not supported as a key shorthand`,
-                );
+                throw new CompileError({
+                    context: options.context,
+                    span: {
+                        start: prop.key.start,
+                        end: prop.key.end,
+                    },
+                    message: `Unsupported property key type: ${prop.key.type}`,
+                });
             }
         }
         // unsupported
         else {
-            throw new TypeError(
-                `style: ${prop.key.type} is not supported as a key shorthand`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key type: ${prop.key.type}`,
+            });
         }
     }
     // "display"
     else if (prop.key.type === "Literal") {
         if (prop.key.value === null) {
-            throw new TypeError(`style: key is null`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key value: ${prop.key.value}`,
+            });
         }
 
         key = prop.key.value.toString();
@@ -136,14 +188,20 @@ const collectPropStyleNodes = (
     }
     // unsupported
     else {
-        throw new TypeError(
-            `style: ${prop.key.type} is not supported as a key`,
-        );
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: prop.key.start,
+                end: prop.key.end,
+            },
+            message: `Unsupported property key type: ${prop.key.type}`,
+        });
     }
 
     key = normalizeCssKey(key);
 
     const result: HandleKeyValueResult = handleKeyValue({
+        context: options.context,
         program: options.program,
         selectors: options.selectors,
         key,
@@ -156,6 +214,7 @@ const collectPropStyleNodes = (
 };
 
 type CollectStyleNodesOptions = {
+    context: CompilerContext;
     program: Program;
     selectors: string[];
     object: ObjectExpression;
@@ -178,10 +237,18 @@ const collectStyleNodes = (
 
         if (prop.type === "SpreadElement") {
             // TODO: support spread element
-            throw new TypeError(`keyframes: spread element is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.start,
+                    end: prop.end,
+                },
+                message: `Unsupported property type: ${prop.type}`,
+            });
         }
 
         const result: CollectPropStyleNodesResult = collectPropStyleNodes({
+            context: options.context,
             program: options.program,
             selectors: options.selectors,
             prop,

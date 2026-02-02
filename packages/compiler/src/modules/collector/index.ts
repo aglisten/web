@@ -6,13 +6,20 @@ import type {
 } from "oxc-parser";
 
 import type { Specifier } from "#/@types/specifier";
+import type { CompilerContext } from "#/contexts/compiler";
 
 import { Visitor } from "oxc-parser";
+
+import { CompileError } from "#/errors/compile";
 
 /**
  * Options for the `collect` function.
  */
 type CollectOptions = {
+    /**
+     * Compiler context.
+     */
+    context: CompilerContext;
     /**
      * Program to be collected.
      */
@@ -92,9 +99,14 @@ const collect = (options: CollectOptions): CollectResult => {
 
                     // unsupported type
                     else {
-                        throw new TypeError(
-                            `Unsupported specifier imported type: ${specifier.imported.type}`,
-                        );
+                        throw new CompileError({
+                            context: options.context,
+                            span: {
+                                start: specifier.imported.start,
+                                end: specifier.imported.end,
+                            },
+                            message: `Unsupported specifier imported type: ${specifier.imported.type}`,
+                        });
                     }
                 }
             }
@@ -128,15 +140,25 @@ const collect = (options: CollectOptions): CollectResult => {
                         // const { x: y } = require("p");
                         if (prop.type === "Property") {
                             if (prop.key.type !== "Identifier") {
-                                throw new TypeError(
-                                    `Unsupported require property key type: ${prop.key.type}`,
-                                );
+                                throw new CompileError({
+                                    context: options.context,
+                                    span: {
+                                        start: prop.key.start,
+                                        end: prop.key.end,
+                                    },
+                                    message: `Unsupported require property key type: ${prop.key.type}`,
+                                });
                             }
 
                             if (prop.value.type !== "Identifier") {
-                                throw new TypeError(
-                                    `Unsupported require property value type: ${prop.value.type}`,
-                                );
+                                throw new CompileError({
+                                    context: options.context,
+                                    span: {
+                                        start: prop.value.start,
+                                        end: prop.value.end,
+                                    },
+                                    message: `Unsupported require property value type: ${prop.value.type}`,
+                                });
                             }
 
                             specifiers.push({
@@ -148,9 +170,14 @@ const collect = (options: CollectOptions): CollectResult => {
                         // const { ...x } = require("p");
                         else if (prop.type === "RestElement") {
                             if (prop.argument.type !== "Identifier") {
-                                throw new TypeError(
-                                    `Unsupported require rest argument type: ${prop.argument.type}`,
-                                );
+                                throw new CompileError({
+                                    context: options.context,
+                                    span: {
+                                        start: prop.argument.start,
+                                        end: prop.argument.end,
+                                    },
+                                    message: `Unsupported require rest argument type: ${prop.argument.type}`,
+                                });
                             }
 
                             namespaces.push(prop.argument.name);
@@ -160,9 +187,14 @@ const collect = (options: CollectOptions): CollectResult => {
 
                 // unsupported type
                 else {
-                    throw new TypeError(
-                        `Unsupported variable declaration id type: ${decl.id.type}`,
-                    );
+                    throw new CompileError({
+                        context: options.context,
+                        span: {
+                            start: decl.id.start,
+                            end: decl.id.end,
+                        },
+                        message: `Unsupported variable declaration id type: ${decl.id.type}`,
+                    });
                 }
             }
         },

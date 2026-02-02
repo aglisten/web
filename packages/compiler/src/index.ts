@@ -2,6 +2,7 @@ import type { Format } from "ts-vista";
 
 import type { CodegenResult } from "#/ast/codegen";
 import type { ParseResult } from "#/ast/parse";
+import type { CompilerContext } from "#/contexts/compiler";
 import type {
     BundleResult,
     DynamicBundleOptions,
@@ -13,6 +14,7 @@ import type { ProcessResult } from "#/modules/processor";
 
 import { codegen } from "#/ast/codegen";
 import { parse } from "#/ast/parse";
+import { createCompilerContext } from "#/contexts/compiler";
 import { bundle } from "#/modules/bundler";
 import { collect } from "#/modules/collector";
 import { preprocess } from "#/modules/preprocessor";
@@ -53,7 +55,13 @@ const compile = async (
         code: options.code,
     });
 
+    const context: CompilerContext = createCompilerContext({
+        file: options.file,
+        program: parsed.program,
+    });
+
     const { isImported, namespaces, specifiers } = collect({
+        context,
         program: parsed.program,
         packageName: options.packageName,
         includedFunctions: options.includedFunctions,
@@ -62,6 +70,7 @@ const compile = async (
     if (!isImported) return void 0;
 
     const preprocessed: PreprocessResult = preprocess({
+        context,
         program: parsed.program,
         namespaces,
         includedFunctions: options.includedFunctions,
@@ -91,6 +100,7 @@ const compile = async (
     });
 
     const processed: ProcessResult = process({
+        context,
         program: preprocessed.program,
         programRef: parsedbundle.program,
     });

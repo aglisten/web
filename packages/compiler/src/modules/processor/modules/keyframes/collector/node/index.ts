@@ -5,11 +5,14 @@ import type {
     Program,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
 import type { KeyframeNode } from "##/processor/keyframes/@types";
 
+import { CompileError } from "#/errors/compile";
 import { collectStyleNodes } from "##/processor/style/collector/node";
 
 type ColelctPropKeyframeNodesOptions = {
+    context: CompilerContext;
     program: Program;
     prop: ObjectProperty;
 };
@@ -35,9 +38,14 @@ const collectPropKeyframeNodes = (
             prop.key.value;
 
         if (value === null) {
-            throw new Error(
-                `keyframes: null is not supported as a key literal`,
-            );
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.key.start,
+                    end: prop.key.end,
+                },
+                message: `Unsupported property key type: ${prop.key.type}`,
+            });
         }
 
         if (typeof value === "number") {
@@ -50,14 +58,29 @@ const collectPropKeyframeNodes = (
     }
     // unsupported
     else {
-        throw new TypeError(`keyframes: ${prop.key.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: prop.key.start,
+                end: prop.key.end,
+            },
+            message: `Unsupported property key type: ${prop.key.type}`,
+        });
     }
 
     if (prop.value.type !== "ObjectExpression") {
-        throw new TypeError(`keyframes: ${prop.value.type} is not supported`);
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: prop.value.start,
+                end: prop.value.end,
+            },
+            message: `Unsupported property value type: ${prop.value.type}`,
+        });
     }
 
     const { styleNodes } = collectStyleNodes({
+        context: options.context,
         program: options.program,
         selectors: [],
         object: prop.value,
@@ -74,6 +97,7 @@ const collectPropKeyframeNodes = (
 };
 
 type CollectKeyframesNodesOptions = {
+    context: CompilerContext;
     program: Program;
     object: ObjectExpression;
 };
@@ -95,11 +119,19 @@ const collectKeyframesNodes = (
 
         if (prop.type === "SpreadElement") {
             // TODO: support spread element
-            throw new TypeError(`keyframes: spread element is not supported`);
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: prop.start,
+                    end: prop.end,
+                },
+                message: `Unsupported property type: ${prop.type}`,
+            });
         }
 
         const result: CollectPropKeyframeNodesResult = collectPropKeyframeNodes(
             {
+                context: options.context,
                 program: options.program,
                 prop,
             },

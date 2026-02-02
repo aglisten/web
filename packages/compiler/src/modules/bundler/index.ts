@@ -88,8 +88,12 @@ type BundleResult = {
 const bundle = async (options: BundleOptions): Promise<BundleResult> => {
     const bundled: RolldownBuild = await rolldown({
         input: options.file,
-        treeshake: false,
         cwd: options.cwd,
+        logLevel: "silent",
+        transform: {
+            jsx: "preserve",
+        },
+        treeshake: false,
         plugins: [
             externalResolver({
                 packageName: options.packageName,

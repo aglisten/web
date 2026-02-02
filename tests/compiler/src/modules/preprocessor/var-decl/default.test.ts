@@ -1,7 +1,10 @@
+import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
+
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
 import { codegen } from "@aglisten/compiler/ast/codegen";
 import { parse } from "@aglisten/compiler/ast/parse";
+import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
 import { preprocess } from "@aglisten/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
@@ -40,8 +43,14 @@ describe("preprocessor variable declaration tests (default namespace)", (): void
             code,
         });
 
-        const { program: preprocessed } = preprocess({
+        const context: CompilerContext = createCompilerContext({
             test: true,
+            file,
+            program,
+        });
+
+        const { program: preprocessed } = preprocess({
+            context,
             program,
             namespaces: [
                 "x",
@@ -97,8 +106,14 @@ describe("preprocessor variable declaration tests (default namespace)", (): void
             code,
         });
 
-        const { program: preprocessed } = preprocess({
+        const context: CompilerContext = createCompilerContext({
             test: true,
+            file,
+            program,
+        });
+
+        const { program: preprocessed } = preprocess({
+            context,
             program,
             namespaces: [
                 "x",

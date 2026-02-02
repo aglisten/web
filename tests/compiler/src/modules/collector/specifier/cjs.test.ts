@@ -1,7 +1,9 @@
 import type { Specifier } from "@aglisten/compiler/collector";
+import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
 
 import { parse } from "@aglisten/compiler/ast/parse";
 import { collect } from "@aglisten/compiler/collector";
+import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
 import { describe, expect, it } from "vitest";
 
 const file = "index.ts" as const;
@@ -25,7 +27,14 @@ describe("collector tests (specifier, cjs)", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { isImported, namespaces, specifiers } = collect({
+            context,
             program,
             packageName: "p",
             includedFunctions: [
@@ -66,7 +75,14 @@ describe("collector tests (specifier, cjs)", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { isImported, namespaces, specifiers } = collect({
+            context,
             program,
             packageName: "p",
             includedFunctions: [
@@ -107,7 +123,14 @@ describe("collector tests (specifier, cjs)", (): void => {
             code,
         });
 
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
         const { isImported, namespaces, specifiers } = collect({
+            context,
             program,
             packageName: "p",
             includedFunctions: [

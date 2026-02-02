@@ -1,11 +1,15 @@
 import type { Argument, MemberExpression, ObjectExpression } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
+
 import { cloneDeep } from "es-toolkit";
 
 import { ARGS, ID, KIND, SIGNATURE } from "#/consts";
+import { CompileError } from "#/errors/compile";
 import { createObjectKeyValue } from "#/modules/preprocessor/preprocess/transform/helper/kv";
 
 type TransformMemberExprOptions = {
+    context: CompilerContext;
     id: string;
     member: MemberExpression;
     arguments: Argument[];
@@ -51,14 +55,26 @@ const transformMemberExpr = (
     // const abc = x["y"]({ ... });
     else if (member.property.type === "Literal") {
         if (member.property.value === "" || member.property.value === null) {
-            throw new TypeError("Unexpected null property value");
+            throw new CompileError({
+                context: options.context,
+                span: {
+                    start: member.property.start,
+                    end: member.property.end,
+                },
+                message: `Unsupported member property value: null`,
+            });
         }
 
         kindName = member.property.value.toString();
     } else {
-        throw new TypeError(
-            `Unexpected member expression property type: ${member.property.type}`,
-        );
+        throw new CompileError({
+            context: options.context,
+            span: {
+                start: member.property.start,
+                end: member.property.end,
+            },
+            message: `Unsupported member expression property type: ${member.property.type}`,
+        });
     }
 
     const { property: kind } = createObjectKeyValue({
