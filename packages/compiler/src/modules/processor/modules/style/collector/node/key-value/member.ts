@@ -271,7 +271,7 @@ const resolvePathToExpr = (
     }
 
     return {
-        expr: null as any,
+        expr: currentExpr,
     };
 };
 
