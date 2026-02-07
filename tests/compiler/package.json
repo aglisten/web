@@ -1,6 +1,9 @@
 {
     "name": "test-compiler",
     "private": true,
+    "scripts": {
+        "test": "vitest run"
+    },
     "dependencies": {
         "@aglisten/compiler": "workspace:*",
         "lightningcss": "catalog:dep",

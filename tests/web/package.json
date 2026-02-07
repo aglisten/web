@@ -1,6 +1,9 @@
 {
     "name": "test-web",
     "private": true,
+    "scripts": {
+        "test": "vitest run"
+    },
     "dependencies": {
         "@aglisten/web": "workspace:*",
         "vitest": "catalog:dep"

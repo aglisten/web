@@ -53,6 +53,17 @@ test:
     cd ./{{test_compiler}} && ./{{vitest}} run
     cd ./{{test_web}} && ./{{vitest}} run
 
+# Run tests on different environments
+test-all:
+    cd ./{{test_compiler}} && pnpm run test
+    cd ./{{test_web}} && pnpm run test
+
+    cd ./{{test_compiler}} && deno run test
+    cd ./{{test_web}} && deno run test
+
+    cd ./{{test_compiler}} && bun run test
+    cd ./{{test_web}} && bun run test
+
 # Clean builds
 clean:
     cd ./{{web}} && rm -rf ./dist
