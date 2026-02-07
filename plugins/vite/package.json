@@ -1,0 +1,35 @@
+{
+    "name": "@aglisten/vite",
+    "version": "0.1.0",
+    "description": "A Vite plugin for Aglisten",
+    "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "@aglisten/rollup": "workspace:*",
+        "@aglisten/runtime": "workspace:*",
+        "ts-vista": "catalog:dep"
+    },
+    "devDependencies": {
+        "vite": "catalog:dev"
+    },
+    "peerDependencies": {
+        "vite": "catalog:peer"
+    },
+    "peerDependenciesMeta": {
+        "vite": {
+            "optional": true
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "webpack serve --port 3001",
+        "build": "webpack --mode=production",
+        "start": "serve ./dist -p 3000"
+    },
+    "dependencies": {
+        "@aglisten/web": "workspace:*",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4"
+    },
+    "devDependencies": {
+        "@aglisten/webpack": "workspace:*",
+        "@swc/core": "^1.15.11",
+        "@types/react": "^19.2.10",
+        "@types/react-dom": "^19.2.3",
+        "clean-webpack-plugin": "^4.0.0",
+        "css-loader": "^7.1.3",
+        "html-webpack-plugin": "catalog:dev",
+        "mini-css-extract-plugin": "^2.10.0",
+        "serve": "^14.2.5",
+        "swc-loader": "~0.2.7",
+        "webpack": "catalog:dev",
+        "webpack-cli": "^6.0.1",
+        "webpack-dev-server": "^5.2.3"
+    }
+}

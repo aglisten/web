@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "scripts": {
+        "watch": "rollup --watch --config rollup.config.mjs",
+        "build": "rollup --config rollup.config.mjs"
+    },
+    "dependencies": {
+        "@aglisten/web": "workspace:*"
+    },
+    "devDependencies": {
+        "@aglisten/rollup": "workspace:*",
+        "@rollup/plugin-typescript": "^12.3.0",
+        "rollup": "catalog:dev"
+    }
+}

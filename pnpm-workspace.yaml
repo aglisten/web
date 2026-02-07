@@ -1,6 +1,8 @@
 packages:
     - ./packages/*
     - ./tests/*
+    - ./plugins/*
+    - ./templates/*
 
 catalogs:
     dep:
@@ -12,6 +14,22 @@ catalogs:
         ts-vista: ~0.2.3
         vitest: ^4.0.0
         vite-tsconfig-paths: ^6.0.0
+    dev:
+        # webpack
+        webpack: 5.76.0
+        html-webpack-plugin: 5.6.1
+        # rollup
+        rollup: 4.40.0
+        # vite
+        vite: 7.0.0
+    peer:
+        # webpack
+        webpack: ^5.76.0
+        html-webpack-plugin: ^5.6.1
+        # rollup
+        rollup: ^4.40.0
+        # vite
+        vite: ^7.0.0
 
 minimumReleaseAge: 1440
 

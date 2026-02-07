@@ -14,6 +14,10 @@ web := "packages/web"
 test_compiler := "tests/compiler"
 test_web := "tests/web"
 
+webpack := "plugins/webpack"
+rollup := "plugins/rollup"
+vite := "plugins/vite"
+
 # Default action
 _:
     just build
@@ -32,6 +36,10 @@ tsc:
     cd ./{{runtime}} && ../../{{tsc}} --noEmit
     cd ./{{web}} && ../../{{tsc}} --noEmit
 
+    cd ./{{webpack}} && ../../{{tsc}} --noEmit
+    cd ./{{rollup}} && ../../{{tsc}} --noEmit
+    cd ./{{vite}} && ../../{{tsc}} --noEmit
+
 # Lint code
 lint:
     ls-lint
@@ -47,6 +55,10 @@ build:
     cd ./{{compiler}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{runtime}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{web}} && ../../{{tsdown}} -c tsdown.config.ts
+
+    cd ./{{webpack}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{rollup}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{vite}} && ../../{{tsdown}} -c tsdown.config.ts
 
 # Run tests
 test:
@@ -66,6 +78,10 @@ test-all:
 
 # Clean builds
 clean:
+    cd ./{{webpack}} && rm -rf ./dist
+    cd ./{{rollup}} && rm -rf ./dist
+    cd ./{{vite}} && rm -rf ./dist
+
     cd ./{{web}} && rm -rf ./dist
     cd ./{{runtime}} && rm -rf ./dist
     cd ./{{compiler}} && rm -rf ./dist
@@ -75,6 +91,11 @@ clean-all:
     just clean
 
     cd ./{{test_compiler}} && rm -rf ./node_modules
+    cd ./{{test_web}} && rm -rf ./node_modules
+
+    cd ./{{webpack}} && rm -rf ./node_modules
+    cd ./{{rollup}} && rm -rf ./node_modules
+    cd ./{{vite}} && rm -rf ./node_modules
 
     cd ./{{web}} && rm -rf ./node_modules
     cd ./{{runtime}} && rm -rf ./node_modules

@@ -1,0 +1,44 @@
+{
+    "name": "@aglisten/webpack",
+    "version": "0.1.0",
+    "description": "A webpack plugin for Aglisten",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./loader": {
+            "types": "./dist/loader.d.ts",
+            "import": "./dist/loader.mjs",
+            "require": "./dist/loader.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "@aglisten/runtime": "workspace:*",
+        "ts-vista": "catalog:dep"
+    },
+    "devDependencies": {
+        "html-webpack-plugin": "catalog:dev",
+        "webpack": "catalog:dev"
+    },
+    "peerDependencies": {
+        "html-webpack-plugin": "catalog:peer",
+        "webpack": "catalog:peer"
+    },
+    "peerDependenciesMeta": {
+        "html-webpack-plugin": {
+            "optional": true
+        },
+        "webpack": {
+            "optional": true
+        }
+    }
+}
