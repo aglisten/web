@@ -13,7 +13,9 @@ const config = {
     },
     plugins: [
         aglisten(),
-        typescript(),
+        typescript({
+            outDir: "./dist/esm",
+        }),
     ],
 };
 
@@ -27,5 +29,11 @@ export default defineConfig([
             format: "cjs",
             entryFileNames: "[name].js",
         },
+        plugins: [
+            aglisten(),
+            typescript({
+                outDir: "./dist/cjs",
+            }),
+        ],
     },
 ]);
