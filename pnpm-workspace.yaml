@@ -8,9 +8,9 @@ catalogs:
     dep:
         es-toolkit: ^1.40.0
         lightningcss: ^1.30.0
-        oxc-parser: ~0.111.0
-        oxc-minify: ~0.111.0
-        rolldown: 1.0.0-rc.2
+        oxc-parser: ~0.112.0
+        oxc-minify: ~0.112.0
+        rolldown: 1.0.0-rc.3
         ts-vista: ~0.2.3
         vitest: ^4.0.0
         vite-tsconfig-paths: ^6.0.0
