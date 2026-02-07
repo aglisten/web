@@ -1,4 +1,5 @@
 set shell := ["bash", "-cu"]
+set windows-shell := ["powershell"]
 
 node_bin := "node_modules/.bin/"
 tsc := node_bin + "tsc"
