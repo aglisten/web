@@ -8,13 +8,13 @@ type ExportAllVariablesOptions = {
 };
 
 type ExportAllVariablesResult = {
-    css: string;
+    cssList: string[];
 };
 
 const exportAllVariables = (
     options: ExportAllVariablesOptions,
 ): ExportAllVariablesResult => {
-    let css: string = "";
+    const cssList: string[] = [];
 
     for (let i: number = 0; i < options.variablesList.length; i++) {
         const variables: Variables | undefined = options.variablesList[i];
@@ -26,12 +26,12 @@ const exportAllVariables = (
 
             if (!kv) continue;
 
-            css += `${kv.selector}{--${kv.title}:${kv.value}}`;
+            cssList.push(`${kv.selector}{--${kv.title}:${kv.value}}`);
         }
     }
 
     return {
-        css,
+        cssList,
     };
 };
 

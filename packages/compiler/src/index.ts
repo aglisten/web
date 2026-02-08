@@ -45,6 +45,10 @@ type CompileResult = {
      * The CSS of the transpiled code.
      */
     css: string;
+    /**
+     * The CSS of the transpiled code that separated by elements.
+     */
+    cssList: string[];
 };
 
 const compile = async (
@@ -113,6 +117,7 @@ const compile = async (
     return {
         code: codegenResult.code,
         css: processed.css,
+        cssList: processed.cssList,
     };
 };
 

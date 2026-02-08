@@ -44,24 +44,24 @@ type ExportAllKeyframesOptions = {
 };
 
 type ExportStylesResult = {
-    css: string;
+    cssList: string[];
 };
 
 const exportAllKeyframes = (
     options: ExportAllKeyframesOptions,
 ): ExportStylesResult => {
-    let css: string = "";
+    const cssList: string[] = [];
 
     for (let i: number = 0; i < options.keyframesList.length; i++) {
         const keyframes: Keyframes | undefined = options.keyframesList[i];
 
         if (!keyframes) continue;
 
-        css += keyframesToCss(keyframes);
+        cssList.push(keyframesToCss(keyframes));
     }
 
     return {
-        css,
+        cssList,
     };
 };
 

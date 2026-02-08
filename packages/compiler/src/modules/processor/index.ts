@@ -11,6 +11,7 @@ import type { MutateAllVariablesResult } from "##/processor/variables/mutator";
 
 import { cloneDeep } from "es-toolkit";
 
+import { sortCssList } from "#/modules/processor/css";
 import { collectAllKeyframes } from "##/processor/keyframes/collector";
 import { exportAllKeyframes } from "##/processor/keyframes/exporter";
 import { mutateAllKeyframes } from "##/processor/keyframes/mutator";
@@ -51,6 +52,10 @@ type ProcessResult = {
      * The processed CSS.
      */
     css: string;
+    /**
+     * The processed CSS separated by elements.
+     */
+    cssList: string[];
 };
 
 /**
@@ -108,29 +113,32 @@ const process = (options: ProcessOptions): ProcessResult => {
 
     // Export
 
-    let css: string = "";
+    const cssList: string[] = [];
 
     const resultVarExport: ExportAllVariablesResult = exportAllVariables({
         variablesList: resultVar.variablesList,
     });
 
-    css += resultVarExport.css;
+    cssList.push(...resultVarExport.cssList);
 
     const resultKfExport: ExportStylesResult = exportAllKeyframes({
         keyframesList: resultKf.keyframesList,
     });
 
-    css += resultKfExport.css;
+    cssList.push(...resultKfExport.cssList);
 
     const resultStylesExport: ExportStylesResult = exportStyles({
         styles: resultStyles.styles,
     });
 
-    css += resultStylesExport.css;
+    cssList.push(...resultStylesExport.cssList);
+
+    const sortedCssList: string[] = sortCssList(cssList);
 
     return {
         program: resultStylesMut.program,
-        css,
+        css: sortedCssList.join(""),
+        cssList: sortedCssList,
     };
 };
 

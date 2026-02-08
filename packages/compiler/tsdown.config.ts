@@ -15,6 +15,7 @@ export default defineConfig(
             "modules/preprocessor/index": "./src/modules/preprocessor/index.ts",
             "modules/bundler/index": "./src/modules/bundler/index.ts",
             "modules/processor/index": "./src/modules/processor/index.ts",
+            "modules/processor/css": "./src/modules/processor/css.ts",
         },
         platform: "node",
     },

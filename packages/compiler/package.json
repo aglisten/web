@@ -48,6 +48,11 @@
             "import": "./dist/modules/processor/index.mjs",
             "require": "./dist/modules/processor/index.js"
         },
+        "./processor/css": {
+            "types": "./dist/modules/processor/css.d.ts",
+            "import": "./dist/modules/processor/css.mjs",
+            "require": "./dist/modules/processor/css.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",

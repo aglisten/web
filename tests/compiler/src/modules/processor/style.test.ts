@@ -69,12 +69,12 @@ describe("processor style tests", (): void => {
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
-            }
-
             .ch8s1cdl {
                 color: #0000ff;
+            }
+            
+            .djcd17uu {
+                display: block;
             }
         ` as const;
 

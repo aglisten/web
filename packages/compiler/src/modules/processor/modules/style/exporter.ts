@@ -37,11 +37,11 @@ type ExportStylesOptions = {
 };
 
 type ExportStylesResult = {
-    css: string;
+    cssList: string[];
 };
 
 const exportStyles = (options: ExportStylesOptions): ExportStylesResult => {
-    let css: string = "";
+    const cssList: string[] = [];
 
     for (let i: number = 0; i < options.styles.length; i++) {
         const style: Style | undefined = options.styles[i];
@@ -53,12 +53,12 @@ const exportStyles = (options: ExportStylesOptions): ExportStylesResult => {
 
             if (!node) continue;
 
-            css += styleNodeToCssWithClass(node);
+            cssList.push(styleNodeToCssWithClass(node));
         }
     }
 
     return {
-        css,
+        cssList,
     };
 };
 

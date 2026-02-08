@@ -1,13 +1,14 @@
 import type {
-    CompileResult,
     DynamicCompileOptions,
     PresetCompileOptions,
+    CompileResult as RawCompileResult,
     UserCompileOptions,
 } from "@aglisten/compiler";
 import type { Targets } from "lightningcss";
 import type { Format, Partial } from "ts-vista";
 
 import { compile } from "@aglisten/compiler";
+import { sortCssList } from "@aglisten/compiler/processor/css";
 import browserslist from "browserslist";
 import { toMerged } from "es-toolkit";
 import { browserslistToTargets, transform } from "lightningcss";
@@ -44,6 +45,11 @@ type CreateRuntimeOptions = Format<Partial<CompleteCreateRuntimeOptions>>;
 
 type CompileOptions = DynamicCompileOptions;
 
+type CompileResult = {
+    code: string;
+    css: string;
+};
+
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
     const coreOpts: ResolvedOptions = toMerged(OPTIONS_DEFAULT, coreOptions);
 
@@ -52,7 +58,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             ? browserslistToTargets(browserslist(coreOpts.targets))
             : coreOpts.targets;
 
-    const cache: Map<string, CompileResult> = new Map();
+    const cache: Map<string, RawCompileResult> = new Map();
 
     let isTransformed: boolean = false;
 
@@ -60,7 +66,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
     return {
         isImported: async (options: CompileOptions): Promise<boolean> => {
-            const result: CompileResult | undefined = await compile(
+            const result: RawCompileResult | undefined = await compile(
                 toMerged(coreOpts, options),
             );
 
@@ -72,10 +78,25 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             return true;
         },
         compile: async (options: CompileOptions): Promise<CompileResult> => {
-            if (cache.has(options.file))
-                return cache.get(options.file) as CompileResult;
+            if (cache.has(options.file)) {
+                const result: RawCompileResult | undefined = cache.get(
+                    options.file,
+                );
 
-            const result: CompileResult | undefined = await compile(
+                if (!result) {
+                    return {
+                        code: options.code,
+                        css: "",
+                    };
+                }
+
+                return {
+                    code: result.code,
+                    css: result.css,
+                };
+            }
+
+            const result: RawCompileResult | undefined = await compile(
                 toMerged(coreOpts, options),
             );
 
@@ -97,11 +118,13 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
         getCSS: async (): Promise<string> => {
             if (isTransformed && cssCache) return cssCache;
 
-            let css: string = "";
+            const cssList: string[] = [];
 
-            cache.forEach((result: CompileResult): void => {
-                css += result.css;
+            cache.forEach((result: RawCompileResult): void => {
+                cssList.push(...result.cssList);
             });
+
+            const css: string = sortCssList(cssList).join("");
 
             const { code: cssCode } = transform({
                 filename: "index.css",

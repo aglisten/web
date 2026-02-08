@@ -56,8 +56,9 @@ describe("processor variables tests", (): void => {
 
     it("should process the variables function with multiple type of selectors", (): void => {
         const code = `
-            const htmlMax = "html[theme=max]";
             const htmlDark = "html[theme=dark]" as const;
+
+            const htmlMax = "html[theme=max]";
 
             const va = {
                 ${SIGNATURE}: true,
@@ -68,8 +69,8 @@ describe("processor variables tests", (): void => {
                     {
                         blue: {
                             default: "#90d5ff",
-                            [htmlMax]: "#0000ff",
                             [htmlDark]: "#111184",
+                            [htmlMax]: "#0000ff",
                         },
                     },
                 ],
@@ -81,12 +82,12 @@ describe("processor variables tests", (): void => {
                 --v${blue}: #90d5ff;
             }
                 
-            html[theme=max] {
-                --v${blue}:#0000ff;
-            }
-                
             html[theme=dark] {
                 --v${blue}:#111184;
+            }
+
+            html[theme=max] {
+                --v${blue}:#0000ff;
             }
         ` as const;
 
