@@ -1,23 +1,22 @@
-import { keyframes, style } from "@aglisten/web";
-import clsx from "clsx";
+import { keyframes, merge, style } from "@aglisten/web";
 import * as React from "react";
 
-import viteLogo from "/vite.svg";
-import reactLogo from "./assets/react.svg";
+import LogoVite from "/vite.svg";
+import LogoReact from "./assets/react.svg";
 
 const App = (): React.JSX.Element => {
     const [count, setCount] = React.useState(0);
 
     return (
         <>
-            <div className={spin}>
+            <div>
                 <a
                     href="https://vite.dev"
                     target="_blank"
                     rel="noopener"
                 >
                     <img
-                        src={viteLogo}
+                        src={LogoVite}
                         className={logo}
                         alt="Vite logo"
                     />
@@ -28,8 +27,8 @@ const App = (): React.JSX.Element => {
                     rel="noopener"
                 >
                     <img
-                        src={reactLogo}
-                        className={clsx(logo, "react")}
+                        src={LogoReact}
+                        className={merge(logo, logoReact)}
                         alt="React logo"
                     />
                 </a>
@@ -58,6 +57,16 @@ const App = (): React.JSX.Element => {
     );
 };
 
+const logo: string = style({
+    height: "6em",
+    padding: "1.5em",
+    transition: "filter 300ms",
+    willChange: "filter",
+    "&:hover": {
+        filter: "drop-shadow(0 0 2em #646cffaa)",
+    },
+});
+
 const logoSpin: string = keyframes({
     from: {
         transform: "rotate(0deg)",
@@ -67,30 +76,14 @@ const logoSpin: string = keyframes({
     },
 });
 
-const spin: string = style({
+const logoReact: string = style({
     "@media (prefers-reduced-motion: no-preference)": {
-        a: {
-            "&:nth-of-type(2)": {
-                ".logo": {
-                    animationName: logoSpin,
-                    animationDuration: "20s",
-                    animationIterationCount: "infinite",
-                    animationTimingFunction: "linear",
-                },
-            },
-        },
+        animationName: logoSpin,
+        animationIterationCount: "infinite",
+        animationDuration: "20s",
+        animationTimingFunction: "linear",
     },
-});
-
-const logo: string = style({
-    height: "6em",
-    padding: "1.5em",
-    transition: "filter 300ms",
-    willChange: "filter",
     "&:hover": {
-        filter: "drop-shadow(0 0 2em #646cffaa)",
-    },
-    "&.react:hover": {
         filter: "drop-shadow(0 0 2em #61dafbaa)",
     },
 });
