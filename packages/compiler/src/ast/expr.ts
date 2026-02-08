@@ -10,8 +10,6 @@ import type { CompilerContext } from "#/contexts/compiler";
 
 import { Visitor } from "oxc-parser";
 
-import { CompileError } from "#/errors/compile";
-
 type FindInlineExpressionOptions = {
     context: CompilerContext;
     program: Program;
@@ -31,34 +29,22 @@ const findInlineExpression = (
 
                 if (!decl) continue;
 
-                if (decl.id.type === "Identifier") {
-                    if (decl.id.name !== options.name) continue;
+                if (decl.id.type !== "Identifier") continue;
 
-                    if (decl.init === null) {
-                        result = {
-                            type: "Literal",
-                            value: null,
-                            raw: null,
-                            start: 0,
-                            end: 0,
-                        } satisfies NullLiteral;
-                        return void 0;
-                    }
+                if (decl.id.name !== options.name) continue;
 
-                    result = decl.init;
+                if (decl.init === null) {
+                    result = {
+                        type: "Literal",
+                        value: null,
+                        raw: null,
+                        start: 0,
+                        end: 0,
+                    } satisfies NullLiteral;
+                    return void 0;
                 }
-                // TODO: support more id type
-                // unsupported
-                else {
-                    throw new CompileError({
-                        context: options.context,
-                        span: {
-                            start: decl.id.start,
-                            end: decl.id.end,
-                        },
-                        message: `Unsupported id type: ${decl.id.type}`,
-                    });
-                }
+
+                result = decl.init;
             }
         },
     });
