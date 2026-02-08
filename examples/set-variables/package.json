@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "tsdown --config tsdown.config.ts"
+    },
+    "dependencies": {
+        "@aglisten/web": "workspace:*",
+        "react": "catalog:dep"
+    },
+    "devDependencies": {
+        "@aglisten/rollup": "workspace:*",
+        "@types/react": "catalog:dep"
+    }
+}

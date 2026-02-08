@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   dep:
+    '@types/react':
+      specifier: ^19.0.0
+      version: 19.2.13
     es-toolkit:
       specifier: ^1.40.0
       version: 1.43.0
@@ -18,6 +21,9 @@ catalogs:
     oxc-parser:
       specifier: ~0.112.0
       version: 0.112.0
+    react:
+      specifier: ^19.0.0
+      version: 19.2.4
     rolldown:
       specifier: 1.0.0-rc.3
       version: 1.0.0-rc.3
@@ -78,6 +84,38 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+
+  examples/merge:
+    dependencies:
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      react:
+        specifier: catalog:dep
+        version: 19.2.4
+    devDependencies:
+      '@aglisten/rollup':
+        specifier: workspace:*
+        version: link:../../plugins/rollup
+      '@types/react':
+        specifier: catalog:dep
+        version: 19.2.13
+
+  examples/set-variables:
+    dependencies:
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      react:
+        specifier: catalog:dep
+        version: 19.2.4
+    devDependencies:
+      '@aglisten/rollup':
+        specifier: workspace:*
+        version: link:../../plugins/rollup
+      '@types/react':
+        specifier: catalog:dep
+        version: 19.2.13
 
   packages/compiler:
     dependencies:

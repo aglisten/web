@@ -3,13 +3,18 @@ packages:
     - ./tests/*
     - ./plugins/*
     - ./templates/*
+    - ./examples/*
 
 catalogs:
     dep:
+        "@types/react": ^19.0.0
+        "@types/react-dom": ^19.0.0
         es-toolkit: ^1.40.0
         lightningcss: ^1.30.0
         oxc-parser: ~0.112.0
         oxc-minify: ~0.112.0
+        react: ^19.0.0
+        react-dom: ^19.0.0
         rolldown: 1.0.0-rc.3
         ts-vista: ~0.2.3
         vitest: ^4.0.0
