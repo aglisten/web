@@ -35,15 +35,7 @@ type PluginOptions = Format<
 
 const createPlugin = (options?: CreatePluginOptions) => {
     return (opts?: PluginOptions): RollupPlugin => {
-        const runtime: Runtime =
-            options?.runtime ??
-            createRuntime({
-                cwd: opts?.cwd,
-                include: opts?.include,
-                exclude: opts?.exclude,
-                targets: opts?.targets,
-                minify: opts?.minify,
-            });
+        let runtime: Runtime | null = null;
 
         const emit: boolean =
             typeof opts?.emit === "boolean" ? opts.emit : true;
@@ -52,12 +44,22 @@ const createPlugin = (options?: CreatePluginOptions) => {
 
         return {
             name: "@aglisten/rollup",
+            buildStart(): void {
+                runtime =
+                    options?.runtime ??
+                    createRuntime({
+                        cwd: opts?.cwd,
+                        include: opts?.include,
+                        exclude: opts?.exclude,
+                        targets: opts?.targets,
+                        minify: opts?.minify,
+                    });
+            },
             async transform(
                 code: string,
                 file: string,
             ): Promise<TransformResult> {
-                // JS check
-                if (!FILTER_JS_ADVANCED.test(file)) return void 0;
+                if (!FILTER_JS_ADVANCED.test(file) || !runtime) return void 0;
 
                 const result = await runtime.compile({
                     file,
@@ -70,8 +72,7 @@ const createPlugin = (options?: CreatePluginOptions) => {
                 };
             },
             async generateBundle(): Promise<void> {
-                // no emit
-                if (!emit) return void 0;
+                if (!emit || !runtime) return void 0;
 
                 const source: string = await runtime.getCSS();
 
