@@ -4,6 +4,9 @@ import * as Path from "node:path";
 
 import { fdir } from "fdir";
 
+const isThisViteVirtualModule = (id: string): boolean =>
+    id.startsWith("/@") || id.startsWith("virtual:") || id.startsWith("\0");
+
 const isThisPath = (id: string): boolean =>
     id.startsWith(".") || id.startsWith("/");
 
@@ -103,10 +106,16 @@ const externalResolver = (options: ExternalResolverOptions): Plugin => {
                 };
             }
 
-            const isPath: boolean = isThisPath(id);
+            // vite virtual modules
+            if (isThisViteVirtualModule(id)) {
+                return {
+                    id,
+                    external: true,
+                };
+            }
 
             // path
-            if (isPath) {
+            if (isThisPath(id)) {
                 if (exclude.paths.includes(id)) {
                     return {
                         id,
