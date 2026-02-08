@@ -10,13 +10,12 @@
     "dependencies": {
         "@aglisten/vite": "workspace:*",
         "@aglisten/web": "workspace:*",
-        "clsx": "^2.1.1",
-        "react": "^19.2.0",
-        "react-dom": "^19.2.0"
+        "react": "catalog:dep",
+        "react-dom": "catalog:dep"
     },
     "devDependencies": {
-        "@types/react": "^19.2.5",
-        "@types/react-dom": "^19.2.3",
+        "@types/react": "catalog:dep",
+        "@types/react-dom": "catalog:dep",
         "@vitejs/plugin-react": "^5.1.1",
         "vite": "catalog:dev"
     }
