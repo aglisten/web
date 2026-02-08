@@ -1,10 +1,5 @@
 import { fixedFnv1a } from "#/modules/processor/functions/hash";
-
-const isEnglishLetter = (char?: string): char is string => {
-    if (!char) return false;
-
-    return /^[A-Za-z]/.test(char);
-};
+import { isEnglishLetter } from "##/processor/style/collector/helper/letter";
 
 type CreateStyleNodeTitleOptions = {
     selectors: string[];

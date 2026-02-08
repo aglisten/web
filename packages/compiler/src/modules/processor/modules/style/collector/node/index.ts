@@ -12,6 +12,7 @@ import type { HandleKeyValueResult } from "##/processor/style/collector/node/key
 
 import { findInlineExpression } from "#/ast/expr";
 import { CompileError } from "#/errors/compile";
+import { isEnglishLetter } from "##/processor/style/collector/helper/letter";
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 
 const normalizeCssKey = (key: string): string => {
@@ -21,6 +22,12 @@ const normalizeCssKey = (key: string): string => {
         const char: string | undefined = key[i];
 
         if (!char) continue;
+
+        // ignore non-alphabet
+        if (!isEnglishLetter(char)) {
+            result += char;
+            continue;
+        }
 
         if (char === char.toUpperCase()) {
             result += `-${char.toLowerCase()}`;
