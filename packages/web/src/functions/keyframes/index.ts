@@ -1,6 +1,6 @@
 import type { Keyframes } from "#/@types/style";
 
-import { TranspileError } from "#/error";
+import { TransformError } from "#/errors/transform";
 
 /**
  * Create a keyframes.
@@ -21,7 +21,7 @@ import { TranspileError } from "#/error";
  * ```
  */
 const keyframes = (_keyframes: Keyframes): string => {
-    throw new TranspileError("keyframes");
+    throw new TransformError("keyframes");
 };
 
 export { keyframes };

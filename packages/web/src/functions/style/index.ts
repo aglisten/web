@@ -1,6 +1,6 @@
 import type { CSS } from "#/@types/style";
 
-import { TranspileError } from "#/error";
+import { TransformError } from "#/errors/transform";
 
 /**
  * Create a style for an element.
@@ -31,7 +31,7 @@ import { TranspileError } from "#/error";
  * ```
  */
 const style = (_css: CSS): string => {
-    throw new TranspileError("style");
+    throw new TransformError("style");
 };
 
 export { style };

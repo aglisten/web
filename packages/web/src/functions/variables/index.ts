@@ -1,4 +1,4 @@
-import { TranspileError } from "#/error";
+import { TransformError } from "#/errors/transform";
 
 type VariablesObject = Record<
     string,
@@ -41,7 +41,7 @@ type VariablesObject = Record<
 const variables = <V extends VariablesObject>(
     _vars: V,
 ): Record<keyof V, string> => {
-    throw new TranspileError("variables");
+    throw new TransformError("variables");
 };
 
 export type { VariablesObject };
