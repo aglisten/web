@@ -20,6 +20,8 @@ catalogs:
         html-webpack-plugin: 5.6.1
         # rollup
         rollup: 4.40.0
+        # rolldown
+        rolldown: 1.0.0-rc.3
         # vite
         vite: 7.0.0
     peer:
@@ -28,6 +30,8 @@ catalogs:
         html-webpack-plugin: ^5.6.1
         # rollup
         rollup: ^4.40.0
+        # rolldown
+        rolldown: 1.0.0-rc.3
         # vite
         vite: ^7.0.0
 

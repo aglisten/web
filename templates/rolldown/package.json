@@ -1,0 +1,14 @@
+{
+    "private": true,
+    "scripts": {
+        "watch": "rolldown --watch --config rolldown.config.ts",
+        "build": "rolldown --config rolldown.config.ts"
+    },
+    "dependencies": {
+        "@aglisten/web": "workspace:*"
+    },
+    "devDependencies": {
+        "@aglisten/rollup": "workspace:*",
+        "rolldown": "catalog:dev"
+    }
+}
