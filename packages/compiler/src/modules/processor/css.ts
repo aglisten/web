@@ -1,9 +1,11 @@
 const getPriority = (css: string): number => {
     if (css.startsWith(":root")) return 0;
+
     if (/^[a-zA-Z]/.test(css)) return 1;
-    if (css.startsWith("@")) return 2;
-    if (css.startsWith(".")) return 3;
-    return 4;
+
+    if (css.startsWith(".")) return 2;
+
+    return 3;
 };
 
 const getSelector = (css: string): string => {
