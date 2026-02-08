@@ -5,7 +5,7 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { Keyframes } from "##/processor/keyframes/@types";
 
 import { cloneDeep } from "es-toolkit";
@@ -59,13 +59,13 @@ const mutateAllKeyframes = (
 
             if (!decl) continue;
 
-            const info: GetInfoResult | undefined = getInfo({
+            const info: VarDeclInfo | undefined = getInfo({
                 decl,
             });
 
             if (!info) continue;
 
-            if (info.kind !== "keyframes") continue;
+            if (info.fn !== "keyframes") continue;
 
             const keyframes: Keyframes | undefined = options.keyframesList.find(
                 (kf: Keyframes): boolean => kf.id === info.id,

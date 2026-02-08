@@ -5,7 +5,7 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { Style, StyleNode } from "##/processor/style/@types";
 
 import { cloneDeep } from "es-toolkit";
@@ -59,13 +59,13 @@ const mutateStyles = (options: MutateStylesOptions): MutateStylesResult => {
 
             if (!decl) continue;
 
-            const info: GetInfoResult | undefined = getInfo({
+            const info: VarDeclInfo | undefined = getInfo({
                 decl,
             });
 
             if (!info) continue;
 
-            if (info.kind !== "style") continue;
+            if (info.fn !== "style") continue;
 
             const style: Style | undefined = options.styles.find(
                 (style: Style): boolean => style.id === info.id,

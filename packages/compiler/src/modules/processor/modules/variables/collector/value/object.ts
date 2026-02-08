@@ -1,6 +1,7 @@
 import type { ObjectExpression, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { HandleExpressionResult } from "#/modules/processor/modules/variables/collector/expr";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 import type { HandleKeyValueResult } from "##/processor/variables/collector/key-value";
@@ -11,8 +12,8 @@ import { handleKeyValue } from "##/processor/variables/collector/key-value";
 
 type HandleObjectValueOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     selector: string;
     key: string;
     object: ObjectExpression;
@@ -94,8 +95,8 @@ const handleObjectValue = (
 
         const result: HandleKeyValueResult = handleKeyValue({
             context: options.context,
+            info: options.info,
             program: options.program,
-            id: options.id,
             selector,
             key: options.key,
             value: prop.value,

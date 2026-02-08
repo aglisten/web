@@ -10,7 +10,7 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { HandleExpressionResult } from "#/modules/processor/modules/variables/collector/expr";
 import type {
     VariableKeyValue,
@@ -29,6 +29,7 @@ import { handleIdentValue } from "##/processor/variables/collector/value/ident";
 
 type CollectPropVariablesOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
     id: string;
     prop: ObjectProperty;
@@ -60,8 +61,8 @@ const collectPropVariables = (
 
         const result: HandleIdentValueResult = handleIdentValue({
             context: options.context,
+            info: options.info,
             program: options.program,
-            id: options.id,
             selector,
             key: prop.key.name,
             ident: prop.key,
@@ -146,8 +147,8 @@ const collectPropVariables = (
 
     const result: HandleKeyValueResult = handleKeyValue({
         context: options.context,
+        info: options.info,
         program: options.program,
-        id: options.id,
         selector,
         key,
         value: prop.value,
@@ -160,6 +161,7 @@ const collectPropVariables = (
 
 type CollectVariablesOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
     id: string;
     object: ObjectExpression;
@@ -185,6 +187,7 @@ const collectVariables = (
 
             const result: CollectPropVariablesResult = collectPropVariables({
                 context: options.context,
+                info: options.info,
                 program: options.program,
                 id: options.id,
                 prop,
@@ -237,13 +240,13 @@ const collectAllVariables = (
 
                 if (!decl) continue;
 
-                const info: GetInfoResult | undefined = getInfo({
+                const info: VarDeclInfo | undefined = getInfo({
                     decl,
                 });
 
                 if (!info) continue;
 
-                if (info.kind !== "variables") continue;
+                if (info.fn !== "variables") continue;
 
                 // variables function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
@@ -265,6 +268,7 @@ const collectAllVariables = (
 
                 const result: CollectVariablesResult = collectVariables({
                     context: options.context,
+                    info,
                     program: options.program,
                     id: info.id,
                     object: arg,

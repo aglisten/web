@@ -8,7 +8,7 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { Keyframes } from "##/processor/keyframes/@types";
 
 import { Visitor } from "oxc-parser";
@@ -20,8 +20,8 @@ import { createKeyframesTitle } from "##/processor/keyframes/collector/title";
 
 type CollectKeyframesOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     object: ObjectExpression;
 };
 
@@ -44,7 +44,7 @@ const collectKeyframes = (
 
     return {
         keyframes: {
-            id: options.id,
+            id: options.info.id,
             title,
             children: keyframeNodes,
         },
@@ -73,13 +73,13 @@ const collectAllKeyframes = (
 
                 if (!decl) continue;
 
-                const info: GetInfoResult | undefined = getInfo({
+                const info: VarDeclInfo | undefined = getInfo({
                     decl,
                 });
 
                 if (!info) continue;
 
-                if (info.kind !== "keyframes") continue;
+                if (info.fn !== "keyframes") continue;
 
                 // keyframes function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
@@ -101,8 +101,8 @@ const collectAllKeyframes = (
 
                 const result: CollectKeyframesResult = collectKeyframes({
                     context: options.context,
+                    info,
                     program: options.program,
-                    id: info.id,
                     object: arg,
                 });
 

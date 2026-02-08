@@ -1,6 +1,7 @@
 import type { Expression, IdentifierReference, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 import type { HandleKeyValueResult } from "##/processor/variables/collector/key-value";
 import type { HandleLiteralValueResult } from "##/processor/variables/collector/value/lit";
@@ -12,8 +13,8 @@ import { handleLiteralValue } from "##/processor/variables/collector/value/lit";
 
 type HandleIdentValueOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     selector: string;
     key: string;
     ident: IdentifierReference;
@@ -47,8 +48,8 @@ const handleIdentValue = (
     if (expr.type === "Literal") {
         const result: HandleLiteralValueResult = handleLiteralValue({
             context: options.context,
+            info: options.info,
             program: options.program,
-            id: options.id,
             selector: options.selector,
             key: options.key,
             lit: expr,
@@ -62,8 +63,8 @@ const handleIdentValue = (
     // blue: ???
     const result: HandleKeyValueResult = handleKeyValue({
         context: options.context,
+        info: options.info,
         program: options.program,
-        id: options.id,
         selector: options.selector,
         key: options.key,
         value: expr,

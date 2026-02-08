@@ -29,7 +29,8 @@ describe("preprocessor variable declaration tests (specifier)", (): void => {
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "x",
+                variable: "block",
+                function: "x",
                 arguments: [
                     {
                         display: "block",
@@ -94,7 +95,8 @@ describe("preprocessor variable declaration tests (specifier)", (): void => {
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "x",
+                variable: "block",
+                function: "x",
                 arguments: [
                     "html",
                     {

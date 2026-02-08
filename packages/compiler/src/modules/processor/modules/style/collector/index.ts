@@ -8,7 +8,7 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { Style } from "##/processor/style/@types";
 import type { CollectStyleNodesResult } from "##/processor/style/collector/node";
 
@@ -20,8 +20,8 @@ import { collectStyleNodes } from "##/processor/style/collector/node";
 
 type CollectStyleOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     object: ObjectExpression;
 };
 
@@ -39,7 +39,7 @@ const collectStyle = (options: CollectStyleOptions): CollectStyleResult => {
 
     return {
         style: {
-            id: options.id,
+            id: options.info.id,
             children: result.styleNodes,
         },
     };
@@ -65,13 +65,13 @@ const collectStyles = (options: CollectStylesOptions): CollectStylesResult => {
 
                 if (!decl) continue;
 
-                const info: GetInfoResult | undefined = getInfo({
+                const info: VarDeclInfo | undefined = getInfo({
                     decl,
                 });
 
                 if (!info) continue;
 
-                if (info.kind !== "style") continue;
+                if (info.fn !== "style") continue;
 
                 // style function suppose to have 1 argument only
                 const arg: (Expression | SpreadElement) | undefined =
@@ -93,8 +93,8 @@ const collectStyles = (options: CollectStylesOptions): CollectStylesResult => {
 
                 const result: CollectStyleResult = collectStyle({
                     context: options.context,
+                    info,
                     program: options.program,
-                    id: info.id,
                     object: arg,
                 });
 

@@ -6,7 +6,7 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
-import { ARGS, ID, KIND } from "#/consts";
+import { ARGS, FN, ID, VA } from "#/consts";
 
 type KeyValue = {
     key: string;
@@ -57,11 +57,14 @@ const getString = (
     return value.toString();
 };
 
-const getId = (props: ObjectPropertyKind[]): string | undefined =>
+const getID = (props: ObjectPropertyKind[]): string | undefined =>
     getString(props, ID);
 
-const getKind = (props: ObjectPropertyKind[]): string | undefined =>
-    getString(props, KIND);
+const getVA = (props: ObjectPropertyKind[]): string | undefined =>
+    getString(props, VA);
+
+const getFN = (props: ObjectPropertyKind[]): string | undefined =>
+    getString(props, FN);
 
 const getArguments = (
     props: ObjectPropertyKind[],
@@ -85,13 +88,29 @@ type GetInfoOptions = {
     decl: VariableDeclarator;
 };
 
-type GetInfoResult = {
+/**
+ * Variable Declaration Info.
+ */
+type VarDeclInfo = {
+    /**
+     * Variable Declaration Info ID.
+     */
     id: string;
-    kind: string;
+    /**
+     * Variable name.
+     */
+    va: string;
+    /**
+     * Function name.
+     */
+    fn: string;
+    /**
+     * Function arguments.
+     */
     args: (Expression | SpreadElement)[];
 };
 
-const getInfo = (options: GetInfoOptions): GetInfoResult | undefined => {
+const getInfo = (options: GetInfoOptions): VarDeclInfo | undefined => {
     const decl: VariableDeclarator = options.decl;
 
     if (!decl.init) return void 0;
@@ -100,13 +119,17 @@ const getInfo = (options: GetInfoOptions): GetInfoResult | undefined => {
 
     const props: ObjectPropertyKind[] = decl.init.properties;
 
-    const id: string | undefined = getId(props);
+    const id: string | undefined = getID(props);
 
     if (!id) return void 0;
 
-    const kind: string | undefined = getKind(props);
+    const va: string | undefined = getVA(props);
 
-    if (!kind) return void 0;
+    if (!va) return void 0;
+
+    const fn: string | undefined = getFN(props);
+
+    if (!fn) return void 0;
 
     const args: (Expression | SpreadElement)[] | undefined =
         getArguments(props);
@@ -115,10 +138,11 @@ const getInfo = (options: GetInfoOptions): GetInfoResult | undefined => {
 
     return {
         id,
-        kind,
+        va,
+        fn,
         args,
     };
 };
 
-export type { GetInfoOptions, GetInfoResult };
+export type { GetInfoOptions, VarDeclInfo };
 export { getInfo };

@@ -10,13 +10,16 @@ import { minifyCSS } from "#/functions/minify/css";
 
 const file = "index.ts" as const;
 
+const blue = "i4w1cdl" as const;
+
 describe("processor variables tests", (): void => {
     it("should process the variables function", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const va = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                id: "va",
+                variable: "va",
+                function: "variables",
                 arguments: [
                     {
                         blue: "#0000ff",
@@ -27,7 +30,7 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root{
-                --vg71dl:#00f;
+                --v${blue}:#00f;
             }
         ` as const;
 
@@ -56,10 +59,11 @@ describe("processor variables tests", (): void => {
             const htmlMax = "html[theme=max]";
             const htmlDark = "html[theme=dark]" as const;
 
-            const ${SIGNATURE}_ce_1 = {
+            const va = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                id: "va",
+                variable: "va",
+                function: "variables",
                 arguments: [
                     {
                         blue: {
@@ -74,15 +78,15 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root {
-                --vg71dl: #90d5ff;
+                --v${blue}: #90d5ff;
             }
                 
             html[theme=max] {
-                --vg71dl:#0000ff;
+                --v${blue}:#0000ff;
             }
                 
             html[theme=dark] {
-                --vg71dl:#111184;
+                --v${blue}:#111184;
             }
         ` as const;
 
@@ -110,10 +114,11 @@ describe("processor variables tests", (): void => {
         const code = `
             const htmlDark = "html[theme=dark]";
 
-            const ${SIGNATURE}_ce_1 = {
+            const va = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                id: "va",
+                variable: "va",
+                function: "variables",
                 arguments: [
                     {
                         blue: {
@@ -127,11 +132,11 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root{
-                --vg71dl:#90d5ff;
+                --v${blue}:#90d5ff;
             }
             
             html[theme=dark] {
-                --vg71dl:#111184;
+                --v${blue}:#111184;
             }
         ` as const;
 
@@ -160,10 +165,11 @@ describe("processor variables tests", (): void => {
             const themeName = "dark" as const;
             const htmlDark = \`html[theme=\${themeName}]\`;
 
-            const ${SIGNATURE}_ce_1 = {
+            const va = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "variables",
+                id: "va",
+                variable: "va",
+                function: "variables",
                 arguments: [
                     {
                         blue: {
@@ -177,11 +183,11 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root{
-                --vg71dl: #90d5ff;
+                --v${blue}: #90d5ff;
             }
                 
             html[theme=dark] {
-                --vg71dl:#111184;
+                --v${blue}:#111184;
             }
         ` as const;
 

@@ -6,7 +6,7 @@ import type {
     VariableDeclarator,
 } from "oxc-parser";
 
-import type { GetInfoResult } from "#/modules/processor/functions/get-info";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type {
     VariableKeyValue,
     Variables,
@@ -112,13 +112,13 @@ const mutateAllVariables = (
 
             if (!decl) continue;
 
-            const info: GetInfoResult | undefined = getInfo({
+            const info: VarDeclInfo | undefined = getInfo({
                 decl,
             });
 
             if (!info) continue;
 
-            if (info.kind !== "variables") continue;
+            if (info.fn !== "variables") continue;
 
             const variables: Variables | undefined = options.variablesList.find(
                 (variables: Variables): boolean => variables.id === info.id,

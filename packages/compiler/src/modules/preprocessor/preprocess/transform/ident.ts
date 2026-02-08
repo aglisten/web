@@ -4,13 +4,17 @@ import type {
     ObjectExpression,
 } from "oxc-parser";
 
+import type { CompilerContext } from "#/contexts/compiler";
+
 import { cloneDeep } from "es-toolkit";
 
-import { ARGS, ID, KIND, SIGNATURE } from "#/consts";
+import { ARGS, FN, ID, SIGNATURE, VA } from "#/consts";
+import { createId } from "#/modules/preprocessor/preprocess/transform/helper/id";
 import { createObjectKeyValue } from "#/modules/preprocessor/preprocess/transform/helper/kv";
 
 type TransformIdentOptions = {
-    id: string;
+    context: CompilerContext;
+    va: string;
     ident: IdentifierReference;
     arguments: Argument[];
 };
@@ -22,6 +26,8 @@ type TransformIdentResult = {
 const transformIdent = (
     options: TransformIdentOptions,
 ): TransformIdentResult => {
+    const ctx: CompilerContext = options.context;
+
     const ident: IdentifierReference = cloneDeep(options.ident);
 
     const object: ObjectExpression = {
@@ -40,17 +46,28 @@ const transformIdent = (
 
     const { property: id } = createObjectKeyValue({
         key: ID,
-        value: options.id,
+        value: createId({
+            context: ctx,
+            va: options.va,
+            arguments: options.arguments,
+        }),
     });
 
     object.properties.push(id);
 
-    const { property: kind } = createObjectKeyValue({
-        key: KIND,
+    const { property: va } = createObjectKeyValue({
+        key: VA,
+        value: options.va,
+    });
+
+    object.properties.push(va);
+
+    const { property: fn } = createObjectKeyValue({
+        key: FN,
         value: options.ident.name,
     });
 
-    object.properties.push(kind);
+    object.properties.push(fn);
 
     const { property: args } = createObjectKeyValue({
         key: ARGS,

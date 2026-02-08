@@ -14,7 +14,6 @@ import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/tra
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
 import { cloneDeep } from "es-toolkit";
-import { v7 as uuid } from "uuid";
 
 import { transformIdent } from "#/modules/preprocessor/preprocess/transform/ident";
 import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform/member";
@@ -47,9 +46,7 @@ const preprocessCallExpr = (
 
         const call: CallExpression = body.expression;
 
-        const id: string = options.context.isTest
-            ? `call_${i}`
-            : `call_${uuid().replaceAll("-", "_")}`;
+        const va: string = `call_${i}`;
 
         // x.y();
         if (call.callee.type === "MemberExpression") {
@@ -83,7 +80,7 @@ const preprocessCallExpr = (
             const resultTransform: TransformMemberExprResult =
                 transformMemberExpr({
                     context: options.context,
-                    id,
+                    va,
                     member,
                     arguments: call.arguments,
                 });
@@ -96,7 +93,7 @@ const preprocessCallExpr = (
                         type: "VariableDeclarator",
                         id: {
                             type: "Identifier",
-                            name: id,
+                            name: va,
                             start: 0,
                             end: 0,
                         },
@@ -117,7 +114,8 @@ const preprocessCallExpr = (
             if (!options.includedFunctions.includes(ident.name)) continue;
 
             const resultTransform: TransformIdentResult = transformIdent({
-                id,
+                context: options.context,
+                va,
                 ident,
                 arguments: call.arguments,
             });
@@ -130,7 +128,7 @@ const preprocessCallExpr = (
                         type: "VariableDeclarator",
                         id: {
                             type: "Identifier",
-                            name: id,
+                            name: va,
                             start: 0,
                             end: 0,
                         },

@@ -1,6 +1,7 @@
 import type { Expression, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 
 import { CompileError } from "#/errors/compile";
@@ -8,8 +9,8 @@ import { fixedFnv1a } from "#/modules/processor/functions/hash";
 
 type HandleLiteralValueOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     selector: string;
     key: string;
     lit: Expression;
@@ -45,7 +46,7 @@ const handleLiteralValue = (
         value = options.lit.value.toString();
     }
 
-    const title: string = `v${fixedFnv1a(options.id, 2)}${fixedFnv1a(options.key, 3)}`;
+    const title: string = `v${fixedFnv1a(options.info.va, 3)}${fixedFnv1a(options.key, 4)}`;
 
     keyValues.push({
         title,

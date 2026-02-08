@@ -1,6 +1,7 @@
 import type { Expression, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
+import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { VariableKeyValue } from "##/processor/variables/@types";
 
 import { CompileError } from "#/errors/compile";
@@ -10,8 +11,8 @@ import { handleObjectValue } from "##/processor/variables/collector/value/object
 
 type HandleKeyValueOptions = {
     context: CompilerContext;
+    info: VarDeclInfo;
     program: Program;
-    id: string;
     selector: string;
     key: string;
     value: Expression;

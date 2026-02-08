@@ -4,13 +4,14 @@ import type { CompilerContext } from "#/contexts/compiler";
 
 import { cloneDeep } from "es-toolkit";
 
-import { ARGS, ID, KIND, SIGNATURE } from "#/consts";
+import { ARGS, FN, ID, SIGNATURE, VA } from "#/consts";
 import { CompileError } from "#/errors/compile";
 import { createObjectKeyValue } from "#/modules/preprocessor/preprocess/transform/helper/kv";
+import { createId } from "./helper/id";
 
 type TransformMemberExprOptions = {
     context: CompilerContext;
-    id: string;
+    va: string;
     member: MemberExpression;
     arguments: Argument[];
 };
@@ -22,6 +23,8 @@ type TransformMemberExprResult = {
 const transformMemberExpr = (
     options: TransformMemberExprOptions,
 ): TransformMemberExprResult => {
+    const ctx: CompilerContext = options.context;
+
     const member: MemberExpression = cloneDeep(options.member);
 
     const object: ObjectExpression = {
@@ -40,16 +43,27 @@ const transformMemberExpr = (
 
     const { property: id } = createObjectKeyValue({
         key: ID,
-        value: options.id,
+        value: createId({
+            context: ctx,
+            va: options.va,
+            arguments: options.arguments,
+        }),
     });
 
     object.properties.push(id);
 
-    let kindName: string = "";
+    const { property: va } = createObjectKeyValue({
+        key: VA,
+        value: options.va,
+    });
+
+    object.properties.push(va);
+
+    let fnName: string = "";
 
     // const abc = x.y({ ... });
     if (member.property.type === "Identifier") {
-        kindName = member.property.name;
+        fnName = member.property.name;
     }
 
     // const abc = x["y"]({ ... });
@@ -65,7 +79,7 @@ const transformMemberExpr = (
             });
         }
 
-        kindName = member.property.value.toString();
+        fnName = member.property.value.toString();
     } else {
         throw new CompileError({
             context: options.context,
@@ -77,12 +91,12 @@ const transformMemberExpr = (
         });
     }
 
-    const { property: kind } = createObjectKeyValue({
-        key: KIND,
-        value: kindName,
+    const { property: fn } = createObjectKeyValue({
+        key: FN,
+        value: fnName,
     });
 
-    object.properties.push(kind);
+    object.properties.push(fn);
 
     const { property: args } = createObjectKeyValue({
         key: ARGS,

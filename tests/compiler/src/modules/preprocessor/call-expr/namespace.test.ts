@@ -29,7 +29,8 @@ describe("preprocessor call expression tests (namespace)", (): void => {
             const call_1 = {
                 ${SIGNATURE}: true,
                 id: "call_1",
-                kind: "y",
+                variable: "call_1",
+                function: "y",
                 arguments: [
                     {
                         display: "block",
@@ -89,7 +90,8 @@ describe("preprocessor call expression tests (namespace)", (): void => {
             const call_1 = {
                 ${SIGNATURE}: true,
                 id: "call_1",
-                kind: "y",
+                variable: "call_1",
+                function: "y",
                 arguments: [
                     "html",
                     {

@@ -13,10 +13,11 @@ const file = "index.ts" as const;
 describe("processor style tests", (): void => {
     it("should process the style function", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const container = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                id: "container",
+                variable: "container",
+                function: "style",
                 arguments: [
                     {
                         display: "block",
@@ -53,10 +54,11 @@ describe("processor style tests", (): void => {
 
     it("should process the style function with multiple nodes", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const container = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                id: "container",
+                variable: "container",
+                function: "style",
                 arguments: [
                     {
                         display: "block",
@@ -99,10 +101,12 @@ describe("processor style tests", (): void => {
     it("should process the style function with shorthand", (): void => {
         const code = `
             const display = "block" as const;
-            const ${SIGNATURE}_ce_1 = {
+
+            const container = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                id: "container",
+                variable: "container",
+                function: "style",
                 arguments: [
                     {
                         display,
@@ -139,10 +143,11 @@ describe("processor style tests", (): void => {
 
     it("should process the style function with fallback value", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const container = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "style",
+                id: "container",
+                variable: "container",
+                function: "style",
                 arguments: [
                     {
                         display: [

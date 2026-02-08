@@ -13,10 +13,11 @@ const file = "index.ts" as const;
 describe("processor keyframes tests", (): void => {
     it("should process the keyframes function", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const kf = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "keyframes",
+                id: "kf",
+                variable: "kf",
+                function: "keyframes",
                 arguments: [
                     {
                         0: {
@@ -63,10 +64,11 @@ describe("processor keyframes tests", (): void => {
 
     it("should process the keyframes function with string key", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const kf = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "keyframes",
+                id: "kf",
+                variable: "kf",
+                function: "keyframes",
                 arguments: [
                     {
                         "0%": {
@@ -113,10 +115,11 @@ describe("processor keyframes tests", (): void => {
 
     it("should process the keyframes function with from and to", (): void => {
         const code = `
-            const ${SIGNATURE}_ce_1 = {
+            const kf = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "keyframes",
+                id: "kf",
+                variable: "kf",
+                function: "keyframes",
                 arguments: [
                     {
                         from: {
@@ -165,10 +168,11 @@ describe("processor keyframes tests", (): void => {
         const code = `
             const zero = "rotate(0deg)" as const;
 
-            const ${SIGNATURE}_ce_1 = {
+            const kf = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "keyframes",
+                id: "kf",
+                variable: "kf",
+                function: "keyframes",
                 arguments: [
                     {
                         0: {
@@ -217,10 +221,11 @@ describe("processor keyframes tests", (): void => {
         const code = `
             const transform = "rotate(0deg)" as const;
 
-            const ${SIGNATURE}_ce_1 = {
+            const kf = {
                 ${SIGNATURE}: true,
-                id: "${SIGNATURE}_ce_1",
-                kind: "keyframes",
+                id: "kf",
+                variable: "kf",
+                function: "keyframes",
                 arguments: [
                     {
                         0: {

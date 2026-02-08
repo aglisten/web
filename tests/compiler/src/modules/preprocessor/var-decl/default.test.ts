@@ -29,7 +29,8 @@ describe("preprocessor variable declaration tests (default namespace)", (): void
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "y",
+                variable: "block",
+                function: "y",
                 arguments: [
                     {
                         display: "block",
@@ -91,7 +92,8 @@ describe("preprocessor variable declaration tests (default namespace)", (): void
             const block = {
                 ${SIGNATURE}: true,
                 id: "block",
-                kind: "y",
+                variable: "block",
+                function: "y",
                 arguments: [
                     "html",
                     {

@@ -14,7 +14,6 @@ import type { TransformIdentResult } from "#/modules/preprocessor/preprocess/tra
 import type { TransformMemberExprResult } from "#/modules/preprocessor/preprocess/transform/member";
 
 import { cloneDeep } from "es-toolkit";
-import { v7 as uuid } from "uuid";
 
 import { transformIdent } from "#/modules/preprocessor/preprocess/transform/ident";
 import { transformMemberExpr } from "#/modules/preprocessor/preprocess/transform/member";
@@ -54,14 +53,8 @@ const preprocessVarDecl = (
 
             const call: CallExpression = decl.init;
 
-            const id: string =
-                decl.id.type === "Identifier"
-                    ? options.context.isTest
-                        ? decl.id.name
-                        : `${decl.id.name}_${uuid().replaceAll("-", "_")}`
-                    : options.context.isTest
-                      ? `var_${i}_${j}`
-                      : `var_${uuid().replaceAll("-", "_")}`;
+            const va: string =
+                decl.id.type === "Identifier" ? decl.id.name : `var_${i}_${j}`;
 
             // const abc = x.y();
             if (call.callee.type === "MemberExpression") {
@@ -79,7 +72,7 @@ const preprocessVarDecl = (
                 const resultTransform: TransformMemberExprResult =
                     transformMemberExpr({
                         context: options.context,
-                        id,
+                        va,
                         member,
                         arguments: call.arguments,
                     });
@@ -94,7 +87,8 @@ const preprocessVarDecl = (
                 if (!options.includedFunctions.includes(ident.name)) continue;
 
                 const resultTransform: TransformIdentResult = transformIdent({
-                    id,
+                    context: options.context,
+                    va,
                     ident,
                     arguments: call.arguments,
                 });
