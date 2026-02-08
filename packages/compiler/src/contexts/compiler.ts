@@ -3,9 +3,8 @@ import type { Format, Partial } from "ts-vista";
 
 import type { CodegenResult } from "#/ast/codegen";
 
-import { version } from "package.json";
-
 import { codegen } from "#/ast/codegen";
+import { version } from "../../package.json";
 
 type CreateCompilerContextBaseOptions = {
     /**
