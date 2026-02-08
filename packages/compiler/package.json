@@ -67,7 +67,6 @@
         "fdir": "^6.5.0",
         "oxc-parser": "catalog:dep",
         "rolldown": "catalog:dep",
-        "ts-vista": "catalog:dep",
-        "uuid": "^13.0.0"
+        "ts-vista": "catalog:dep"
     }
 }
