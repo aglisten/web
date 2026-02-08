@@ -11,6 +11,7 @@ export default defineConfig({
     },
     outputOptions: {
         entryFileNames: "[name].js",
+        assetFileNames: "[name][extname]",
     },
     plugins: [
         aglisten(),
