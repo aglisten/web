@@ -17,7 +17,7 @@ const createId = (options: CreateIdOptions): string => {
 
     const struct: string = JSON.stringify(options.arguments);
 
-    const hash: string = fixedFnv1a(struct, 16);
+    const hash: string = fixedFnv1a(struct, 8);
 
     return hash;
 };
