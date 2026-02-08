@@ -5,6 +5,7 @@ export default defineConfig(
     {
         entry: {
             index: "./src/index.ts",
+            hmr: "./src/hmr.ts",
         },
         platform: "node",
     },
