@@ -7,6 +7,8 @@ import * as Path from "node:path";
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
+import { name } from "../package.json";
+
 type CompleteCreatePluginOptions = {
     runtime: Runtime;
 };
@@ -38,7 +40,7 @@ const createPlugin = (options?: CreatePluginOptions) => {
             typeof opts?.filename === "string" ? opts.filename : "aglisten";
 
         return {
-            name: "@aglisten/rollup",
+            name,
             buildStart(): void {
                 runtime =
                     options?.runtime ??

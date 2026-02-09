@@ -16,7 +16,7 @@ import * as Path from "node:path";
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
-const PLUGIN_NAME = "@aglisten/webpack";
+import { name } from "../../package.json";
 
 type HtmlWebpackPluginData = {
     html: string;
@@ -82,10 +82,10 @@ class Plugin implements WebpackPluginInstance {
         ////////////////////////////////////////
 
         compiler.hooks.thisCompilation.tap(
-            PLUGIN_NAME,
+            name,
             (compilation: Compilation): void => {
                 NormalModule.getCompilationHooks(compilation).loader.tap(
-                    PLUGIN_NAME,
+                    name,
                     (_, module: NormalModule): void => {
                         try {
                             // get CSS entry
@@ -128,119 +128,109 @@ class Plugin implements WebpackPluginInstance {
         // Add additional asset
         ////////////////////////////////////////
 
-        compiler.hooks.make.tap(
-            PLUGIN_NAME,
-            (compilation: Compilation): void => {
-                // get hash content
-                const getHashContent = (source: string): string => {
-                    const {
-                        hashDigest,
-                        hashDigestLength,
-                        hashFunction,
-                        hashSalt,
-                    } = compilation.outputOptions;
+        compiler.hooks.make.tap(name, (compilation: Compilation): void => {
+            // get hash content
+            const getHashContent = (source: string): string => {
+                const { hashDigest, hashDigestLength, hashFunction, hashSalt } =
+                    compilation.outputOptions;
 
-                    const hash = compiler.webpack.util.createHash(
-                        hashFunction ?? "md5",
-                    );
+                const hash = compiler.webpack.util.createHash(
+                    hashFunction ?? "md5",
+                );
 
-                    if (hashSalt) hash.update(hashSalt);
+                if (hashSalt) hash.update(hashSalt);
 
-                    hash.update(source);
+                hash.update(source);
 
-                    return hash
-                        .digest(hashDigest)
-                        .toString()
-                        .slice(0, hashDigestLength);
-                };
+                return hash
+                    .digest(hashDigest)
+                    .toString()
+                    .slice(0, hashDigestLength);
+            };
 
-                // add asset
-                compilation.hooks.processAssets.tapPromise(
-                    {
-                        name: PLUGIN_NAME,
-                        stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
-                    },
-                    async (): Promise<void> => {
+            // add asset
+            compilation.hooks.processAssets.tapPromise(
+                {
+                    name,
+                    stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+                },
+                async (): Promise<void> => {
+                    try {
+                        // no emit
+                        if (!this.emit) return void 0;
+
+                        const css: string = await this.runtime.getCSS();
+
+                        const contentHash: string = getHashContent(css);
+
+                        const data: PathData = {
+                            filename: this.filename,
+                            contentHash,
+                            chunk: {
+                                id: this.filename,
+                                name: Path.parse(this.filename).name,
+                                hash: contentHash,
+                            },
+                        };
+
+                        const { path: assetPath, info: assetInfo } =
+                            compilation.getPathWithInfo(this.filename, data);
+
+                        compilation.emitAsset(
+                            assetPath,
+                            new RawSource(css),
+                            assetInfo,
+                        );
+
+                        // html-webpack-plugin
+
                         try {
-                            // no emit
-                            if (!this.emit) return void 0;
-
-                            const css: string = await this.runtime.getCSS();
-
-                            const contentHash: string = getHashContent(css);
-
-                            const data: PathData = {
-                                filename: this.filename,
-                                contentHash,
-                                chunk: {
-                                    id: this.filename,
-                                    name: Path.parse(this.filename).name,
-                                    hash: contentHash,
-                                },
-                            };
-
-                            const { path: assetPath, info: assetInfo } =
-                                compilation.getPathWithInfo(
-                                    this.filename,
-                                    data,
-                                );
-
-                            compilation.emitAsset(
-                                assetPath,
-                                new RawSource(css),
-                                assetInfo,
+                            const { default: plugin } = await import(
+                                "html-webpack-plugin"
                             );
 
-                            // html-webpack-plugin
+                            plugin
+                                .getCompilationHooks(compilation)
+                                .beforeEmit.tapPromise(
+                                    name,
+                                    async ({
+                                        html,
+                                        outputName,
+                                        plugin,
+                                    }: HtmlWebpackPluginData): Promise<HtmlWebpackPluginData> => {
+                                        const href: string = plugin.options
+                                            ?.hash
+                                            ? `${this.filename}?${contentHash}`
+                                            : `${this.filename}`;
 
-                            try {
-                                const { default: plugin } = await import(
-                                    "html-webpack-plugin"
-                                );
+                                        // inject
+                                        html = html.replace(
+                                            "</head>",
+                                            `<link rel="stylesheet" href="${href}" /></head>`,
+                                        );
 
-                                plugin
-                                    .getCompilationHooks(compilation)
-                                    .beforeEmit.tapPromise(
-                                        PLUGIN_NAME,
-                                        async ({
+                                        return {
                                             html,
                                             outputName,
                                             plugin,
-                                        }: HtmlWebpackPluginData): Promise<HtmlWebpackPluginData> => {
-                                            const href: string = plugin.options
-                                                ?.hash
-                                                ? `${this.filename}?${contentHash}`
-                                                : `${this.filename}`;
-
-                                            // inject
-                                            html = html.replace(
-                                                "</head>",
-                                                `<link rel="stylesheet" href="${href}" /></head>`,
-                                            );
-
-                                            return {
-                                                html,
-                                                outputName,
-                                                plugin,
-                                            };
-                                        },
-                                    );
-                            } catch (_: unknown) {
-                                // `html-webpack-plugin` not found
-                            }
-                        } catch (er: unknown) {
-                            if (er instanceof WebpackError) {
-                                compilation.errors.push(er);
-                            } else {
-                                compilation.errors.push(
-                                    new WebpackError(String(er)),
+                                        };
+                                    },
                                 );
-                            }
+                        } catch (_: unknown) {
+                            // `html-webpack-plugin` not found
                         }
-                    },
-                ); // compilation.hooks.additionalAssets
-            },
-        ); // compiler.hooks.make
+                    } catch (er: unknown) {
+                        if (er instanceof WebpackError) {
+                            compilation.errors.push(er);
+                        } else {
+                            compilation.errors.push(
+                                new WebpackError(String(er)),
+                            );
+                        }
+                    }
+                },
+            ); // compilation.hooks.additionalAssets
+        }); // compiler.hooks.make
     } // apply
 }
 

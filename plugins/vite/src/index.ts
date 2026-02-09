@@ -19,6 +19,8 @@ import { createPlugin } from "@aglisten/rollup/create";
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
+import { name } from "../package.json";
+
 type PluginOptions = Format<
     {
         /**
@@ -37,8 +39,6 @@ type PluginOptions = Format<
         filename?: string;
     } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
 >;
-
-const PLUGIN_NAME = "@aglisten/vite" as const;
 
 const PREFIX = "aglisten" as const;
 
@@ -73,7 +73,7 @@ const plugin = (options?: PluginOptions): Plugin => {
         // @ts-expect-error: rollup plugin type error
         return {
             ...rollupPlugin(options),
-            name: PLUGIN_NAME,
+            name,
             configureServer(server: ViteDevServer): void {
                 server.ws.on(`${PREFIX}:init`, async (): Promise<void> => {
                     // inline CSS
@@ -143,7 +143,7 @@ const plugin = (options?: PluginOptions): Plugin => {
     // @ts-expect-error: rollup plugin type error
     return {
         ...rollupPlugin(options),
-        name: PLUGIN_NAME,
+        name,
         transformIndexHtml: {
             order: "post",
             handler(
