@@ -91,6 +91,22 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  examples/fallback:
+    dependencies:
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      react:
+        specifier: catalog:dep
+        version: 19.2.4
+    devDependencies:
+      '@aglisten/rollup':
+        specifier: workspace:*
+        version: link:../../plugins/rollup
+      '@types/react':
+        specifier: catalog:dep
+        version: 19.2.13
+
   examples/merge:
     dependencies:
       '@aglisten/web':
