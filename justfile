@@ -18,6 +18,7 @@ test_web := "tests/web"
 webpack := "plugins/webpack"
 rollup := "plugins/rollup"
 vite := "plugins/vite"
+postcss := "plugins/postcss"
 
 # Default action
 _:
@@ -40,6 +41,7 @@ tsc:
     cd ./{{webpack}} && ../../{{tsc}} --noEmit
     cd ./{{rollup}} && ../../{{tsc}} --noEmit
     cd ./{{vite}} && ../../{{tsc}} --noEmit
+    cd ./{{postcss}} && ../../{{tsc}} --noEmit
 
 # Lint code
 lint:
@@ -60,6 +62,7 @@ build:
     cd ./{{webpack}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{rollup}} && ../../{{tsdown}} -c tsdown.config.ts
     cd ./{{vite}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{postcss}} && ../../{{tsdown}} -c tsdown.config.ts
 
 # Run tests
 test:
@@ -79,9 +82,10 @@ test-all:
 
 # Clean builds
 clean:
-    cd ./{{webpack}} && rm -rf ./dist
-    cd ./{{rollup}} && rm -rf ./dist
+    cd ./{{postcss}} && rm -rf ./dist
     cd ./{{vite}} && rm -rf ./dist
+    cd ./{{rollup}} && rm -rf ./dist
+    cd ./{{webpack}} && rm -rf ./dist
 
     cd ./{{web}} && rm -rf ./dist
     cd ./{{runtime}} && rm -rf ./dist
@@ -91,12 +95,13 @@ clean:
 clean-all:
     just clean
 
-    cd ./{{test_compiler}} && rm -rf ./node_modules
     cd ./{{test_web}} && rm -rf ./node_modules
+    cd ./{{test_compiler}} && rm -rf ./node_modules
 
-    cd ./{{webpack}} && rm -rf ./node_modules
-    cd ./{{rollup}} && rm -rf ./node_modules
+    cd ./{{postcss}} && rm -rf ./node_modules
     cd ./{{vite}} && rm -rf ./node_modules
+    cd ./{{rollup}} && rm -rf ./node_modules
+    cd ./{{webpack}} && rm -rf ./node_modules
 
     cd ./{{web}} && rm -rf ./node_modules
     cd ./{{runtime}} && rm -rf ./node_modules

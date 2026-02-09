@@ -64,7 +64,7 @@
     "dependencies": {
         "es-toolkit": "catalog:dep",
         "esrap": "^2.2.0",
-        "fdir": "^6.5.0",
+        "fdir": "catalog:dep",
         "oxc-parser": "catalog:dep",
         "rolldown": "catalog:dep",
         "ts-vista": "catalog:dep"

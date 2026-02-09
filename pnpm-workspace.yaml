@@ -10,6 +10,7 @@ catalogs:
         "@types/react": ^19.0.0
         "@types/react-dom": ^19.0.0
         es-toolkit: ^1.40.0
+        fdir: ^6.5.0
         oxc-parser: ~0.112.0
         oxc-minify: ~0.112.0
         react: ^19.0.0
@@ -28,6 +29,8 @@ catalogs:
         rolldown: 1.0.0-rc.3
         # vite
         vite: 7.0.0
+        # postcss
+        postcss: 8.5.0
     peer:
         # webpack
         webpack: ^5.76.0
@@ -38,6 +41,8 @@ catalogs:
         rolldown: 1.0.0-rc.3
         # vite
         vite: ^7.0.0
+        # postcss
+        postcss: ^8.5.0
 
 minimumReleaseAge: 1440
 
