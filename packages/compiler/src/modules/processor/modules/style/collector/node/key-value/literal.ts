@@ -8,10 +8,9 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { CompileError } from "#/errors/compile";
-import { createStyleNodeTitle } from "##/processor/style/collector/title";
 
 type HandleLiteralValueOptions = {
     context: CompilerContext;
@@ -27,7 +26,7 @@ type HandleLiteralValueOptions = {
 };
 
 type HandleLiteralValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleLiteralValue = (
@@ -44,19 +43,14 @@ const handleLiteralValue = (
         });
     }
 
-    const { title } = createStyleNodeTitle({
-        selectors: options.selectors,
-        key: options.key,
-        value: options.literal.value.toString(),
-    });
-
     return {
-        styleNodes: [
+        plans: [
             {
-                title,
                 selectors: options.selectors,
                 key: options.key,
-                value: options.literal.value.toString(),
+                values: [
+                    options.literal.value.toString(),
+                ],
             },
         ],
     };

@@ -23,9 +23,7 @@
     ],
     "dependencies": {
         "@aglisten/compiler": "workspace:*",
-        "browserslist": "^4.28.1",
         "es-toolkit": "catalog:dep",
-        "lightningcss": "catalog:dep",
         "ts-vista": "catalog:dep"
     }
 }

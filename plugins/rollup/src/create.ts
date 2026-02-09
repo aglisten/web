@@ -25,12 +25,7 @@ type PluginOptions = Format<
          * By default, it is `aglisten`.
          */
         filename?: string;
-    } & Partial<
-        Pick<
-            CreateRuntimeOptions,
-            "cwd" | "include" | "exclude" | "targets" | "minify"
-        >
-    >
+    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
 >;
 
 const createPlugin = (options?: CreatePluginOptions) => {
@@ -51,8 +46,6 @@ const createPlugin = (options?: CreatePluginOptions) => {
                         cwd: opts?.cwd,
                         include: opts?.include,
                         exclude: opts?.exclude,
-                        targets: opts?.targets,
-                        minify: opts?.minify,
                     });
             },
             async transform(

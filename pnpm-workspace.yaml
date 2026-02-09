@@ -10,7 +10,6 @@ catalogs:
         "@types/react": ^19.0.0
         "@types/react-dom": ^19.0.0
         es-toolkit: ^1.40.0
-        lightningcss: ^1.30.0
         oxc-parser: ~0.112.0
         oxc-minify: ~0.112.0
         react: ^19.0.0

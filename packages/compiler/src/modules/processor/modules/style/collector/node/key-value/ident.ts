@@ -1,12 +1,11 @@
 import type { Expression, IdentifierReference, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { findInlineExpression } from "#/ast/expr";
 import { CompileError } from "#/errors/compile";
 import { handleKeyValue } from "##/processor/style/collector/node/key-value";
-import { createStyleNodeTitle } from "##/processor/style/collector/title";
 
 type HandleIdentValueOptions = {
     context: CompilerContext;
@@ -17,7 +16,7 @@ type HandleIdentValueOptions = {
 };
 
 type HandleIdentValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleIdentValue = (
@@ -56,19 +55,14 @@ const handleIdentValue = (
 
         const value: string = expr.value.toString();
 
-        const { title } = createStyleNodeTitle({
-            selectors: options.selectors,
-            key: options.key,
-            value,
-        });
-
         return {
-            styleNodes: [
+            plans: [
                 {
-                    title,
                     selectors: options.selectors,
                     key: options.key,
-                    value,
+                    values: [
+                        value,
+                    ],
                 },
             ],
         };

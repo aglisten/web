@@ -10,13 +10,13 @@ import type {
 import type { CompilerContext } from "#/contexts/compiler";
 import type { VarDeclInfo } from "#/modules/processor/functions/get-info";
 import type { Style } from "##/processor/style/@types";
-import type { CollectStyleNodesResult } from "##/processor/style/collector/node";
 
 import { Visitor } from "oxc-parser";
 
 import { CompileError } from "#/errors/compile";
 import { getInfo } from "#/modules/processor/functions/get-info";
-import { collectStyleNodes } from "##/processor/style/collector/node";
+import { collectStyleNodePlans } from "##/processor/style/collector/node";
+import { createStyleNodesByPlans } from "./plan";
 
 type CollectStyleOptions = {
     context: CompilerContext;
@@ -30,17 +30,21 @@ type CollectStyleResult = {
 };
 
 const collectStyle = (options: CollectStyleOptions): CollectStyleResult => {
-    const result: CollectStyleNodesResult = collectStyleNodes({
+    const { plans } = collectStyleNodePlans({
         context: options.context,
         program: options.program,
         selectors: [],
         object: options.object,
     });
 
+    const { styleNodes: children } = createStyleNodesByPlans({
+        plans,
+    });
+
     return {
         style: {
             id: options.info.id,
-            children: result.styleNodes,
+            children,
         },
     };
 };

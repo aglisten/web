@@ -4,14 +4,11 @@ import type {
     CompileResult as RawCompileResult,
     UserCompileOptions,
 } from "@aglisten/compiler";
-import type { Targets } from "lightningcss";
 import type { Format, Partial } from "ts-vista";
 
 import { compile } from "@aglisten/compiler";
-import { sortCssList } from "@aglisten/compiler/processor/css";
-import browserslist from "browserslist";
+import { transformCssList } from "@aglisten/compiler/processor/css";
 import { toMerged } from "es-toolkit";
-import { browserslistToTargets, transform } from "lightningcss";
 
 import { INCLUDED_FUNCTIONS_DEFAULT, PACKAGE_NAME_DEFAULT } from "#/helper";
 
@@ -21,25 +18,13 @@ const OPTIONS_DEFAULT: ResolvedOptions = {
     cwd: process.cwd(),
     include: [],
     exclude: [],
-    targets: void 0,
-    minify: false,
 };
 
 type CompleteCreateRuntimeOptions = Format<
-    PresetCompileOptions &
-        UserCompileOptions & {
-            /**
-             * Browserslist targets for the CSS output.
-             */
-            targets: string | Targets;
-            /**
-             * Whether minify the CSS output.
-             */
-            minify: boolean;
-        }
+    PresetCompileOptions & UserCompileOptions
 >;
 
-type ResolvedOptions = Format<Partial<CompleteCreateRuntimeOptions, "targets">>;
+type ResolvedOptions = CompleteCreateRuntimeOptions;
 
 type CreateRuntimeOptions = Format<Partial<CompleteCreateRuntimeOptions>>;
 
@@ -53,14 +38,7 @@ type CompileResult = {
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
     const coreOpts: ResolvedOptions = toMerged(OPTIONS_DEFAULT, coreOptions);
 
-    const targets: Targets | undefined =
-        typeof coreOpts.targets === "string"
-            ? browserslistToTargets(browserslist(coreOpts.targets))
-            : coreOpts.targets;
-
     const cache: Map<string, RawCompileResult> = new Map();
-
-    let isTransformed: boolean = false;
 
     let cssCache: string = "";
 
@@ -72,7 +50,6 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             if (!result) return false;
 
-            isTransformed = false;
             cache.set(options.file, result);
 
             return true;
@@ -107,7 +84,6 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
                 };
             }
 
-            isTransformed = false;
             cache.set(options.file, result);
 
             return {
@@ -116,7 +92,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             };
         },
         getCSS: async (): Promise<string> => {
-            if (isTransformed && cssCache) return cssCache;
+            if (cssCache) return cssCache;
 
             const cssList: string[] = [];
 
@@ -124,21 +100,11 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
                 cssList.push(...result.cssList);
             });
 
-            const css: string = sortCssList(cssList).join("");
+            const css: string = transformCssList(cssList).join("");
 
-            const { code: cssCode } = transform({
-                filename: "index.css",
-                code: new TextEncoder().encode(css),
-                minify: coreOpts.minify,
-                targets,
-            });
+            cssCache = css;
 
-            const result: string = new TextDecoder().decode(cssCode);
-
-            isTransformed = true;
-            cssCache = result;
-
-            return result;
+            return css;
         },
     };
 };

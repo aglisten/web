@@ -1,15 +1,15 @@
 import type {
     ArrayExpression,
     ArrayExpressionElement,
+    Expression,
     Program,
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
-import type { HandleKeyValueResult } from "##/processor/style/collector/node/key-value";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { CompileError } from "#/errors/compile";
-import { handleKeyValue } from "##/processor/style/collector/node/key-value";
+import { handleKeyValues } from "##/processor/style/collector/node/key-value";
 
 type HandleArrayValueOptions = {
     context: CompilerContext;
@@ -20,13 +20,13 @@ type HandleArrayValueOptions = {
 };
 
 type HandleArrayValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleArrayValue = (
     options: HandleArrayValueOptions,
 ): HandleArrayValueResult => {
-    const styleNodes: StyleNode[] = [];
+    const values: Expression[] = [];
 
     for (let i: number = 0; i < options.array.elements.length; i++) {
         const element: ArrayExpressionElement | undefined =
@@ -46,19 +46,34 @@ const handleArrayValue = (
             });
         }
 
-        const result: HandleKeyValueResult = handleKeyValue({
-            context: options.context,
-            program: options.program,
-            selectors: options.selectors,
-            key: options.key,
-            value: element,
-        });
-
-        styleNodes.push(...result.styleNodes);
+        values.push(element);
     }
 
+    const { plans } = handleKeyValues({
+        context: options.context,
+        program: options.program,
+        selectors: options.selectors,
+        key: options.key,
+        values,
+    });
+
+    const plan: StyleNodePlan | undefined = plans[0];
+
+    if (!plan)
+        return {
+            plans: [],
+        };
+
     return {
-        styleNodes,
+        plans: [
+            {
+                selectors: plan.selectors,
+                key: plan.key,
+                values: plans.flatMap(
+                    (plan: StyleNodePlan): string[] => plan.values,
+                ),
+            },
+        ],
     };
 };
 

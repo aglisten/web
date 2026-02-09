@@ -11,7 +11,7 @@ import type { MutateAllVariablesResult } from "##/processor/variables/mutator";
 
 import { cloneDeep } from "es-toolkit";
 
-import { sortCssList } from "#/modules/processor/css";
+import { transformCssList } from "#/modules/processor/css";
 import { collectAllKeyframes } from "##/processor/keyframes/collector";
 import { exportAllKeyframes } from "##/processor/keyframes/exporter";
 import { mutateAllKeyframes } from "##/processor/keyframes/mutator";
@@ -133,12 +133,12 @@ const process = (options: ProcessOptions): ProcessResult => {
 
     cssList.push(...resultStylesExport.cssList);
 
-    const sortedCssList: string[] = sortCssList(cssList);
+    const transformedCssList: string[] = transformCssList(cssList);
 
     return {
         program: resultStylesMut.program,
-        css: sortedCssList.join(""),
-        cssList: sortedCssList,
+        css: transformedCssList.join(""),
+        cssList: transformedCssList,
     };
 };
 

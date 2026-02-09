@@ -49,7 +49,15 @@ describe("processor style tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the style function with multiple nodes", (): void => {
@@ -95,7 +103,15 @@ describe("processor style tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the style function with shorthand", (): void => {
@@ -138,7 +154,15 @@ describe("processor style tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the style function with fallback value", (): void => {
@@ -151,8 +175,8 @@ describe("processor style tests", (): void => {
                 arguments: [
                     {
                         display: [
-                            "block",
                             "flex",
+                            "grid",
                         ],
                     },
                 ],
@@ -160,12 +184,9 @@ describe("processor style tests", (): void => {
         ` as const;
 
         const output = `
-            .djcd17uu {
-                display: block;
-            }
-
-            .djcd1agm {
+            .djcdoxg2 {
                 display: flex;
+                display: grid;
             }
         ` as const;
 
@@ -186,6 +207,14 @@ describe("processor style tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 });

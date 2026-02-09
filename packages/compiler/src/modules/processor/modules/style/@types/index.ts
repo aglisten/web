@@ -1,21 +1,57 @@
-type StyleNode = {
-    // Title of the style node,
-    // for class name usage
-    title: string;
-    // Included selectors for current
-    // style node (e.g. #xxx, .child)
+import type { Format } from "ts-vista";
+
+/**
+ * Style node plan type.
+ *
+ * This is a plan for creating a style node.
+ */
+type StyleNodePlan = {
+    /**
+     * Included selectors for current style node.
+     *
+     * For example, `[".child"]` and `["@media (hover: hover)", "&:hover"]`.
+     */
     selectors: string[];
-    // Style key (e.g. display, color)
+    /**
+     * Style key.
+     *
+     * For example, `display` and `backgroundColor`.
+     */
     key: string;
-    // Style value (e.g. block, blue)
-    value: string;
+    /**
+     * Style value with the possibility of adding fallback values.
+     *
+     * For example, with the `display` key, it can be `["block"]` and `["flex", "grid"]`.
+     */
+    values: string[];
 };
 
+/**
+ * Style node type.
+ *
+ * This is used to represent each style expression.
+ */
+type StyleNode = Format<
+    {
+        /**
+         * Title of the style node.
+         *
+         * This is used for class name usage.
+         */
+        title: string;
+    } & StyleNodePlan
+>;
+
+/**
+ * Style type.
+ *
+ * This carries a list of style nodes.
+ */
 type Style = {
-    // ID of the style
+    /** ID of the style. */
     id: string;
-    // Style nodes
+    /** Style nodes. */
     children: StyleNode[];
 };
 
-export type { StyleNode, Style };
+export type { StyleNodePlan, StyleNode, Style };

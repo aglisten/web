@@ -9,7 +9,7 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { findInlineExpression } from "#/ast/expr";
 import { CompileError } from "#/errors/compile";
@@ -284,7 +284,7 @@ type HandleMemberValueOptions = {
 };
 
 type HandleMemberValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleMemberValue = (

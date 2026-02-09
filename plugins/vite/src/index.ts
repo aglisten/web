@@ -35,12 +35,7 @@ type PluginOptions = Format<
          * By default, it is `aglisten`.
          */
         filename?: string;
-    } & Partial<
-        Pick<
-            CreateRuntimeOptions,
-            "cwd" | "include" | "exclude" | "targets" | "minify"
-        >
-    >
+    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
 >;
 
 const PLUGIN_NAME = "@aglisten/vite" as const;
@@ -53,15 +48,10 @@ const plugin = (options?: PluginOptions): Plugin => {
             ? options.dev
             : process.env.NODE_ENV === "development";
 
-    const minify: boolean =
-        typeof options?.minify === "boolean" ? options.minify : !isDev;
-
     const runtime: Runtime = createRuntime({
         cwd: options?.cwd,
         include: options?.include,
         exclude: options?.exclude,
-        targets: options?.targets,
-        minify,
     });
 
     const rollupPlugin = createPlugin({

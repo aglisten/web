@@ -1,7 +1,7 @@
 import type { Expression, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { CompileError } from "#/errors/compile";
 import { handleArrayValue } from "##/processor/style/collector/node/key-value/array";
@@ -19,7 +19,7 @@ type HandleKeyValueOptions = {
 };
 
 type HandleKeyValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleKeyValue = (
@@ -95,5 +95,48 @@ const handleKeyValue = (
     }
 };
 
-export type { HandleKeyValueOptions, HandleKeyValueResult };
-export { handleKeyValue };
+type HandleKeyValuesOptions = {
+    context: CompilerContext;
+    program: Program;
+    selectors: string[];
+    key: string;
+    values: Expression[];
+};
+
+type HandleKeyValuesResult = {
+    plans: StyleNodePlan[];
+};
+
+const handleKeyValues = (
+    options: HandleKeyValuesOptions,
+): HandleKeyValuesResult => {
+    const plans: StyleNodePlan[] = [];
+
+    for (let i: number = 0; i < options.values.length; i++) {
+        const value: Expression | undefined = options.values[i];
+
+        if (!value) continue;
+
+        const { plans: current } = handleKeyValue({
+            context: options.context,
+            program: options.program,
+            selectors: options.selectors,
+            key: options.key,
+            value,
+        });
+
+        plans.push(...current);
+    }
+
+    return {
+        plans,
+    };
+};
+
+export type {
+    HandleKeyValueOptions,
+    HandleKeyValueResult,
+    HandleKeyValuesOptions,
+    HandleKeyValuesResult,
+};
+export { handleKeyValue, handleKeyValues };

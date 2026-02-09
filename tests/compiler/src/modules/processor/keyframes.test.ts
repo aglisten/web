@@ -59,7 +59,15 @@ describe("processor keyframes tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the keyframes function with string key", (): void => {
@@ -110,7 +118,15 @@ describe("processor keyframes tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the keyframes function with from and to", (): void => {
@@ -161,7 +177,15 @@ describe("processor keyframes tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the keyframes function with external value", (): void => {
@@ -214,7 +238,15 @@ describe("processor keyframes tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the keyframes function with shorthand", (): void => {
@@ -267,6 +299,14 @@ describe("processor keyframes tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 });

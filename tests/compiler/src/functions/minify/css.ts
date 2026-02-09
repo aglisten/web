@@ -1,20 +1,24 @@
-import type { TransformResult } from "lightningcss";
+import { Processor } from "postcss";
+// @ts-expect-error
+import { default as minify } from "postcss-minify";
 
-import { transform } from "lightningcss";
+type MinifyCSSOptions = {
+    source: string;
+};
 
 type MinifyCSSResult = {
     code: string;
 };
 
-const minifyCSS = (filename: string, source: string): MinifyCSSResult => {
-    const result: TransformResult = transform({
-        filename,
-        code: new TextEncoder().encode(source),
-        minify: true,
-    });
+const minifyCSS = (options: MinifyCSSOptions): MinifyCSSResult => {
+    const processor: Processor = new Processor([
+        minify(),
+    ]);
+
+    const { css } = processor.process(options.source).sync();
 
     return {
-        code: result.code.toString(),
+        code: css,
     };
 };
 

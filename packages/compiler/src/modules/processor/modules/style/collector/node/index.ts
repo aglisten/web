@@ -7,13 +7,13 @@ import type {
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
-import type { HandleKeyValueResult } from "##/processor/style/collector/node/key-value";
+import type { StyleNodePlan } from "##/processor/style/@types";
+import type { HandleKeyValuesResult } from "##/processor/style/collector/node/key-value";
 
 import { findInlineExpression } from "#/ast/expr";
 import { CompileError } from "#/errors/compile";
 import { isEnglishLetter } from "##/processor/style/collector/helper/letter";
-import { handleKeyValue } from "##/processor/style/collector/node/key-value";
+import { handleKeyValues } from "##/processor/style/collector/node/key-value";
 
 const normalizeCssKey = (key: string): string => {
     let result: string = "";
@@ -47,10 +47,10 @@ type ColelctPropStyleNodesOptions = {
 };
 
 type CollectPropStyleNodesResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
-const collectPropStyleNodes = (
+const collectPropStyleNodePlans = (
     options: ColelctPropStyleNodesOptions,
 ): CollectPropStyleNodesResult => {
     const prop: ObjectProperty = options.prop;
@@ -85,16 +85,18 @@ const collectPropStyleNodes = (
             });
         }
 
-        const result: HandleKeyValueResult = handleKeyValue({
+        const { plans } = handleKeyValues({
             context: options.context,
             program: options.program,
             selectors: options.selectors,
             key: prop.key.name,
-            value,
+            values: [
+                value,
+            ],
         });
 
         return {
-            styleNodes: result.styleNodes,
+            plans,
         };
     }
 
@@ -207,34 +209,36 @@ const collectPropStyleNodes = (
 
     key = normalizeCssKey(key);
 
-    const result: HandleKeyValueResult = handleKeyValue({
+    const result: HandleKeyValuesResult = handleKeyValues({
         context: options.context,
         program: options.program,
         selectors: options.selectors,
         key,
-        value: prop.value,
+        values: [
+            prop.value,
+        ],
     });
 
     return {
-        styleNodes: result.styleNodes,
+        plans: result.plans,
     };
 };
 
-type CollectStyleNodesOptions = {
+type CollectStyleNodePlansOptions = {
     context: CompilerContext;
     program: Program;
     selectors: string[];
     object: ObjectExpression;
 };
 
-type CollectStyleNodesResult = {
-    styleNodes: StyleNode[];
+type CollectStyleNodePlansResult = {
+    plans: StyleNodePlan[];
 };
 
-const collectStyleNodes = (
-    options: CollectStyleNodesOptions,
-): CollectStyleNodesResult => {
-    const styleNodes: StyleNode[] = [];
+const collectStyleNodePlans = (
+    options: CollectStyleNodePlansOptions,
+): CollectStyleNodePlansResult => {
+    const plans: StyleNodePlan[] = [];
 
     for (let i: number = 0; i < options.object.properties.length; i++) {
         const prop: ObjectPropertyKind | undefined =
@@ -254,20 +258,20 @@ const collectStyleNodes = (
             });
         }
 
-        const result: CollectPropStyleNodesResult = collectPropStyleNodes({
+        const { plans: current } = collectPropStyleNodePlans({
             context: options.context,
             program: options.program,
             selectors: options.selectors,
             prop,
         });
 
-        styleNodes.push(...result.styleNodes);
+        plans.push(...current);
     }
 
     return {
-        styleNodes,
+        plans,
     };
 };
 
-export type { CollectStyleNodesOptions, CollectStyleNodesResult };
-export { collectStyleNodes };
+export type { CollectStyleNodePlansOptions, CollectStyleNodePlansResult };
+export { collectStyleNodePlans };

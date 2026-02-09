@@ -9,7 +9,8 @@ import type { CompilerContext } from "#/contexts/compiler";
 import type { KeyframeNode } from "##/processor/keyframes/@types";
 
 import { CompileError } from "#/errors/compile";
-import { collectStyleNodes } from "##/processor/style/collector/node";
+import { collectStyleNodePlans } from "##/processor/style/collector/node";
+import { createStyleNodesByPlans } from "##/processor/style/collector/plan";
 
 type ColelctPropKeyframeNodesOptions = {
     context: CompilerContext;
@@ -79,18 +80,22 @@ const collectPropKeyframeNodes = (
         });
     }
 
-    const { styleNodes } = collectStyleNodes({
+    const { plans } = collectStyleNodePlans({
         context: options.context,
         program: options.program,
         selectors: [],
         object: prop.value,
     });
 
+    const { styleNodes: children } = createStyleNodesByPlans({
+        plans,
+    });
+
     return {
         keyframeNodes: [
             {
                 title,
-                children: styleNodes,
+                children,
             },
         ],
     };

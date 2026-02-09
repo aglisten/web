@@ -1,7 +1,15 @@
 import type { Style, StyleNode } from "##/processor/style/@types";
 
 const styleNodeToCss = (node: StyleNode): string => {
-    const kv: string = `${node.key}:${node.value};`;
+    let kv: string = "";
+
+    for (let i: number = 0; i < node.values.length; i++) {
+        const value: string | undefined = node.values[i];
+
+        if (!value) continue;
+
+        kv += `${node.key}:${value};`;
+    }
 
     if (node.selectors.length === 0) return kv;
 

@@ -40,12 +40,7 @@ type PluginOptions = Format<
          * By default, it is `aglisten`.
          */
         filename?: string;
-    } & Partial<
-        Pick<
-            CreateRuntimeOptions,
-            "cwd" | "include" | "exclude" | "targets" | "minify"
-        >
-    >
+    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
 >;
 
 class Plugin implements WebpackPluginInstance {
@@ -57,8 +52,6 @@ class Plugin implements WebpackPluginInstance {
 
     protected isDev: boolean = process.env.NODE_ENV === "development";
 
-    protected isMinify: boolean = !this.isDev;
-
     protected filename: string = "aglisten.css";
 
     protected cssEntry: string = "";
@@ -68,18 +61,10 @@ class Plugin implements WebpackPluginInstance {
 
         if (typeof opts?.dev === "boolean") this.isDev = opts.dev;
 
-        if (typeof opts?.minify === "boolean") {
-            this.isMinify = opts.minify;
-        } else {
-            this.isMinify = !this.isDev;
-        }
-
         this.runtime = createRuntime({
             cwd: opts?.cwd,
             include: opts?.include,
             exclude: opts?.exclude,
-            minify: this.isMinify,
-            targets: opts?.targets,
         });
 
         if (typeof opts?.emit === "boolean") this.emit = opts.emit;

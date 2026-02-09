@@ -6,8 +6,9 @@
     },
     "dependencies": {
         "@aglisten/compiler": "workspace:*",
-        "lightningcss": "catalog:dep",
         "oxc-minify": "catalog:dep",
+        "postcss": "^8.5.6",
+        "postcss-minify": "^1.2.0",
         "vitest": "catalog:dep"
     },
     "devDependencies": {

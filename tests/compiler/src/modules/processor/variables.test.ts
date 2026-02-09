@@ -30,7 +30,7 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root{
-                --v${blue}:#00f;
+                --v${blue}:#0000ff;
             }
         ` as const;
 
@@ -51,7 +51,15 @@ describe("processor variables tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the variables function with multiple type of selectors", (): void => {
@@ -79,7 +87,7 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root {
-                --v${blue}: #90d5ff;
+                --v${blue}:#90d5ff;
             }
                 
             html[theme=dark] {
@@ -108,7 +116,15 @@ describe("processor variables tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the variables function with multiple type of selectors as const", (): void => {
@@ -158,7 +174,15 @@ describe("processor variables tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 
     it("should process the variables function with multiple type of selectors and nesting ", (): void => {
@@ -184,7 +208,7 @@ describe("processor variables tests", (): void => {
 
         const output = `
             :root{
-                --v${blue}: #90d5ff;
+                --v${blue}:#90d5ff;
             }
                 
             html[theme=dark] {
@@ -209,6 +233,14 @@ describe("processor variables tests", (): void => {
             programRef: program,
         });
 
-        expect(minifyCSS(file, css).code).toBe(minifyCSS(file, output).code);
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
     });
 });

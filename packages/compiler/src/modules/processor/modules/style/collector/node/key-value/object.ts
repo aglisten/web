@@ -1,9 +1,9 @@
 import type { ObjectExpression, Program } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNode } from "##/processor/style/@types";
+import type { StyleNodePlan } from "##/processor/style/@types";
 
-import { collectStyleNodes } from "##/processor/style/collector/node";
+import { collectStyleNodePlans } from "##/processor/style/collector/node";
 
 type HandleObjectValueOptions = {
     context: CompilerContext;
@@ -14,7 +14,7 @@ type HandleObjectValueOptions = {
 };
 
 type HandleObjectValueResult = {
-    styleNodes: StyleNode[];
+    plans: StyleNodePlan[];
 };
 
 const handleObjectValue = (
@@ -24,7 +24,7 @@ const handleObjectValue = (
 
     selectors.push(options.key);
 
-    const { styleNodes } = collectStyleNodes({
+    const { plans } = collectStyleNodePlans({
         context: options.context,
         program: options.program,
         selectors,
@@ -32,7 +32,7 @@ const handleObjectValue = (
     });
 
     return {
-        styleNodes,
+        plans,
     };
 };
 
