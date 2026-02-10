@@ -234,6 +234,9 @@ importers:
 
   plugins/webpack:
     dependencies:
+      '@aglisten/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
       '@aglisten/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime

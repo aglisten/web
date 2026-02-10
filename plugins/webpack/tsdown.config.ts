@@ -4,21 +4,19 @@ import { cjsPreset, dtsPreset, esmPreset } from "@apst/tsdown/presets";
 export default defineConfig(
     {
         entry: {
+            // public
             index: "./src/index.ts",
-            // plugin loader
-            "plugin/loader": "./src/plugin/loader.ts",
-            // direct loader
             loader: "./src/loader.ts",
+            // internal
+            "plugin/create": "./src/plugin/create.ts",
+            "plugin/loader": "./src/plugin/loader.ts",
         },
         platform: "node",
+        shims: false,
     },
     [
         esmPreset(),
         cjsPreset(),
-        dtsPreset({
-            presetOptions: {
-                performanceMode: true,
-            },
-        }),
+        dtsPreset(),
     ],
 );

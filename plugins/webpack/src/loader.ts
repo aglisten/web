@@ -1,12 +1,13 @@
-import type {
-    CompileResult,
-    CreateRuntimeOptions,
-    Runtime,
-} from "@aglisten/runtime";
+import type { CompileResult } from "@aglisten/compiler";
+import type { CreateRuntimeOptions } from "@aglisten/runtime";
 import type { Format, Partial } from "ts-vista";
 import type { LoaderContext } from "webpack";
 
-import { createRuntime } from "@aglisten/runtime";
+import { compile } from "@aglisten/compiler";
+import {
+    INCLUDED_FUNCTIONS_DEFAULT,
+    PACKAGE_NAME_DEFAULT,
+} from "@aglisten/runtime/helper";
 
 /**
  * Options for the loader.
@@ -21,27 +22,29 @@ type LoaderOptions = Format<
 function loader(this: LoaderContext<LoaderOptions>, source: string): void {
     const options: LoaderOptions = this.getOptions();
 
+    // @ts-expect-error
     const callback: (
         error: unknown | null,
         result?: string,
         sourceMap?: string,
-    ) => void = this.async;
-
-    const runtime: Runtime = createRuntime({
-        cwd: options.cwd,
-        include: options.include,
-        exclude: options.exclude,
-    });
+    ) => void = this.async();
 
     try {
-        runtime
-            .compile({
-                file: this.resourcePath,
-                code: source,
-            })
-            .then((result: CompileResult): void => {
+        compile({
+            packageName: PACKAGE_NAME_DEFAULT,
+            includedFunctions: INCLUDED_FUNCTIONS_DEFAULT,
+            cwd: options.cwd ?? process.cwd(),
+            include: options.include ?? [],
+            exclude: options.exclude ?? [],
+            file: this.resourcePath,
+            code: source,
+        }).then((result: CompileResult | undefined): void => {
+            if (result) {
                 callback(null, result.code);
-            });
+            } else {
+                callback(null, source);
+            }
+        });
     } catch (er: unknown) {
         callback(er);
     }
