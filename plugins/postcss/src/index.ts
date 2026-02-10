@@ -80,6 +80,6 @@ const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
 
 plugin.postcss = true;
 
-export type { PluginOptions };
 export default plugin;
+export type { PluginOptions };
 export { plugin as aglisten };
