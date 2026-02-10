@@ -6,20 +6,17 @@
         ".": {
             "types": "./dist/index.d.ts",
             "import": "./dist/index.mjs",
-            "require": "./dist/index.js",
-            "default": "./dist/index.js"
+            "require": "./dist/index.js"
         },
         "./loader": {
             "types": "./dist/loader.d.ts",
             "import": "./dist/loader.mjs",
-            "require": "./dist/loader.js",
-            "default": "./dist/loader.js"
+            "require": "./dist/loader.js"
         },
         "./plugin/create": {
             "types": "./dist/plugin/create.d.ts",
             "import": "./dist/plugin/create.mjs",
-            "require": "./dist/plugin/create.js",
-            "default": "./dist/plugin/create.js"
+            "require": "./dist/plugin/create.js"
         },
         "./package.json": "./package.json"
     },
