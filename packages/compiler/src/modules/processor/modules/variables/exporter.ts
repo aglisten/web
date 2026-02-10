@@ -26,7 +26,13 @@ const exportAllVariables = (
 
             if (!kv) continue;
 
-            cssList.push(`${kv.selector}{--${kv.title}:${kv.value}}`);
+            if (kv.selector.startsWith("@")) {
+                cssList.push(
+                    `:root{${kv.selector}{--${kv.title}:${kv.value}}}`,
+                );
+            } else {
+                cssList.push(`${kv.selector}{--${kv.title}:${kv.value}}`);
+            }
         }
     }
 
