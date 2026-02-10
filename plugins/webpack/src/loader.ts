@@ -1,13 +1,14 @@
-import type { CompileResult } from "@aglisten/compiler";
-import type { CreateRuntimeOptions } from "@aglisten/runtime";
+import type {
+    CompileResult,
+    CreateRuntimeOptions,
+    Runtime,
+} from "@aglisten/runtime";
 import type { Format, Partial } from "ts-vista";
 import type { LoaderContext } from "webpack";
 
-import { compile } from "@aglisten/compiler";
-import {
-    INCLUDED_FUNCTIONS_DEFAULT,
-    PACKAGE_NAME_DEFAULT,
-} from "@aglisten/runtime/helper";
+import { createRuntime } from "@aglisten/runtime";
+
+let runtime: Runtime | null = null;
 
 /**
  * Options for the loader.
@@ -20,6 +21,8 @@ type LoaderOptions = Format<
  * Webpack loader function.
  */
 function loader(this: LoaderContext<LoaderOptions>, source: string): void {
+    this.cacheable(true);
+
     const options: LoaderOptions = this.getOptions();
 
     // @ts-expect-error
@@ -30,25 +33,26 @@ function loader(this: LoaderContext<LoaderOptions>, source: string): void {
     ) => void = this.async();
 
     try {
-        compile({
-            packageName: PACKAGE_NAME_DEFAULT,
-            includedFunctions: INCLUDED_FUNCTIONS_DEFAULT,
-            cwd: options.cwd ?? process.cwd(),
-            include: options.include ?? [],
-            exclude: options.exclude ?? [],
-            file: this.resourcePath,
-            code: source,
-        }).then((result: CompileResult | undefined): void => {
-            if (result) {
+        if (!runtime) {
+            runtime = createRuntime({
+                cwd: options.cwd,
+                include: options.include,
+                exclude: options.exclude,
+            });
+        }
+
+        runtime
+            .compile({
+                file: this.resourcePath,
+                code: source,
+            })
+            .then((result: CompileResult): void => {
                 callback(null, result.code);
-            } else {
-                callback(null, source);
-            }
-        });
+            });
     } catch (er: unknown) {
         callback(er);
     }
 }
 
-export type { LoaderOptions };
 export default loader;
+export type { LoaderOptions };

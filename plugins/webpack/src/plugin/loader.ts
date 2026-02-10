@@ -50,5 +50,5 @@ function loader(
     }
 }
 
-export type { InternalLoaderOptions };
 export default loader;
+export type { InternalLoaderOptions };

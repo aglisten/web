@@ -27,7 +27,6 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/compiler": "workspace:*",
         "@aglisten/runtime": "workspace:*",
         "ts-vista": "catalog:dep"
     },
