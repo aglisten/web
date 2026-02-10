@@ -17,6 +17,7 @@ Welcome for any suggestions if you have any ideas for the roadmap.
 ## Tier 1
 
 - [ ] Add support for Lynx React
+- [ ] Add support for function (calculate at compile time)
 - [ ] Add support for extension (plugin/preset)
 
 ## Tier 2
