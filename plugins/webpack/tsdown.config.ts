@@ -12,7 +12,6 @@ export default defineConfig(
             "plugin/loader": "./src/plugin/loader.ts",
         },
         platform: "node",
-        shims: false,
     },
     [
         esmPreset(),
