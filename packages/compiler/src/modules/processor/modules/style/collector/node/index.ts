@@ -42,7 +42,7 @@ const normalizeCssKey = (key: string): string => {
 type ColelctPropStyleNodesOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     prop: ObjectProperty;
 };
 
@@ -227,7 +227,7 @@ const collectPropStyleNodePlans = (
 type CollectStyleNodePlansOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     object: ObjectExpression;
 };
 

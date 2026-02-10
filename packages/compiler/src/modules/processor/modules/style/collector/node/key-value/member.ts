@@ -278,7 +278,7 @@ const resolvePathToExpr = (
 type HandleMemberValueOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     member: MemberExpression;
 };

@@ -14,7 +14,7 @@ import { CompileError } from "#/errors/compile";
 
 type HandleLiteralValueOptions = {
     context: CompilerContext;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     literal:
         | BooleanLiteral
@@ -46,7 +46,9 @@ const handleLiteralValue = (
     return {
         plans: [
             {
-                selectors: options.selectors,
+                selectors: [
+                    ...options.selectors,
+                ],
                 key: options.key,
                 values: [
                     options.literal.value.toString(),

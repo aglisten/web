@@ -8,7 +8,7 @@ import { collectStyleNodePlans } from "##/processor/style/collector/node";
 type HandleObjectValueOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     object: ObjectExpression;
 };
@@ -20,7 +20,9 @@ type HandleObjectValueResult = {
 const handleObjectValue = (
     options: HandleObjectValueOptions,
 ): HandleObjectValueResult => {
-    const selectors: string[] = options.selectors;
+    const selectors: string[] = [
+        ...options.selectors,
+    ];
 
     selectors.push(options.key);
 

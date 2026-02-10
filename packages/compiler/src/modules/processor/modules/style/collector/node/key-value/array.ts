@@ -14,7 +14,7 @@ import { handleKeyValues } from "##/processor/style/collector/node/key-value";
 type HandleArrayValueOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     array: ArrayExpression;
 };

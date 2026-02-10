@@ -13,7 +13,7 @@ import { handleObjectValue } from "##/processor/style/collector/node/key-value/o
 type HandleKeyValueOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     value: Expression;
 };
@@ -98,9 +98,9 @@ const handleKeyValue = (
 type HandleKeyValuesOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
-    values: Expression[];
+    values: readonly Expression[];
 };
 
 type HandleKeyValuesResult = {

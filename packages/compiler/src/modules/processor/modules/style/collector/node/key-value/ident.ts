@@ -10,7 +10,7 @@ import { handleKeyValue } from "##/processor/style/collector/node/key-value";
 type HandleIdentValueOptions = {
     context: CompilerContext;
     program: Program;
-    selectors: string[];
+    selectors: readonly string[];
     key: string;
     ident: IdentifierReference;
 };
@@ -58,7 +58,9 @@ const handleIdentValue = (
         return {
             plans: [
                 {
-                    selectors: options.selectors,
+                    selectors: [
+                        ...options.selectors,
+                    ],
                     key: options.key,
                     values: [
                         value,
