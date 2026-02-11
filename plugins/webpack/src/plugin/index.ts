@@ -1,6 +1,6 @@
-import type { PluginOptions } from "#/plugin/create";
+import type { PluginOptions } from "#/plugin/create/instance";
 
-import { createPlugin } from "#/plugin/create";
+import { createPlugin } from "#/plugin/create/creater";
 
 const Plugin = createPlugin();
 

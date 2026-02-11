@@ -1,28 +1,24 @@
 import type { CreateRuntimeOptions, Runtime } from "@aglisten/runtime";
-import type HtmlWebpackPlugin from "html-webpack-plugin";
 import type { Format, Partial } from "ts-vista";
 import type {
     Compilation,
     Compiler,
-    NormalModule,
     PathData,
+    RuleSetRule,
     WebpackPluginInstance,
 } from "webpack";
 
-import type { InternalLoaderOptions } from "#/plugin/loader";
+import type { HtmlCompilationHooks } from "#/plugin/create/html";
+import type { InternalLoaderOptions } from "#/plugin/create/loader";
+import type { CreatePluginOptions } from "./creater";
 
 import * as Path from "node:path";
 
 import { createRuntime } from "@aglisten/runtime";
-import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
+import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
-import { name as currentName } from "../../package.json";
-
-type HtmlWebpackPluginData = {
-    html: string;
-    outputName: string;
-    plugin: HtmlWebpackPlugin;
-};
+import { getHtmlHooks } from "#/plugin/create/html";
+import { name as currentName } from "../../../package.json";
 
 type PluginOptions = Format<
     {
@@ -77,62 +73,43 @@ class PluginInstance implements WebpackPluginInstance {
     }
 
     apply(compiler: Compiler): void {
-        const { Compilation, NormalModule, WebpackError } = compiler.webpack;
+        const { Compilation, WebpackError } = compiler.webpack;
         const { RawSource } = compiler.webpack.sources;
 
         const name: string = this.createOptions?.name ?? currentName;
 
         ////////////////////////////////////////
-        // transform
+        // push loader
         ////////////////////////////////////////
 
-        let entryCss: string = "";
+        const rules: (RuleSetRule | "...")[] = compiler.options.module.rules;
 
-        compiler.hooks.thisCompilation.tap(
-            name,
-            (compilation: Compilation): void => {
-                NormalModule.getCompilationHooks(compilation).loader.tap(
-                    name,
-                    (_, module: NormalModule): void => {
-                        try {
-                            // get CSS entry
-                            if (
-                                entryCss === "" &&
-                                FILTER_CSS.test(module.resource)
-                            ) {
-                                entryCss = module.resource;
-                            }
+        const hasRule: boolean = rules.some(
+            (rule: RuleSetRule | "..."): boolean =>
+                typeof rule === "object" &&
+                rule !== null &&
+                "test" in rule &&
+                rule.test === FILTER_JS_ADVANCED,
+        );
 
-                            // JS check
-                            if (!FILTER_JS_ADVANCED.test(module.resource))
-                                return void 0;
-
-                            // add loader
-                            module.loaders.push({
-                                loader: Path.resolve(__dirname, "loader.js"),
-                                options: {
-                                    isDev: this.isDev,
-                                    runtime: this.runtime,
-                                } satisfies InternalLoaderOptions,
-                                ident: null,
-                                type: null,
-                            });
-                        } catch (er: unknown) {
-                            if (er instanceof WebpackError) {
-                                compilation.errors.push(er);
-                            } else {
-                                compilation.errors.push(
-                                    new WebpackError(String(er)),
-                                );
-                            }
-                        }
+        if (!hasRule) {
+            rules.push({
+                test: FILTER_JS_ADVANCED,
+                use: [
+                    {
+                        loader: Path.resolve(__dirname, "loader.js"),
+                        options: {
+                            isDev: this.isDev,
+                            runtime: this.runtime,
+                        } satisfies InternalLoaderOptions,
                     },
-                ); // NormalModule.getCompilationHooks
-            },
-        ); // compiler.hooks.compilation
+                ],
+                type: "javascript/auto",
+            });
+        }
 
         ////////////////////////////////////////
-        // Add additional asset
+        // add additional asset
         ////////////////////////////////////////
 
         compiler.hooks.make.tap(name, (compilation: Compilation): void => {
@@ -189,42 +166,32 @@ class PluginInstance implements WebpackPluginInstance {
                             assetInfo,
                         );
 
-                        // html-webpack-plugin
+                        // html-webpack-plugin / html-rspack-plugin
 
-                        try {
-                            const { default: plugin } = await import(
-                                "html-webpack-plugin"
-                            );
+                        const htmlHooks: HtmlCompilationHooks[] = getHtmlHooks(
+                            compilation,
+                            compiler,
+                        );
 
-                            plugin
-                                .getCompilationHooks(compilation)
-                                .beforeEmit.tapPromise(
-                                    name,
-                                    async ({
-                                        html,
-                                        outputName,
-                                        plugin,
-                                    }: HtmlWebpackPluginData): Promise<HtmlWebpackPluginData> => {
-                                        const href: string = plugin.options
-                                            ?.hash
-                                            ? `${this.filename}?${contentHash}`
-                                            : `${this.filename}`;
+                        for (const hooks of htmlHooks) {
+                            hooks.beforeEmit?.tapPromise(
+                                name,
+                                async ({ html, outputName, plugin }) => {
+                                    const href: string = (plugin as any)
+                                        ?.options?.hash
+                                        ? `${this.filename}?${contentHash}`
+                                        : this.filename;
 
-                                        // inject
-                                        html = html.replace(
+                                    return {
+                                        html: html.replace(
                                             "</head>",
                                             `<link rel="stylesheet" href="${href}" /></head>`,
-                                        );
-
-                                        return {
-                                            html,
-                                            outputName,
-                                            plugin,
-                                        };
-                                    },
-                                );
-                        } catch (_: unknown) {
-                            // `html-webpack-plugin` not found
+                                        ),
+                                        outputName,
+                                        plugin,
+                                    };
+                                },
+                            );
                         }
                     } catch (er: unknown) {
                         if (er instanceof WebpackError) {
@@ -236,25 +203,10 @@ class PluginInstance implements WebpackPluginInstance {
                         }
                     }
                 },
-            ); // compilation.hooks.additionalAssets
-        }); // compiler.hooks.make
+            ); // compilation.hooks.processAssets.tapPromise
+        }); // compiler.hooks.make.tap
     } // apply
 }
 
-type CompleteCreatePluginOptions = {
-    name: string;
-    runtime: Runtime;
-};
-
-type CreatePluginOptions = Format<Partial<CompleteCreatePluginOptions>>;
-
-const createPlugin = (options?: CreatePluginOptions) => {
-    return class Plugin extends PluginInstance {
-        constructor(pluginOptions?: PluginOptions) {
-            super(options, pluginOptions);
-        }
-    };
-};
-
-export type { CreatePluginOptions, PluginOptions };
-export { createPlugin };
+export type { PluginOptions };
+export { PluginInstance };

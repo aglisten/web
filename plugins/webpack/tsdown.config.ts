@@ -8,8 +8,8 @@ export default defineConfig(
             index: "./src/index.ts",
             loader: "./src/loader.ts",
             // internal
-            "plugin/create": "./src/plugin/create.ts",
-            "plugin/loader": "./src/plugin/loader.ts",
+            "plugin/create/index": "./src/plugin/create/index.ts",
+            "plugin/create/loader": "./src/plugin/create/loader.ts",
         },
         platform: "node",
     },
