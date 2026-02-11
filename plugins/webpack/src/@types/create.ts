@@ -1,0 +1,11 @@
+import type { Runtime } from "@aglisten/runtime";
+import type { Format, Partial } from "ts-vista";
+
+type CompleteCreatePluginOptions = {
+    name: string;
+    runtime: Runtime;
+};
+
+type CreatePluginOptions = Format<Partial<CompleteCreatePluginOptions>>;
+
+export type { CompleteCreatePluginOptions, CreatePluginOptions };

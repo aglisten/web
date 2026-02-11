@@ -1,7 +1,13 @@
-import type { PluginOptions } from "#/plugin";
+import type {
+    InputOptions,
+    OutputOptions,
+    PluginOptions,
+} from "#/@types/options";
 
-import { Plugin } from "#/plugin";
+import { createPlugin } from "#/create";
+
+const Plugin = createPlugin();
 
 export default Plugin;
-export type { PluginOptions };
+export type { InputOptions, OutputOptions, PluginOptions };
 export { Plugin as AglistenPlugin };

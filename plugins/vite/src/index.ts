@@ -1,9 +1,4 @@
-import type {
-    CompileResult,
-    CreateRuntimeOptions,
-    Runtime,
-} from "@aglisten/runtime";
-import type { Format } from "ts-vista";
+import type { CompileResult, Runtime } from "@aglisten/runtime";
 import type {
     IndexHtmlTransformContext,
     IndexHtmlTransformResult,
@@ -12,6 +7,12 @@ import type {
     ViteDevServer,
 } from "vite";
 
+import type {
+    InputOptions,
+    OutputOptions,
+    PluginOptions,
+} from "#/@types/options";
+
 import * as Fsp from "node:fs/promises";
 import * as Path from "node:path";
 
@@ -19,26 +20,8 @@ import { createPlugin } from "@aglisten/rollup/create";
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
+import { getOutput } from "#/functions/output";
 import { name } from "../package.json";
-
-type PluginOptions = Format<
-    {
-        /**
-         * Whether to emit the output file.
-         */
-        emit?: boolean;
-        /**
-         * Whether running in development mode.
-         */
-        dev?: boolean;
-        /**
-         * Filename of the output file.
-         *
-         * By default, it is `aglisten`.
-         */
-        filename?: string;
-    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
->;
 
 const PREFIX = "aglisten" as const;
 
@@ -50,8 +33,8 @@ const plugin = (options?: PluginOptions): Plugin => {
 
     const runtime: Runtime = createRuntime({
         cwd: options?.cwd,
-        include: options?.include,
-        exclude: options?.exclude,
+        include: options?.input?.include,
+        exclude: options?.input?.exclude,
     });
 
     const rollupPlugin = createPlugin({
@@ -61,10 +44,9 @@ const plugin = (options?: PluginOptions): Plugin => {
     const emit: boolean =
         typeof options?.emit === "boolean" ? options.emit : true;
 
-    const filename: string =
-        typeof options?.filename === "string"
-            ? `${Path.parse(options.filename).name}.css`
-            : "aglisten";
+    const { outName } = getOutput({
+        options,
+    });
 
     if (isDev) {
         let entryJs: string | undefined = void 0;
@@ -160,7 +142,8 @@ const plugin = (options?: PluginOptions): Plugin => {
                 // get output CSS filename
                 for (const asset in bundle) {
                     if (
-                        asset.includes(Path.parse(filename).name) &&
+                        // (abc.css | abc.[xxx].css) -> abc
+                        asset.includes(outName.split(".")[0] ?? "") &&
                         FILTER_CSS.test(asset)
                     ) {
                         out = bundle[asset]?.fileName;
@@ -189,5 +172,5 @@ const plugin = (options?: PluginOptions): Plugin => {
     };
 };
 
-export type { PluginOptions };
+export type { InputOptions, OutputOptions, PluginOptions };
 export { plugin as aglisten };

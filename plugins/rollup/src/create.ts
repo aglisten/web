@@ -1,12 +1,13 @@
-import type { CreateRuntimeOptions, Runtime } from "@aglisten/runtime";
+import type { Runtime } from "@aglisten/runtime";
 import type { Plugin as RollupPlugin, TransformResult } from "rollup";
 import type { Format, Partial } from "ts-vista";
 
-import * as Path from "node:path";
+import type { PluginOptions } from "#/@types/options";
 
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
+import { getOutput } from "#/functions/output";
 import { name } from "../package.json";
 
 type CompleteCreatePluginOptions = {
@@ -15,29 +16,16 @@ type CompleteCreatePluginOptions = {
 
 type CreatePluginOptions = Format<Partial<CompleteCreatePluginOptions>>;
 
-type PluginOptions = Format<
-    {
-        /**
-         * Whether to emit the output file.
-         */
-        emit?: boolean;
-        /**
-         * Filename of the output file.
-         *
-         * By default, it is `aglisten`.
-         */
-        filename?: string;
-    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
->;
-
 const createPlugin = (options?: CreatePluginOptions) => {
     return (opts?: PluginOptions): RollupPlugin => {
         let runtime: Runtime | null = null;
 
         const emit: boolean =
             typeof opts?.emit === "boolean" ? opts.emit : true;
-        const filename: string =
-            typeof opts?.filename === "string" ? opts.filename : "aglisten";
+
+        const { outName } = getOutput({
+            options: opts,
+        });
 
         return {
             name,
@@ -46,8 +34,8 @@ const createPlugin = (options?: CreatePluginOptions) => {
                     options?.runtime ??
                     createRuntime({
                         cwd: opts?.cwd,
-                        include: opts?.include,
-                        exclude: opts?.exclude,
+                        include: opts?.input?.include,
+                        exclude: opts?.input?.exclude,
                     });
             },
             async transform(
@@ -73,7 +61,7 @@ const createPlugin = (options?: CreatePluginOptions) => {
 
                 this.emitFile({
                     type: "asset",
-                    name: `${Path.parse(filename).name}.css`,
+                    name: outName,
                     source,
                 });
             },

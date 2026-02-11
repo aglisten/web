@@ -13,15 +13,10 @@
             "import": "./dist/loader.mjs",
             "require": "./dist/loader.js"
         },
-        "./plugin/create": {
-            "types": "./dist/plugin/create/index.d.ts",
-            "import": "./dist/plugin/create/index.mjs",
-            "require": "./dist/plugin/create/index.js"
-        },
-        "./plugin/create/loader": {
-            "types": "./dist/plugin/create/loader.d.ts",
-            "import": "./dist/plugin/create/loader.mjs",
-            "require": "./dist/plugin/create/loader.js"
+        "./create": {
+            "types": "./dist/create.d.ts",
+            "import": "./dist/create.mjs",
+            "require": "./dist/create.js"
         },
         "./package.json": "./package.json"
     },

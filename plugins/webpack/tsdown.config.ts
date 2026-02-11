@@ -6,12 +6,14 @@ export default defineConfig(
         entry: {
             // public
             index: "./src/index.ts",
-            loader: "./src/loader.ts",
+            loader: "./src/loader-external.ts",
             // internal
-            "plugin/create/index": "./src/plugin/create/index.ts",
-            "plugin/create/loader": "./src/plugin/create/loader.ts",
+            create: "./src/create/index.ts",
+            "loader-internal": "./src/loader-internal.ts",
         },
         platform: "node",
+        // https://github.com/rolldown/tsdown/issues/572
+        unbundle: false,
     },
     [
         esmPreset(),

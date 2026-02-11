@@ -1,29 +1,14 @@
-import type { CreateRuntimeOptions, Runtime } from "@aglisten/runtime";
+import type { Runtime } from "@aglisten/runtime";
 import type { PluginCreator, Root } from "postcss";
-import type { Format } from "ts-vista";
+
+import type { InputOptions, PluginOptions } from "#/@types/options";
 
 import * as Fsp from "node:fs/promises";
-import * as Path from "node:path";
 
 import { createRuntime } from "@aglisten/runtime";
 
 import { getPaths } from "#/functions/path";
 import { name } from "../package.json";
-
-type PluginOptions = Format<
-    {
-        /**
-         * Whether to emit the output file.
-         */
-        emit?: boolean;
-        /**
-         * Filename of the output file.
-         *
-         * By default, it is `aglisten`.
-         */
-        filename?: string;
-    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
->;
 
 const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
     return {
@@ -35,19 +20,15 @@ const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
 
             const cwd: string = options?.cwd ?? process.cwd();
 
-            const filename: string = options?.filename ?? "aglisten";
-
-            const cssFile: string = `${Path.parse(filename).name}.css`;
-
             const runtime: Runtime = createRuntime({
                 cwd,
-                include: options?.include,
-                exclude: options?.exclude,
+                include: options?.input?.include,
+                exclude: options?.input?.exclude,
             });
 
             const include: string[] = await getPaths({
                 cwd,
-                paths: options?.include ?? [
+                paths: options?.input?.include ?? [
                     "./src",
                 ],
             });
@@ -64,14 +45,14 @@ const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
                     type: "dependency",
                     plugin: name,
                     file,
-                    parent: cssFile,
+                    parent: "aglisten.css",
                 });
             }
 
             // append result
             root.append(
                 postcss.parse(await runtime.getCSS(), {
-                    from: cssFile,
+                    from: "aglisten.css",
                 }),
             );
         },
@@ -81,5 +62,5 @@ const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
 plugin.postcss = true;
 
 export default plugin;
-export type { PluginOptions };
+export type { InputOptions, PluginOptions };
 export { plugin as aglisten };

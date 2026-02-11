@@ -1,6 +1,6 @@
-import type { CreateRuntimeOptions, Runtime } from "@aglisten/runtime";
-import type { Format, Partial } from "ts-vista";
+import type { Runtime } from "@aglisten/runtime";
 import type {
+    Asset,
     Compilation,
     Compiler,
     PathData,
@@ -8,36 +8,18 @@ import type {
     WebpackPluginInstance,
 } from "webpack";
 
-import type { HtmlCompilationHooks } from "#/plugin/create/html";
-import type { InternalLoaderOptions } from "#/plugin/create/loader";
-import type { CreatePluginOptions } from "./creator";
+import type { CreatePluginOptions } from "#/@types/create";
+import type { PluginOptions } from "#/@types/options";
+import type { HtmlCompilationHooks } from "#/create/functions/html";
+import type { InternalLoaderOptions } from "#/loader-internal";
 
 import * as Path from "node:path";
 
 import { createRuntime } from "@aglisten/runtime";
 import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
-import { getHtmlHooks } from "#/plugin/create/html";
-import { name as currentName } from "../../../package.json";
-
-type PluginOptions = Format<
-    {
-        /**
-         * Whether to emit the output file.
-         */
-        emit?: boolean;
-        /**
-         * Whether running in development mode.
-         */
-        dev?: boolean;
-        /**
-         * Filename of the output file.
-         *
-         * By default, it is `aglisten`.
-         */
-        filename?: string;
-    } & Partial<Pick<CreateRuntimeOptions, "cwd" | "include" | "exclude">>
->;
+import { getHtmlHooks } from "#/create/functions/html";
+import { name as currentName } from "../../package.json";
 
 class PluginInstance implements WebpackPluginInstance {
     public createOptions?: CreatePluginOptions;
@@ -50,7 +32,11 @@ class PluginInstance implements WebpackPluginInstance {
 
     public isDev: boolean = process.env.NODE_ENV === "development";
 
-    public filename: string = "aglisten.css";
+    public outDir: string | undefined;
+
+    public outName: string = "aglisten.css";
+
+    public outPath: string = this.outName;
 
     constructor(createOpts?: CreatePluginOptions, opts?: PluginOptions) {
         this.createOptions = createOpts;
@@ -62,14 +48,30 @@ class PluginInstance implements WebpackPluginInstance {
             createOpts?.runtime ??
             createRuntime({
                 cwd: opts?.cwd,
-                include: opts?.include,
-                exclude: opts?.exclude,
+                include: opts?.input?.include,
+                exclude: opts?.input?.exclude,
             });
 
         if (typeof opts?.emit === "boolean") this.emit = opts.emit;
 
-        if (typeof opts?.filename === "string")
-            this.filename = `${Path.parse(opts.filename).name}.css`;
+        if (typeof opts?.output?.dir === "string")
+            this.outDir = opts.output.dir;
+
+        if (typeof opts?.output?.fileName === "string") {
+            const parsed: Path.ParsedPath = Path.parse(opts.output.fileName);
+
+            const hasExt: boolean = parsed.ext !== "";
+
+            if (hasExt) {
+                this.outName = `${parsed.name}${parsed.ext}`;
+            } else {
+                this.outName = `${parsed.name}.css`;
+            }
+        }
+
+        this.outPath = this.outDir
+            ? Path.posix.join(this.outDir, this.outName)
+            : this.outName;
     }
 
     apply(compiler: Compiler): void {
@@ -97,19 +99,18 @@ class PluginInstance implements WebpackPluginInstance {
                 test: FILTER_JS_ADVANCED,
                 use: [
                     {
-                        loader: "@aglisten/webpack/plugin/create/loader",
+                        loader: Path.resolve(__dirname, "loader-internal"),
                         options: {
                             isDev: this.isDev,
                             runtime: this.runtime,
                         } satisfies InternalLoaderOptions,
                     },
                 ],
-                type: "javascript/auto",
             });
         }
 
         ////////////////////////////////////////
-        // add additional asset
+        // emit asset
         ////////////////////////////////////////
 
         compiler.hooks.make.tap(name, (compilation: Compilation): void => {
@@ -132,7 +133,7 @@ class PluginInstance implements WebpackPluginInstance {
                     .slice(0, hashDigestLength);
             };
 
-            // add asset
+            // emit asset
             compilation.hooks.processAssets.tapPromise(
                 {
                     name,
@@ -148,25 +149,64 @@ class PluginInstance implements WebpackPluginInstance {
                         const contentHash: string = getHashContent(css);
 
                         const data: PathData = {
-                            filename: this.filename,
+                            filename: this.outPath,
                             contentHash,
                             chunk: {
-                                id: this.filename,
-                                name: Path.parse(this.filename).name,
+                                id: this.outPath,
+                                name: Path.parse(this.outName).name,
                                 hash: contentHash,
                             },
                         };
 
                         const { path: assetPath, info: assetInfo } =
-                            compilation.getPathWithInfo(this.filename, data);
+                            compilation.getPathWithInfo(this.outPath, data);
 
                         compilation.emitAsset(
                             assetPath,
                             new RawSource(css),
                             assetInfo,
                         );
+                    } catch (er: unknown) {
+                        if (er instanceof WebpackError) {
+                            compilation.errors.push(er);
+                        } else {
+                            compilation.errors.push(
+                                new WebpackError(String(er)),
+                            );
+                        }
+                    }
+                },
+            ); // compilation.hooks.processAssets.tapPromise
 
-                        // html-webpack-plugin / html-rspack-plugin
+            // html injection
+            compilation.hooks.processAssets.tapPromise(
+                {
+                    name,
+                    stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+                },
+                async (): Promise<void> => {
+                    try {
+                        // no emit
+                        if (!this.emit) return void 0;
+
+                        const css: string = await this.runtime.getCSS();
+
+                        const contentHash: string = getHashContent(css);
+
+                        const assets: Readonly<Asset>[] =
+                            compilation.getAssets();
+
+                        const asset: Asset | undefined = assets.find(
+                            ({ name }): boolean =>
+                                name.includes(
+                                    // (abc.css | abc.[xxx].css) -> abc
+                                    Path.parse(this.outName).name.split(
+                                        ".",
+                                    )[0] ?? "",
+                                ),
+                        );
+
+                        if (!asset) return void 0;
 
                         const htmlHooks: HtmlCompilationHooks[] = getHtmlHooks(
                             compilation,
@@ -179,8 +219,8 @@ class PluginInstance implements WebpackPluginInstance {
                                 async ({ html, outputName, plugin }) => {
                                     const href: string = (plugin as any)
                                         ?.options?.hash
-                                        ? `${this.filename}?${contentHash}`
-                                        : this.filename;
+                                        ? `/${asset.name}?${contentHash}`
+                                        : `/${asset.name}`;
 
                                     return {
                                         html: html.replace(
@@ -208,5 +248,4 @@ class PluginInstance implements WebpackPluginInstance {
     } // apply
 }
 
-export type { PluginOptions };
 export { PluginInstance };
