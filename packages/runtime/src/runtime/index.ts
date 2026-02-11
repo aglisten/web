@@ -11,6 +11,7 @@ import { transformCssList } from "@aglisten/compiler/processor/css";
 import { toMerged } from "es-toolkit";
 
 import { INCLUDED_FUNCTIONS_DEFAULT, PACKAGE_NAME_DEFAULT } from "#/helper";
+import { getMD5 } from "#/runtime/hash";
 
 const OPTIONS_DEFAULT: ResolvedOptions = {
     packageName: PACKAGE_NAME_DEFAULT,
@@ -18,6 +19,11 @@ const OPTIONS_DEFAULT: ResolvedOptions = {
     cwd: process.cwd(),
     include: [],
     exclude: [],
+};
+
+type CacheValues = {
+    hash: string;
+    result: RawCompileResult;
 };
 
 type CompleteCreateRuntimeOptions = Format<
@@ -38,7 +44,7 @@ type CompileResult = {
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
     const coreOpts: ResolvedOptions = toMerged(OPTIONS_DEFAULT, coreOptions);
 
-    const cache: Map<string, RawCompileResult> = new Map();
+    const cache: Map<string, CacheValues> = new Map();
 
     let cssCache: string = "";
 
@@ -50,27 +56,23 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             if (!result) return false;
 
-            cache.set(options.file, result);
+            cache.set(options.file, {
+                hash: getMD5(options.code),
+                result,
+            });
 
             return true;
         },
         compile: async (options: CompileOptions): Promise<CompileResult> => {
             if (cache.has(options.file)) {
-                const result: RawCompileResult | undefined = cache.get(
-                    options.file,
-                );
+                const vl: CacheValues | undefined = cache.get(options.file);
 
-                if (!result) {
+                if (vl && vl.hash === getMD5(options.code)) {
                     return {
-                        code: options.code,
-                        css: "",
+                        code: vl.result.code,
+                        css: vl.result.css,
                     };
                 }
-
-                return {
-                    code: result.code,
-                    css: result.css,
-                };
             }
 
             const result: RawCompileResult | undefined = await compile(
@@ -84,7 +86,10 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
                 };
             }
 
-            cache.set(options.file, result);
+            cache.set(options.file, {
+                hash: getMD5(options.code),
+                result,
+            });
 
             return {
                 code: result.code,
@@ -96,8 +101,8 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             const cssList: string[] = [];
 
-            cache.forEach((result: RawCompileResult): void => {
-                cssList.push(...result.cssList);
+            cache.forEach((vl: CacheValues): void => {
+                cssList.push(...vl.result.cssList);
             });
 
             const css: string = transformCssList(cssList).join("");
