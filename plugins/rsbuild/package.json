@@ -1,0 +1,34 @@
+{
+    "name": "@aglisten/rsbuild",
+    "version": "0.1.0",
+    "description": "A Rsbuild plugin for Aglisten",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "dependencies": {
+        "@aglisten/webpack": "workspace:*",
+        "ts-vista": "catalog:dep"
+    },
+    "devDependencies": {
+        "@rsbuild/core": "catalog:dev"
+    },
+    "peerDependencies": {
+        "@rsbuild/core": "catalog:peer"
+    },
+    "peerDependenciesMeta": {
+        "@rsbuild/core": {
+            "optional": true
+        }
+    }
+}

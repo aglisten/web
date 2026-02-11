@@ -32,6 +32,8 @@ catalogs:
     dev:
         # webpack
         webpack: 5.76.0
+        # rsbuild
+        "@rsbuild/core": 1.5.0
         # rollup
         rollup: 4.40.0
         # rolldown
@@ -43,6 +45,8 @@ catalogs:
     peer:
         # webpack
         webpack: ^5.76.0
+        # rsbuild
+        "@rsbuild/core": ^1.5.0
         # rollup
         rollup: ^4.40.0
         # rolldown

@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "rsbuild dev --port 3001",
+        "build": "rsbuild build",
+        "preview": "rsbuild preview --port 3000"
+    },
+    "dependencies": {
+        "@aglisten/web": "workspace:*",
+        "react": "catalog:dep",
+        "react-dom": "catalog:dep"
+    },
+    "devDependencies": {
+        "@aglisten/rsbuild": "workspace:*",
+        "@rsbuild/core": "catalog:dev",
+        "@rsbuild/plugin-react": "^1.4.2",
+        "@types/react": "catalog:dep",
+        "@types/react-dom": "catalog:dep"
+    }
+}

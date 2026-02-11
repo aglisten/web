@@ -10,12 +10,12 @@ ignore:
     - "**/__MACOSX"
     - .DS_Store
     - "**/.DS_Store"
+    - "**/.next"
     - node_modules
     - "**/node_modules"
     - dist
     - "**/dist"
     - apis
-    - "**/@aglisten"
     - "**/@types"
     - "*.tsbuildinfo"
     - "**/*.tsbuildinfo"

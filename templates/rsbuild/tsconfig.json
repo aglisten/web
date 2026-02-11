@@ -1,0 +1,21 @@
+{
+    "extends": "@apst/tsconfig",
+    "compilerOptions": {
+        "lib": [
+            "dom"
+        ],
+        "jsx": "react-jsx",
+        "noEmit": true,
+        "paths": {
+            "#/*": [
+                "./src/*"
+            ],
+            "#/public/*": [
+                "./public/*"
+            ]
+        }
+    },
+    "include": [
+        "./src"
+    ]
+}
