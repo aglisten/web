@@ -10,7 +10,7 @@ import type {
 
 import type { HtmlCompilationHooks } from "#/plugin/create/html";
 import type { InternalLoaderOptions } from "#/plugin/create/loader";
-import type { CreatePluginOptions } from "./creater";
+import type { CreatePluginOptions } from "./creator";
 
 import * as Path from "node:path";
 
