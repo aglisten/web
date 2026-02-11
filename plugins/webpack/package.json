@@ -18,6 +18,11 @@
             "import": "./dist/plugin/create/index.mjs",
             "require": "./dist/plugin/create/index.js"
         },
+        "./plugin/create/loader": {
+            "types": "./dist/plugin/create/loader.d.ts",
+            "import": "./dist/plugin/create/loader.mjs",
+            "require": "./dist/plugin/create/loader.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./dist/index.js",

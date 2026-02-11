@@ -97,7 +97,7 @@ class PluginInstance implements WebpackPluginInstance {
                 test: FILTER_JS_ADVANCED,
                 use: [
                     {
-                        loader: Path.resolve(__dirname, "loader.js"),
+                        loader: "@aglisten/webpack/plugin/create/loader",
                         options: {
                             isDev: this.isDev,
                             runtime: this.runtime,
