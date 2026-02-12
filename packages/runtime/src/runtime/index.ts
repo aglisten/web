@@ -43,8 +43,11 @@ type CompileResult = {
     map: SourceMap;
 };
 
-const createRuntime = (coreOptions: CreateRuntimeOptions) => {
-    const coreOpts: ResolvedOptions = toMerged(OPTIONS_DEFAULT, coreOptions);
+const createRuntime = (coreOptions?: CreateRuntimeOptions) => {
+    const coreOpts: ResolvedOptions = toMerged(
+        OPTIONS_DEFAULT,
+        coreOptions ?? {},
+    );
 
     const cache: Map<string, CacheValues> = new Map();
 
