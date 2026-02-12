@@ -122,8 +122,11 @@ const plugin = (options?: PluginOptions): Plugin => {
                     },
                 );
 
-                // return given code (which may include HMR script inside)
                 if (!result) {
+                    // no change
+                    if (code === source) return void 0;
+
+                    // HMR injected
                     return {
                         code,
                         map: null,
