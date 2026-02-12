@@ -2,6 +2,8 @@ import type * as React from "react";
 
 import { merge, style } from "@aglisten/web";
 
+import { colors } from "../styles/variables/colors";
+
 const Heading = (): React.JSX.Element => {
     return <h1 className={merge(containerA, containerB)}>{"Hello, World!"}</h1>;
 };
@@ -14,7 +16,7 @@ const containerA: string = style({
 });
 
 const containerB: string = style({
-    color: "#007acc",
+    color: colors.blue,
 });
 
 export { Heading };

@@ -5,26 +5,45 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-/** @type {import("@swc/core").Options} */
-const swcOptions = {
-    jsc: {
-        parser: {
-            syntax: "typescript",
-            tsx: true,
-        },
-        transform: {
-            react: {
-                runtime: "automatic",
-            },
-        },
-    },
-};
-
 /** @type {import("webpack").Configuration} */
 const config = (_, argv) => {
+    /** @type {string} */
     const mode = argv.mode || "development";
 
-    const dev = mode === "development";
+    /** @type {boolean} */
+    const isDev = mode === "development";
+
+    /** @type {import("@swc/core").Options} */
+    const swcOptions = {
+        jsc: {
+            parser: {
+                syntax: "typescript",
+                tsx: true,
+            },
+            transform: {
+                react: {
+                    runtime: "automatic",
+                    development: isDev,
+                    refresh: isDev,
+                },
+            },
+        },
+    };
+
+    /** @type {import("webpack").Configuration["plugins"]} */
+    const plugins = [
+        !isDev && new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: "index.css",
+        }),
+        new AglistenPlugin({
+            dev: isDev,
+        }),
+        new HtmlWebpackPlugin({
+            template: "./public/index.html",
+            hash: true,
+        }),
+    ];
 
     return {
         mode,
@@ -56,25 +75,17 @@ const config = (_, argv) => {
                         "css-loader",
                     ],
                 },
+                {
+                    test: /\.svg$/,
+                    type: "asset",
+                },
             ],
         },
         output: {
             path: path.resolve(__dirname, "dist"),
             filename: "index.js",
         },
-        plugins: [
-            new CleanWebpackPlugin(),
-            new MiniCssExtractPlugin({
-                filename: "index.css",
-            }),
-            new AglistenPlugin({
-                dev,
-            }),
-            new HtmlWebpackPlugin({
-                template: "./public/index.html",
-                hash: true,
-            }),
-        ],
+        plugins: plugins.filter(Boolean),
     };
 };
 
