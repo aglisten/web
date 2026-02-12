@@ -22,7 +22,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/compiler": "workspace:*",
+        "@aglisten/compiler": "workspace:~",
         "es-toolkit": "catalog:dep",
         "ts-vista": "catalog:dep"
     }

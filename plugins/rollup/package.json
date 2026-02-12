@@ -22,7 +22,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/runtime": "workspace:*",
+        "@aglisten/runtime": "workspace:~",
         "ts-vista": "catalog:dep"
     },
     "devDependencies": {

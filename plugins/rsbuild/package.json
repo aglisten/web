@@ -17,7 +17,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/webpack": "workspace:*",
+        "@aglisten/webpack": "workspace:~",
         "ts-vista": "catalog:dep"
     },
     "devDependencies": {
