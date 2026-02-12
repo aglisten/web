@@ -1,39 +1,41 @@
 import type { Style, StyleNode } from "##/processor/style/@types";
 
 const styleNodeToCss = (node: StyleNode): string => {
-    let kv: string = "";
+    const { selectors, key, values } = node;
 
-    for (let i: number = 0; i < node.values.length; i++) {
-        const value: string | undefined = node.values[i];
+    const kvParts: string[] = [];
+
+    for (let i: number = 0; i < values.length; i++) {
+        const value: string | undefined = values[i];
 
         if (!value) continue;
 
-        kv += `${node.key}:${value};`;
+        kvParts.push(`${key}:${value};`);
     }
 
-    if (node.selectors.length === 0) return kv;
+    if (selectors.length === 0) return kvParts.join("");
 
-    let result: string = "";
+    const resultParts: string[] = [];
 
-    for (let i: number = 0; i < node.selectors.length; i++) {
-        const selector: string | undefined = node.selectors[i];
+    for (let i: number = 0; i < selectors.length; i++) {
+        const selector: string | undefined = selectors[i];
 
         if (!selector) continue;
 
-        result += `${selector}{`;
+        resultParts.push(`${selector}{`);
     }
 
-    result += kv;
+    resultParts.push(...kvParts);
 
-    for (let i: number = 0; i < node.selectors.length; i++) {
-        const selector: string | undefined = node.selectors[i];
+    for (let i: number = 0; i < selectors.length; i++) {
+        const selector: string | undefined = selectors[i];
 
         if (!selector) continue;
 
-        result += "}";
+        resultParts.push("}");
     }
 
-    return result;
+    return resultParts.join("");
 };
 
 const styleNodeToCssWithClass = (node: StyleNode): string => {
