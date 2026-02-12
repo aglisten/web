@@ -1,0 +1,17 @@
+{
+    "name": "bench-keyframes",
+    "private": true,
+    "scripts": {
+        "bench": "vitest bench --run",
+        "": ""
+    },
+    "dependencies": {
+        "@aglisten/compiler": "workspace:*",
+        "@aglisten/runtime": "workspace:*",
+        "@aglisten/web": "workspace:*",
+        "vitest": "catalog:dep"
+    },
+    "devDependencies": {
+        "vite-tsconfig-paths": "catalog:dep"
+    }
+}

@@ -12,14 +12,18 @@ compiler := "packages/compiler"
 runtime := "packages/runtime"
 web := "packages/web"
 
-test_compiler := "tests/compiler"
-test_web := "tests/web"
-
 webpack := "plugins/webpack"
 rsbuild := "plugins/rsbuild"
 rollup := "plugins/rollup"
 vite := "plugins/vite"
 postcss := "plugins/postcss"
+
+test_compiler := "tests/compiler"
+test_web := "tests/web"
+
+bench_keyframes := "benchmarks/keyframes"
+bench_style := "benchmarks/style"
+bench_variables := "benchmarks/variables"
 
 # Default action
 _:
@@ -83,6 +87,12 @@ test-all:
     cd ./{{test_compiler}} && bun run test
     cd ./{{test_web}} && bun run test
 
+# Run benchmarks
+bench:
+    cd ./{{bench_keyframes}} && ./{{vitest}} bench --run
+    cd ./{{bench_style}} && ./{{vitest}} bench --run
+    cd ./{{bench_variables}} && ./{{vitest}} bench --run
+
 # Clean builds
 clean:
     cd ./{{postcss}} && rm -rf ./dist
@@ -98,6 +108,10 @@ clean:
 # Clean everything
 clean-all:
     just clean
+
+    cd ./{{bench_variables}} && rm -rf ./node_modules
+    cd ./{{bench_style}} && rm -rf ./node_modules
+    cd ./{{bench_keyframes}} && rm -rf ./node_modules
 
     cd ./{{test_web}} && rm -rf ./node_modules
     cd ./{{test_compiler}} && rm -rf ./node_modules

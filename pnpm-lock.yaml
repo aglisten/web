@@ -106,6 +106,63 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
+  benchmarks/keyframes:
+    dependencies:
+      '@aglisten/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
+      '@aglisten/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      vitest:
+        specifier: catalog:dep
+        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+    devDependencies:
+      vite-tsconfig-paths:
+        specifier: catalog:dep
+        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+
+  benchmarks/style:
+    dependencies:
+      '@aglisten/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
+      '@aglisten/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      vitest:
+        specifier: catalog:dep
+        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+    devDependencies:
+      vite-tsconfig-paths:
+        specifier: catalog:dep
+        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+
+  benchmarks/variables:
+    dependencies:
+      '@aglisten/compiler':
+        specifier: workspace:*
+        version: link:../../packages/compiler
+      '@aglisten/runtime':
+        specifier: workspace:*
+        version: link:../../packages/runtime
+      '@aglisten/web':
+        specifier: workspace:*
+        version: link:../../packages/web
+      vitest:
+        specifier: catalog:dep
+        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+    devDependencies:
+      vite-tsconfig-paths:
+        specifier: catalog:dep
+        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+
   examples/fallback:
     dependencies:
       '@aglisten/web':
@@ -178,7 +235,7 @@ importers:
   packages/runtime:
     dependencies:
       '@aglisten/compiler':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../compiler
       es-toolkit:
         specifier: catalog:dep
@@ -202,7 +259,7 @@ importers:
   plugins/postcss:
     dependencies:
       '@aglisten/runtime':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../../packages/runtime
       fdir:
         specifier: catalog:dep
@@ -218,7 +275,7 @@ importers:
   plugins/rollup:
     dependencies:
       '@aglisten/runtime':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
         specifier: catalog:dep
@@ -231,7 +288,7 @@ importers:
   plugins/rsbuild:
     dependencies:
       '@aglisten/webpack':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../webpack
       ts-vista:
         specifier: catalog:dep
@@ -244,10 +301,10 @@ importers:
   plugins/vite:
     dependencies:
       '@aglisten/rollup':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../rollup
       '@aglisten/runtime':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
         specifier: catalog:dep
@@ -260,7 +317,7 @@ importers:
   plugins/webpack:
     dependencies:
       '@aglisten/runtime':
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
         specifier: catalog:dep

@@ -4,6 +4,7 @@ packages:
     - ./plugins/*
     - ./templates/*
     - ./examples/*
+    - ./benchmarks/*
 
 catalogs:
     dep:
