@@ -103,6 +103,7 @@ const plugin = (options?: PluginOptions): Plugin => {
                 const ssr: string | boolean = this.environment.config.build.ssr;
                 const isSSR: boolean = typeof ssr === "string" ? true : ssr;
 
+                // inject HMR on init / increment
                 if ((entryJs === void 0 && !isSSR) || entryJs === file) {
                     const script: string = await Fsp.readFile(
                         Path.resolve(import.meta.dirname, "hmr.js"),
@@ -121,7 +122,13 @@ const plugin = (options?: PluginOptions): Plugin => {
                     },
                 );
 
-                if (!result) return void 0;
+                // return given code (which may include HMR script inside)
+                if (!result) {
+                    return {
+                        code,
+                        map: null,
+                    };
+                }
 
                 return {
                     code: result.code,
