@@ -25,33 +25,33 @@ function loader(this: LoaderContext<LoaderOptions>, source: string): void {
 
     const options: LoaderOptions = this.getOptions();
 
-    // @ts-expect-error
-    const callback: (
-        error: unknown | null,
-        result?: string,
-        sourceMap?: string,
-    ) => void = this.async();
+    const callback: ReturnType<LoaderContext<LoaderOptions>["async"]> =
+        this.async();
 
-    try {
-        if (!runtime) {
-            runtime = createRuntime({
-                cwd: options.cwd,
-                include: options.include,
-                exclude: options.exclude,
-            });
-        }
-
-        runtime
-            .compile({
-                file: this.resourcePath,
-                code: source,
-            })
-            .then((result: CompileResult): void => {
-                callback(null, result.code);
-            });
-    } catch (er: unknown) {
-        callback(er);
+    if (!runtime) {
+        runtime = createRuntime({
+            cwd: options.cwd,
+            include: options.include,
+            exclude: options.exclude,
+        });
     }
+
+    runtime
+        .compile({
+            file: this.resourcePath,
+            code: source,
+        })
+        .then((result: CompileResult | undefined): void => {
+            if (!result) return callback(void 0, source);
+            return callback(void 0, result.code, {
+                ...result.map,
+                file: this.resourcePath,
+            });
+        })
+        .catch((err: unknown): void => {
+            if (err instanceof Error) return callback(err);
+            return callback(new Error(String(err)));
+        });
 }
 
 export default loader;

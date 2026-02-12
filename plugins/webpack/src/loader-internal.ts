@@ -1,14 +1,7 @@
 import type { CompileResult, Runtime } from "@aglisten/runtime";
 import type { LoaderContext } from "webpack";
 
-import { createHash } from "node:crypto";
-
-const md5 = (code: string): string => {
-    return createHash("md5").update(code).digest("hex");
-};
-
 type InternalLoaderOptions = {
-    isDev: boolean;
     runtime: Runtime;
 };
 
@@ -16,38 +9,29 @@ function loader(
     this: LoaderContext<InternalLoaderOptions>,
     source: string,
 ): void {
-    const { isDev, runtime } = this.getOptions();
+    this.cacheable(true);
 
-    // @ts-expect-error
-    const callback: (
-        error: unknown | null,
-        result?: string,
-        sourceMap?: string,
-    ) => void = this.async();
+    const { runtime } = this.getOptions();
 
-    try {
-        runtime
-            .compile({
+    const callback: ReturnType<LoaderContext<InternalLoaderOptions>["async"]> =
+        this.async();
+
+    runtime
+        .compile({
+            file: this.resourcePath,
+            code: source,
+        })
+        .then((result: CompileResult | undefined): void => {
+            if (!result) return callback(void 0, source);
+            return callback(void 0, result.code, {
+                ...result.map,
                 file: this.resourcePath,
-                code: source,
-            })
-            .then((result: CompileResult): void => {
-                if (isDev) {
-                    // check if the code has changed
-                    if (result.code === source) {
-                        callback(null, source);
-                        return void 0;
-                    }
-
-                    // force update
-                    callback(null, `// ${md5(source)}\n${result.code}`);
-                } else {
-                    callback(null, result.code);
-                }
             });
-    } catch (er: unknown) {
-        callback(er);
-    }
+        })
+        .catch((err: unknown): void => {
+            if (err instanceof Error) return callback(err);
+            return callback(new Error(String(err)));
+        });
 }
 
 export default loader;

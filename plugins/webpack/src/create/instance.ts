@@ -101,7 +101,6 @@ class PluginInstance implements WebpackPluginInstance {
                     {
                         loader: Path.resolve(__dirname, "loader-internal"),
                         options: {
-                            isDev: this.isDev,
                             runtime: this.runtime,
                         } satisfies InternalLoaderOptions,
                     },

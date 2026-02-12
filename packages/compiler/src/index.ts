@@ -1,6 +1,6 @@
 import type { Format } from "ts-vista";
 
-import type { CodegenResult } from "#/ast/codegen";
+import type { CodegenResult, SourceMap } from "#/ast/codegen";
 import type { ParseResult } from "#/ast/parse";
 import type { CompilerContext } from "#/contexts/compiler";
 import type {
@@ -49,6 +49,10 @@ type CompileResult = {
      * The CSS of the transpiled code that separated by elements.
      */
     cssList: string[];
+    /**
+     * The source map of the transpiled code.
+     */
+    map: SourceMap;
 };
 
 const compile = async (
@@ -83,6 +87,7 @@ const compile = async (
 
     const codegenPreprocessed: CodegenResult = codegen({
         file: options.file,
+        code: options.code,
         program: preprocessed.program,
     });
 
@@ -111,6 +116,7 @@ const compile = async (
 
     const codegenResult: CodegenResult = codegen({
         file: options.file,
+        code: options.code,
         program: processed.program,
     });
 
@@ -118,6 +124,7 @@ const compile = async (
         code: codegenResult.code,
         css: processed.css,
         cssList: processed.cssList,
+        map: codegenResult.map,
     };
 };
 
@@ -126,6 +133,7 @@ export type {
     UserCompileOptions,
     DynamicCompileOptions,
     CompileOptions,
+    SourceMap,
     CompileResult,
 };
 export { compile };

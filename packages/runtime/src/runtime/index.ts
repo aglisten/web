@@ -2,6 +2,7 @@ import type {
     DynamicCompileOptions,
     PresetCompileOptions,
     CompileResult as RawCompileResult,
+    SourceMap,
     UserCompileOptions,
 } from "@aglisten/compiler";
 import type { Format, Partial } from "ts-vista";
@@ -39,6 +40,7 @@ type CompileOptions = DynamicCompileOptions;
 type CompileResult = {
     code: string;
     css: string;
+    map: SourceMap;
 };
 
 const createRuntime = (coreOptions: CreateRuntimeOptions) => {
@@ -63,7 +65,9 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
             return true;
         },
-        compile: async (options: CompileOptions): Promise<CompileResult> => {
+        compile: async (
+            options: CompileOptions,
+        ): Promise<CompileResult | undefined> => {
             if (cache.has(options.file)) {
                 const vl: CacheValues | undefined = cache.get(options.file);
 
@@ -71,6 +75,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
                     return {
                         code: vl.result.code,
                         css: vl.result.css,
+                        map: vl.result.map,
                     };
                 }
             }
@@ -79,12 +84,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
                 toMerged(coreOpts, options),
             );
 
-            if (!result) {
-                return {
-                    code: options.code,
-                    css: "",
-                };
-            }
+            if (!result) return void 0;
 
             cache.set(options.file, {
                 hash: getMD5(options.code),
@@ -94,6 +94,7 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
             return {
                 code: result.code,
                 css: result.css,
+                map: result.map,
             };
         },
         getCSS: async (): Promise<string> => {
@@ -116,5 +117,11 @@ const createRuntime = (coreOptions: CreateRuntimeOptions) => {
 
 type Runtime = ReturnType<typeof createRuntime>;
 
-export type { CreateRuntimeOptions, CompileOptions, CompileResult, Runtime };
+export type {
+    CreateRuntimeOptions,
+    CompileOptions,
+    SourceMap,
+    CompileResult,
+    Runtime,
+};
 export { createRuntime };

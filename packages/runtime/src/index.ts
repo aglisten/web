@@ -3,6 +3,7 @@ export type {
     CompileResult,
     CreateRuntimeOptions,
     Runtime,
+    SourceMap,
 } from "#/runtime";
 
 export { createRuntime } from "#/runtime";

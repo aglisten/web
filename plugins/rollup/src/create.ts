@@ -1,4 +1,4 @@
-import type { Runtime } from "@aglisten/runtime";
+import type { CompileResult, Runtime } from "@aglisten/runtime";
 import type { Plugin as RollupPlugin, TransformResult } from "rollup";
 import type { Format, Partial } from "ts-vista";
 
@@ -8,7 +8,7 @@ import { createRuntime } from "@aglisten/runtime";
 import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
 import { getOutput } from "#/functions/output";
-import { name } from "../package.json";
+import { name, version } from "../package.json";
 
 type CompleteCreatePluginOptions = {
     runtime: Runtime;
@@ -29,6 +29,7 @@ const createPlugin = (options?: CreatePluginOptions) => {
 
         return {
             name,
+            version,
             buildStart(): void {
                 runtime =
                     options?.runtime ??
@@ -44,14 +45,18 @@ const createPlugin = (options?: CreatePluginOptions) => {
             ): Promise<TransformResult> {
                 if (!FILTER_JS_ADVANCED.test(file) || !runtime) return void 0;
 
-                const result = await runtime.compile({
-                    file,
-                    code,
-                });
+                const result: CompileResult | undefined = await runtime.compile(
+                    {
+                        file,
+                        code,
+                    },
+                );
+
+                if (!result) return void 0;
 
                 return {
                     code: result.code,
-                    map: null,
+                    map: result.map,
                 };
             },
             async generateBundle(): Promise<void> {

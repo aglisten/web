@@ -21,7 +21,7 @@ import { createRuntime } from "@aglisten/runtime";
 import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
 
 import { getOutput } from "#/functions/output";
-import { name } from "../package.json";
+import { name, version } from "../package.json";
 
 const PREFIX = "aglisten" as const;
 
@@ -48,14 +48,19 @@ const plugin = (options?: PluginOptions): Plugin => {
         options,
     });
 
+    // @ts-expect-error: rollup plugin type error
+    const plugin: Plugin = {
+        ...rollupPlugin(options),
+        name,
+        version,
+    };
+
     if (isDev) {
         let entryJs: string | undefined = void 0;
         let entryCss: string | undefined = void 0;
 
-        // @ts-expect-error: rollup plugin type error
         return {
-            ...rollupPlugin(options),
-            name,
+            ...plugin,
             configureServer(server: ViteDevServer): void {
                 server.ws.on(`${PREFIX}:init`, async (): Promise<void> => {
                     // inline CSS
@@ -109,23 +114,28 @@ const plugin = (options?: PluginOptions): Plugin => {
                     entryJs = file;
                 }
 
-                const result: CompileResult = await runtime.compile({
-                    file,
-                    code,
-                });
+                const result: CompileResult | undefined = await runtime.compile(
+                    {
+                        file,
+                        code,
+                    },
+                );
+
+                if (!result) return void 0;
 
                 return {
                     code: result.code,
-                    map: null,
+                    map: {
+                        ...result.map,
+                        file,
+                    },
                 };
             },
         };
     }
 
-    // @ts-expect-error: rollup plugin type error
     return {
-        ...rollupPlugin(options),
-        name,
+        ...plugin,
         transformIndexHtml: {
             order: "post",
             handler(
