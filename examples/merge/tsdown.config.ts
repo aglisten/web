@@ -5,6 +5,9 @@ export default defineConfig({
     entry: "./src/index.tsx",
     clean: true,
     inputOptions: {
+        transform: {
+            jsx: "preserve",
+        },
         experimental: {
             attachDebugInfo: "none",
         },
