@@ -25,6 +25,17 @@ bench_keyframes := "benchmarks/keyframes"
 bench_style := "benchmarks/style"
 bench_variables := "benchmarks/variables"
 
+ex_var := "examples/set-variables"
+ex_fallback := "examples/fallback"
+ex_merge := "examples/merge"
+
+tmpl_webpack := "templates/webpack"
+tmpl_rsbuild := "templates/rsbuild"
+tmpl_next := "templates/next"
+tmpl_rollup := "templates/rollup"
+tmpl_rolldown := "templates/rolldown"
+tmpl_vite := "templates/vite"
+
 # Default action
 _:
     just build
@@ -87,14 +98,37 @@ test-all:
     cd ./{{test_compiler}} && bun run test
     cd ./{{test_web}} && bun run test
 
-# Run benchmarks
-bench:
-    cd ./{{bench_keyframes}} && ./{{vitest}} bench --run
-    cd ./{{bench_style}} && ./{{vitest}} bench --run
+# Run variable benchmarks
+bench-var:
     cd ./{{bench_variables}} && ./{{vitest}} bench --run
+
+# Run keyframes benchmarks
+bench-kf:
+    cd ./{{bench_keyframes}} && ./{{vitest}} bench --run
+
+# Run style benchmarks
+bench-style:
+    cd ./{{bench_style}} && ./{{vitest}} bench --run
+
+# Run all benchmarks
+bench:
+    just bench-var
+    just bench-kf
+    just bench-style
 
 # Clean builds
 clean:
+    cd ./{{tmpl_vite}} && rm -rf ./dist
+    cd ./{{tmpl_rolldown}} && rm -rf ./dist
+    cd ./{{tmpl_rollup}} && rm -rf ./dist
+    cd ./{{tmpl_next}} && rm -rf ./dist
+    cd ./{{tmpl_rsbuild}} && rm -rf ./dist
+    cd ./{{tmpl_webpack}} && rm -rf ./dist
+
+    cd ./{{ex_merge}} && rm -rf ./dist
+    cd ./{{ex_fallback}} && rm -rf ./dist
+    cd ./{{ex_var}} && rm -rf ./dist
+
     cd ./{{postcss}} && rm -rf ./dist
     cd ./{{vite}} && rm -rf ./dist
     cd ./{{rollup}} && rm -rf ./dist
@@ -108,6 +142,17 @@ clean:
 # Clean everything
 clean-all:
     just clean
+
+    cd ./{{tmpl_vite}} && rm -rf ./node_modules
+    cd ./{{tmpl_rolldown}} && rm -rf ./node_modules
+    cd ./{{tmpl_rollup}} && rm -rf ./node_modules
+    cd ./{{tmpl_next}} && rm -rf ./node_modules
+    cd ./{{tmpl_rsbuild}} && rm -rf ./node_modules
+    cd ./{{tmpl_webpack}} && rm -rf ./node_modules
+
+    cd ./{{ex_merge}} && rm -rf ./node_modules
+    cd ./{{ex_fallback}} && rm -rf ./node_modules
+    cd ./{{ex_var}} && rm -rf ./node_modules
 
     cd ./{{bench_variables}} && rm -rf ./node_modules
     cd ./{{bench_style}} && rm -rf ./node_modules
