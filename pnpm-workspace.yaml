@@ -11,8 +11,6 @@ catalogs:
         es-toolkit: ^1.40.0
         fdir: ^6.5.0
         ts-vista: ~0.2.3
-        # webpack
-        css-loader: ^7.1.3
         # postcss
         "@types/postcss-preset-env": ^8.0.0
         postcss-flexbugs-fixes: ^5.0.0
@@ -21,7 +19,7 @@ catalogs:
         # oxc
         oxc-parser: ~0.112.0
         oxc-minify: ~0.112.0
-        rolldown: 1.0.0-rc.3
+        rolldown: 1.0.0-rc.4
         # vite
         vitest: ^4.0.0
         vite-tsconfig-paths: ^6.0.0
@@ -38,7 +36,7 @@ catalogs:
         # rollup
         rollup: 4.40.0
         # rolldown
-        rolldown: 1.0.0-rc.3
+        rolldown: 1.0.0-rc.4
         # vite
         vite: 7.0.0
         # postcss
@@ -51,7 +49,7 @@ catalogs:
         # rollup
         rollup: ^4.40.0
         # rolldown
-        rolldown: 1.0.0-rc.3
+        rolldown: 1.0.0-rc.4
         # vite
         vite: ^7.0.0
         # postcss
