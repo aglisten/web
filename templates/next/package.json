@@ -14,7 +14,6 @@
     "devDependencies": {
         "@aglisten/postcss": "workspace:*",
         "@aglisten/webpack": "workspace:*",
-        "@types/postcss-preset-env": "catalog:dep",
         "@types/react": "catalog:dep",
         "@types/react-dom": "catalog:dep",
         "postcss-flexbugs-fixes": "catalog:dep",

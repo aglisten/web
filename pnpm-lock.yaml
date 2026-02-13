@@ -6,14 +6,11 @@ settings:
 
 catalogs:
   dep:
-    '@types/postcss-preset-env':
-      specifier: ^8.0.0
-      version: 8.0.0
     '@types/react':
-      specifier: ^19.0.0
+      specifier: ^19.2.0
       version: 19.2.13
     '@types/react-dom':
-      specifier: ^19.0.0
+      specifier: ^19.2.0
       version: 19.2.3
     es-toolkit:
       specifier: ^1.40.0
@@ -34,13 +31,13 @@ catalogs:
       specifier: ^6.0.0
       version: 6.0.1
     postcss-preset-env:
-      specifier: ^11.0.0
+      specifier: ^11.1.0
       version: 11.1.3
     react:
-      specifier: ^19.0.0
+      specifier: ^19.2.0
       version: 19.2.4
     react-dom:
-      specifier: ^19.0.0
+      specifier: ^19.2.0
       version: 19.2.4
     rolldown:
       specifier: 1.0.0-rc.4
@@ -49,8 +46,8 @@ catalogs:
       specifier: ~0.2.3
       version: 0.2.3
     vite-tsconfig-paths:
-      specifier: ^6.0.0
-      version: 6.0.4
+      specifier: ^6.1.0
+      version: 6.1.1
     vitest:
       specifier: ^4.0.0
       version: 4.0.17
@@ -91,8 +88,8 @@ importers:
         specifier: ^2.3.14
         version: 2.3.14
       '@types/node':
-        specifier: ^25.2.1
-        version: 25.2.1
+        specifier: ^25.2.3
+        version: 25.2.3
       tsdown:
         specifier: ~0.20.3
         version: 0.20.3(typescript@5.9.3)
@@ -100,8 +97,8 @@ importers:
         specifier: ~0.28.16
         version: 0.28.16(typescript@5.9.3)
       typedoc-plugin-markdown:
-        specifier: ^4.9.0
-        version: 4.9.0(typedoc@0.28.16(typescript@5.9.3))
+        specifier: ^4.10.0
+        version: 4.10.0(typedoc@0.28.16(typescript@5.9.3))
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -119,11 +116,11 @@ importers:
         version: link:../../packages/web
       vitest:
         specifier: catalog:dep
-        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: catalog:dep
-        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+        version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
 
   benchmarks/style:
     dependencies:
@@ -138,11 +135,11 @@ importers:
         version: link:../../packages/web
       vitest:
         specifier: catalog:dep
-        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: catalog:dep
-        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+        version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
 
   benchmarks/variables:
     dependencies:
@@ -157,11 +154,11 @@ importers:
         version: link:../../packages/web
       vitest:
         specifier: catalog:dep
-        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: catalog:dep
-        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+        version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
 
   examples/fallback:
     dependencies:
@@ -312,7 +309,7 @@ importers:
     devDependencies:
       vite:
         specifier: catalog:dev
-        version: 7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
 
   plugins/webpack:
     dependencies:
@@ -348,9 +345,6 @@ importers:
       '@aglisten/webpack':
         specifier: workspace:*
         version: link:../../plugins/webpack
-      '@types/postcss-preset-env':
-        specifier: catalog:dep
-        version: 8.0.0(postcss@8.5.6)
       '@types/react':
         specifier: catalog:dep
         version: 19.2.13
@@ -447,10 +441,10 @@ importers:
         version: 19.2.3(@types/react@19.2.13)
       '@vitejs/plugin-react':
         specifier: ^5.1.1
-        version: 5.1.3(vite@7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
+        version: 5.1.3(vite@7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
       vite:
         specifier: catalog:dev
-        version: 7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
 
   templates/webpack:
     dependencies:
@@ -520,11 +514,11 @@ importers:
         version: 1.2.0(postcss@8.5.6)
       vitest:
         specifier: catalog:dep
-        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: catalog:dep
-        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+        version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
 
   tests/web:
     dependencies:
@@ -533,11 +527,11 @@ importers:
         version: link:../../packages/web
       vitest:
         specifier: catalog:dep
-        version: 4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+        version: 4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     devDependencies:
       vite-tsconfig-paths:
         specifier: catalog:dep
-        version: 6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1)
+        version: 6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
 
 packages:
 
@@ -2747,12 +2741,8 @@ packages:
     resolution: {integrity: sha512-zmPitbQ8+6zNutpwgcQuLcsEpn/Cj54Kbn7L5pX0Os5kdWplB7xPgEh/g+SWOB/qmows2gpuCaPyduq8ZZRnxA==}
     deprecated: This is a stub types definition. minimatch provides its own type definitions, so you do not need this installed.
 
-  '@types/node@25.2.1':
-    resolution: {integrity: sha512-CPrnr8voK8vC6eEtyRzvMpgp3VyVRhgclonE7qYi6P9sXwYb59ucfrnmFBTaP0yUi8Gk4yZg/LlTJULGxvTNsg==}
-
-  '@types/postcss-preset-env@8.0.0':
-    resolution: {integrity: sha512-Mjw3bkhK1SkPg9HgBxUic1hSzpF5p3fSslgZrSg8fPC9mkjoz6ghhVqr9a+kVVDSvE7Lrw6GY/D+yLxmJ4IDAg==}
-    deprecated: This is a stub types definition. postcss-preset-env provides its own type definitions, so you do not need this installed.
+  '@types/node@25.2.3':
+    resolution: {integrity: sha512-m0jEgYlYz+mDJZ2+F4v8D1AyQb+QzsNqRuI7xg1VQX/KlKS0qT9r1Mo16yo5F/MtifXFgaofIFsdFMox2SxIbQ==}
 
   '@types/qs@6.14.0':
     resolution: {integrity: sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==}
@@ -4897,8 +4887,8 @@ packages:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
 
-  typedoc-plugin-markdown@4.9.0:
-    resolution: {integrity: sha512-9Uu4WR9L7ZBgAl60N/h+jqmPxxvnC9nQAlnnO/OujtG2ubjnKTVUFY1XDhcMY+pCqlX3N2HsQM2QTYZIU9tJuw==}
+  typedoc-plugin-markdown@4.10.0:
+    resolution: {integrity: sha512-psrg8Rtnv4HPWCsoxId+MzEN8TVK5jeKCnTbnGAbTBqcDapR9hM41bJT/9eAyKn9C2MDG9Qjh3MkltAYuLDoXg==}
     engines: {node: '>= 18'}
     peerDependencies:
       typedoc: 0.28.x
@@ -4968,8 +4958,10 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vite-tsconfig-paths@6.0.4:
-    resolution: {integrity: sha512-iIsEJ+ek5KqRTK17pmxtgIxXtqr3qDdE6OxrP9mVeGhVDNXRJTKN/l9oMbujTQNzMLe6XZ8qmpztfbkPu2TiFQ==}
+  vite-tsconfig-paths@6.1.1:
+    resolution: {integrity: sha512-2cihq7zliibCCZ8P9cKJrQBkfgdvcFkOOc3Y02o3GWUDLgqjWsZudaoiuOwO/gzTzy17cS5F7ZPo4bsnS4DGkg==}
+    peerDependencies:
+      vite: '*'
 
   vite@7.0.0:
     resolution: {integrity: sha512-ixXJB1YRgDIw2OszKQS9WxGHKwLdCsbQNkpJN171udl6szi/rIySHL6/Os3s2+oE4P/FLD4dxg4mD7Wust+u5g==}
@@ -6845,11 +6837,11 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/bonjour@3.5.13':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/chai@5.2.3':
     dependencies:
@@ -6859,11 +6851,11 @@ snapshots:
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
       '@types/express-serve-static-core': 4.19.8
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/deep-eql@4.0.2': {}
 
@@ -6885,7 +6877,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.8':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -6900,7 +6892,7 @@ snapshots:
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 6.0.0
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/hast@3.0.4':
     dependencies:
@@ -6912,7 +6904,7 @@ snapshots:
 
   '@types/http-proxy@1.17.17':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/jsesc@2.5.1': {}
 
@@ -6924,15 +6916,9 @@ snapshots:
     dependencies:
       minimatch: 9.0.5
 
-  '@types/node@25.2.1':
+  '@types/node@25.2.3':
     dependencies:
       undici-types: 7.16.0
-
-  '@types/postcss-preset-env@8.0.0(postcss@8.5.6)':
-    dependencies:
-      postcss-preset-env: 11.1.3(postcss@8.5.6)
-    transitivePeerDependencies:
-      - postcss
 
   '@types/qs@6.14.0': {}
 
@@ -6951,11 +6937,11 @@ snapshots:
   '@types/send@0.17.6':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/serve-index@1.9.4':
     dependencies:
@@ -6964,20 +6950,20 @@ snapshots:
   '@types/serve-static@1.15.10':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
       '@types/send': 0.17.6
 
   '@types/sockjs@0.3.36':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
   '@types/unist@3.0.3': {}
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
 
-  '@vitejs/plugin-react@5.1.3(vite@7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))':
+  '@vitejs/plugin-react@5.1.3(vite@7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.29.0)
@@ -6985,7 +6971,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-rc.2
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+      vite: 7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -6998,13 +6984,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))':
+  '@vitest/mocker@4.0.17(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 4.0.17
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
 
   '@vitest/pretty-format@4.0.17':
     dependencies:
@@ -8056,7 +8042,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -9313,7 +9299,7 @@ snapshots:
       media-typer: 0.3.0
       mime-types: 2.1.35
 
-  typedoc-plugin-markdown@4.9.0(typedoc@0.28.16(typescript@5.9.3)):
+  typedoc-plugin-markdown@4.10.0(typedoc@0.28.16(typescript@5.9.3)):
     dependencies:
       typedoc: 0.28.16(typescript@5.9.3)
 
@@ -9368,28 +9354,17 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-tsconfig-paths@6.0.4(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(typescript@5.9.3)(yaml@2.8.1):
+  vite-tsconfig-paths@6.1.1(typescript@5.9.3)(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.9.3)
-      vite: 7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
     transitivePeerDependencies:
-      - '@types/node'
-      - jiti
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
       - supports-color
-      - terser
-      - tsx
       - typescript
-      - yaml
 
-  vite@7.0.0(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
+  vite@7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.3)
@@ -9398,13 +9373,13 @@ snapshots:
       rollup: 4.55.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
       fsevents: 2.3.3
       jiti: 2.6.1
       terser: 5.46.0
       yaml: 2.8.1
 
-  vite@7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
+  vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.3)
@@ -9413,16 +9388,16 @@ snapshots:
       rollup: 4.55.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
       fsevents: 2.3.3
       jiti: 2.6.1
       terser: 5.46.0
       yaml: 2.8.1
 
-  vitest@4.0.17(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
+  vitest@4.0.17(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1):
     dependencies:
       '@vitest/expect': 4.0.17
-      '@vitest/mocker': 4.0.17(vite@7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
+      '@vitest/mocker': 4.0.17(vite@7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
       '@vitest/pretty-format': 4.0.17
       '@vitest/runner': 4.0.17
       '@vitest/snapshot': 4.0.17
@@ -9439,10 +9414,10 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@25.2.1)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
+      vite: 7.3.1(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.2.1
+      '@types/node': 25.2.3
     transitivePeerDependencies:
       - jiti
       - less
