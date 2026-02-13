@@ -48,6 +48,38 @@ _:
 i:
     pnpm install
 
+lsl_cfg := "-config ../../../.ls-lint.yml"
+
+# Lint with ls-lint
+lslint:
+    cd ./{{compiler}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{runtime}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{web}}/src && ls-lint {{lsl_cfg}}
+
+    cd ./{{webpack}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{rsbuild}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{rollup}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{vite}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{postcss}}/src && ls-lint {{lsl_cfg}}
+
+    cd ./{{test_compiler}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{test_web}}/src && ls-lint {{lsl_cfg}}
+
+    cd ./{{bench_keyframes}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{bench_style}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{bench_variables}}/src && ls-lint {{lsl_cfg}}
+
+    cd ./{{ex_var}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{ex_fallback}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{ex_merge}}/src && ls-lint {{lsl_cfg}}
+
+    cd ./{{tmpl_webpack}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{tmpl_rsbuild}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{tmpl_next}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{tmpl_rollup}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{tmpl_rolldown}}/src && ls-lint {{lsl_cfg}}
+    cd ./{{tmpl_vite}}/src && ls-lint {{lsl_cfg}}
+
 # Lint with TypeScript Compiler
 tsc:
     cd ./{{compiler}} && ../../{{tsc}} --noEmit
@@ -62,7 +94,7 @@ tsc:
 
 # Lint code
 lint:
-    ls-lint
+    just lslint
     typos
     just tsc
 
