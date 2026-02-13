@@ -1,0 +1,26 @@
+name: Code Quality
+
+on:
+    pull_request:
+    push:
+
+jobs:
+    lint:
+        name: Linting
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Setup environment
+              uses: ./.github/actions/setup
+
+            - name: Install ls-lint
+              uses: ls-lint/action@v2
+
+            - name: Install typos-cli
+              uses: crate-ci/typos@v1
+
+            - name: Build packages
+              run: just build
+
+            - name: Run linters
+              run: just lint && just lint-biome

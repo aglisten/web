@@ -48,6 +48,10 @@ _:
 i:
     pnpm install
 
+# Install with frozen-lockfile
+if:
+    pnpm install --frozen-lockfile
+
 lsl_cfg := "-config ../../../.ls-lint.yml"
 
 # Lint with ls-lint
@@ -97,6 +101,10 @@ lint:
     just lslint
     typos
     just tsc
+
+# Lint code with Biome
+lint-biome:
+    ./{{biome}} lint .
 
 # Format code
 fmt:
