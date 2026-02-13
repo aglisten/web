@@ -13,7 +13,7 @@ runs:
     steps:
         - name: Install just
           run: brew install just
-          shell: zsh
+          shell: sh
 
         - name: Install pnpm
           uses: pnpm/action-setup@v4
@@ -29,4 +29,4 @@ runs:
 
         - name: Install Node.js dependencies
           run: just if
-          shell: zsh
+          shell: sh
