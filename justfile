@@ -2,7 +2,7 @@ set shell := ["bash", "-cu"]
 set windows-shell := ["powershell"]
 
 node_bin := "node_modules/.bin/"
-tsc := node_bin + "tsc"
+tsc := node_bin + "tsgo"
 biome := node_bin + "biome"
 tsdown := node_bin + "tsdown"
 vitest := node_bin + "vitest"

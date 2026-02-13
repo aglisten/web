@@ -18,6 +18,10 @@ export default defineConfig(
     [
         esmPreset(),
         cjsPreset(),
-        dtsPreset(),
+        dtsPreset({
+            dts: {
+                tsgo: true,
+            },
+        }),
     ],
 );
