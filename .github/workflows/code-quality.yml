@@ -20,7 +20,7 @@ jobs:
               run: brew install ls-lint
 
             - name: Install typos-cli
-              uses: brew install typos-cli
+              run: brew install typos-cli
 
             - name: Build packages
               run: just build
