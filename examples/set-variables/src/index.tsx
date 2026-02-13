@@ -6,12 +6,16 @@ import { setVariables, style, variables } from "@aglisten/web";
 const App = (): React.JSX.Element => {
     return (
         <>
+            <div>
+                {/* default variable values are used here */}
+                <div className={container}></div>
+            </div>
             <div style={darkTheme.props}>
-                {/* variables values changed here */}
+                {/* variable values are overridden in this scope */}
                 <div className={container}></div>
             </div>
             <div style={blueTheme.props}>
-                {/* variables values changed here */}
+                {/* variable values are overridden in this scope */}
                 <div className={container}></div>
             </div>
         </>
