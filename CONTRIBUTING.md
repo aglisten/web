@@ -70,12 +70,22 @@ This command will run all tests.
 just test
 ```
 
-This command will run all tests with all JavaScript runtimes.
+### Benchmarking
 
-> `deno` and `bun` must be installed to run this command.
+The following commands will run different benchmarks.
 
 ```sh
-just test-all
+# Run variables benchmarks
+just bench-var
+
+# Run keyframes benchmarks
+just bench-kf
+
+# Run style benchmarks
+just bench-style
+
+# Run all benchmarks
+just bench
 ```
 
 ### Cleaning
