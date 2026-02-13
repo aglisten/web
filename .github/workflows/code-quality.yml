@@ -7,7 +7,7 @@ on:
 jobs:
     lint:
         name: Linting
-        runs-on: ubuntu-latest
+        runs-on: macos-latest
 
         steps:
             - name: Checkout
@@ -17,10 +17,10 @@ jobs:
               uses: ./.github/actions/setup
 
             - name: Install ls-lint
-              uses: ls-lint/action@v2
+              run: brew install ls-lint
 
             - name: Install typos-cli
-              uses: crate-ci/typos@v1
+              uses: brew install typos-cli
 
             - name: Build packages
               run: just build

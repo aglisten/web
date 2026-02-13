@@ -14,6 +14,7 @@ export default defineConfig(
         platform: "node",
         // https://github.com/rolldown/tsdown/issues/572
         unbundle: false,
+        inlineOnly: false, // suppress warning for tsdown shims
     },
     [
         esmPreset(),

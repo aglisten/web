@@ -7,6 +7,7 @@ export default defineConfig(
             index: "./src/index.ts",
             helper: "./src/helper.ts",
         },
+        platform: "node",
         unbundle: false,
     },
     [

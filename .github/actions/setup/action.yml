@@ -12,8 +12,8 @@ runs:
     using: composite
     steps:
         - name: Install just
-          run: sudo apt update && sudo apt install -y just
-          shell: bash
+          run: brew install just
+          shell: zsh
 
         - name: Install pnpm
           uses: pnpm/action-setup@v4
@@ -29,4 +29,4 @@ runs:
 
         - name: Install Node.js dependencies
           run: just if
-          shell: bash
+          shell: zsh

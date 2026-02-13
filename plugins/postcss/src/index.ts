@@ -63,4 +63,3 @@ plugin.postcss = true;
 
 export default plugin;
 export type { InputOptions, PluginOptions };
-export { plugin as aglisten };
