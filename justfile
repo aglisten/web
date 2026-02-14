@@ -1,12 +1,13 @@
 set shell := ["bash", "-cu"]
-set windows-shell := ["powershell"]
+set windows-shell := ["pwsh", "-Command"]
 
-node_bin := "node_modules/.bin/"
-tsc := node_bin + "tsgo"
-biome := node_bin + "biome"
-tsdown := node_bin + "tsdown"
-vitest := node_bin + "vitest"
-typedoc := node_bin + "typedoc"
+tsc := "pnpm exec tsgo"
+biome := "pnpm exec biome"
+tsdown := "pnpm exec tsdown"
+vitest := "pnpm exec vitest"
+typedoc := "pnpm exec typedoc"
+
+lsl_cfg := "-config ../../../.ls-lint.yml"
 
 compiler := "packages/compiler"
 runtime := "packages/runtime"
@@ -52,8 +53,6 @@ i:
 if:
     pnpm install --frozen-lockfile
 
-lsl_cfg := "-config ../../../.ls-lint.yml"
-
 # Lint with ls-lint
 lslint:
     cd ./{{compiler}}/src && ls-lint {{lsl_cfg}}
@@ -86,15 +85,15 @@ lslint:
 
 # Lint with TypeScript Compiler
 tsc:
-    cd ./{{compiler}} && ../../{{tsc}} --noEmit
-    cd ./{{runtime}} && ../../{{tsc}} --noEmit
-    cd ./{{web}} && ../../{{tsc}} --noEmit
+    cd ./{{compiler}} && {{tsc}} --noEmit
+    cd ./{{runtime}} && {{tsc}} --noEmit
+    cd ./{{web}} && {{tsc}} --noEmit
 
-    cd ./{{webpack}} && ../../{{tsc}} --noEmit
-    cd ./{{rsbuild}} && ../../{{tsc}} --noEmit
-    cd ./{{rollup}} && ../../{{tsc}} --noEmit
-    cd ./{{vite}} && ../../{{tsc}} --noEmit
-    cd ./{{postcss}} && ../../{{tsc}} --noEmit
+    cd ./{{webpack}} && {{tsc}} --noEmit
+    cd ./{{rsbuild}} && {{tsc}} --noEmit
+    cd ./{{rollup}} && {{tsc}} --noEmit
+    cd ./{{vite}} && {{tsc}} --noEmit
+    cd ./{{postcss}} && {{tsc}} --noEmit
 
 # Lint code
 lint:
@@ -104,40 +103,40 @@ lint:
 
 # Lint code with Biome
 lint-biome:
-    ./{{biome}} lint .
+    {{biome}} lint .
 
 # Format code
 fmt:
-    ./{{biome}} check --write .
+    {{biome}} check --write .
 
 # Build packages
 build:
-    cd ./{{compiler}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{runtime}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{web}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{compiler}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{runtime}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{web}} && {{tsdown}} -c tsdown.config.ts
 
-    cd ./{{webpack}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{rsbuild}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{rollup}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{vite}} && ../../{{tsdown}} -c tsdown.config.ts
-    cd ./{{postcss}} && ../../{{tsdown}} -c tsdown.config.ts
+    cd ./{{webpack}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{rsbuild}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{rollup}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{vite}} && {{tsdown}} -c tsdown.config.ts
+    cd ./{{postcss}} && {{tsdown}} -c tsdown.config.ts
 
 # Run tests
 test:
-    cd ./{{test_compiler}} && ./{{vitest}} run
-    cd ./{{test_web}} && ./{{vitest}} run
+    cd ./{{test_compiler}} && {{vitest}} run
+    cd ./{{test_web}} && {{vitest}} run
 
 # Run variables benchmarks
 bench-var:
-    cd ./{{bench_variables}} && ./{{vitest}} bench --run
+    cd ./{{bench_variables}} && {{vitest}} bench --run
 
 # Run keyframes benchmarks
 bench-kf:
-    cd ./{{bench_keyframes}} && ./{{vitest}} bench --run
+    cd ./{{bench_keyframes}} && {{vitest}} bench --run
 
 # Run style benchmarks
 bench-style:
-    cd ./{{bench_style}} && ./{{vitest}} bench --run
+    cd ./{{bench_style}} && {{vitest}} bench --run
 
 # Run all benchmarks
 bench:
