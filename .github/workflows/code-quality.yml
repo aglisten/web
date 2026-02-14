@@ -6,7 +6,7 @@ on:
 
 jobs:
     lint:
-        name: Linting
+        name: Lint
         runs-on: macos-latest
 
         steps:

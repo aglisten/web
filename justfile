@@ -144,59 +144,54 @@ bench:
     just bench-kf
     just bench-style
 
-# Clean builds
+# Clean builds (Linux)
+clean-linux:
+    rm -rf ./templates/*/dist
+    rm -rf ./examples/*/dist
+    rm -rf ./plugins/*/dist
+    rm -rf ./packages/*/dist
+
+# Clean builds (macOS)
+clean-macos:
+    just clean-linux
+
+# Clean builds (Windows)
+clean-windows:
+    Remove-Item -Recurse -Force ./templates/*/dist
+    Remove-Item -Recurse -Force ./examples/*/dist
+    Remove-Item -Recurse -Force ./plugins/*/dist
+    Remove-Item -Recurse -Force ./packages/*/dist
+
+# Clean
 clean:
-    cd ./{{tmpl_vite}} && rm -rf ./dist
-    cd ./{{tmpl_rolldown}} && rm -rf ./dist
-    cd ./{{tmpl_rollup}} && rm -rf ./dist
-    cd ./{{tmpl_next}} && rm -rf ./dist
-    cd ./{{tmpl_rsbuild}} && rm -rf ./dist
-    cd ./{{tmpl_webpack}} && rm -rf ./dist
+    just clean-{{os()}}
 
-    cd ./{{ex_merge}} && rm -rf ./dist
-    cd ./{{ex_fallback}} && rm -rf ./dist
-    cd ./{{ex_var}} && rm -rf ./dist
+# Clean everything (Linux)
+clean-all-linux:
+    just clean
 
-    cd ./{{postcss}} && rm -rf ./dist
-    cd ./{{vite}} && rm -rf ./dist
-    cd ./{{rollup}} && rm -rf ./dist
-    cd ./{{rsbuild}} && rm -rf ./dist
-    cd ./{{webpack}} && rm -rf ./dist
+    rm -rf ./templates/*/node_modules
+    rm -rf ./examples/*/node_modules
+    rm -rf ./plugins/*/node_modules
+    rm -rf ./packages/*/node_modules
 
-    cd ./{{web}} && rm -rf ./dist
-    cd ./{{runtime}} && rm -rf ./dist
-    cd ./{{compiler}} && rm -rf ./dist
+    rm -rf ./node_modules
+
+# Clean everything (macOS)
+clean-all-macos:
+    just clean-all-linux
+
+# Clean everything (Windows)
+clean-all-windows:
+    just clean
+
+    Remove-Item -Recurse -Force ./templates/*/node_modules
+    Remove-Item -Recurse -Force ./examples/*/node_modules
+    Remove-Item -Recurse -Force ./plugins/*/node_modules
+    Remove-Item -Recurse -Force ./packages/*/node_modules
+
+    Remove-Item -Recurse -Force ./node_modules
 
 # Clean everything
 clean-all:
-    just clean
-
-    cd ./{{tmpl_vite}} && rm -rf ./node_modules
-    cd ./{{tmpl_rolldown}} && rm -rf ./node_modules
-    cd ./{{tmpl_rollup}} && rm -rf ./node_modules
-    cd ./{{tmpl_next}} && rm -rf ./node_modules
-    cd ./{{tmpl_rsbuild}} && rm -rf ./node_modules
-    cd ./{{tmpl_webpack}} && rm -rf ./node_modules
-
-    cd ./{{ex_merge}} && rm -rf ./node_modules
-    cd ./{{ex_fallback}} && rm -rf ./node_modules
-    cd ./{{ex_var}} && rm -rf ./node_modules
-
-    cd ./{{bench_variables}} && rm -rf ./node_modules
-    cd ./{{bench_style}} && rm -rf ./node_modules
-    cd ./{{bench_keyframes}} && rm -rf ./node_modules
-
-    cd ./{{test_web}} && rm -rf ./node_modules
-    cd ./{{test_compiler}} && rm -rf ./node_modules
-
-    cd ./{{postcss}} && rm -rf ./node_modules
-    cd ./{{vite}} && rm -rf ./node_modules
-    cd ./{{rollup}} && rm -rf ./node_modules
-    cd ./{{rsbuild}} && rm -rf ./node_modules
-    cd ./{{webpack}} && rm -rf ./node_modules
-
-    cd ./{{web}} && rm -rf ./node_modules
-    cd ./{{runtime}} && rm -rf ./node_modules
-    cd ./{{compiler}} && rm -rf ./node_modules
-
-    rm -rf ./node_modules
+    just clean-all-{{os()}}
