@@ -13,8 +13,11 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: Setup environment
-              uses: ./.github/actions/setup
+            - name: Install just
+              uses: extractions/setup-just@v3
+
+            - name: Setup Node
+              uses: alpheusci/setup-node@v1
 
             - name: Install ls-lint
               run: brew install ls-lint
