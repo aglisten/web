@@ -7,8 +7,8 @@ settings:
 catalogs:
   dep:
     '@types/react':
-      specifier: ^19.2.0
-      version: 19.2.13
+      specifier: ^19.2.14
+      version: 19.2.14
     '@types/react-dom':
       specifier: ^19.2.0
       version: 19.2.3
@@ -177,7 +177,7 @@ importers:
         version: link:../../plugins/rollup
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
 
   examples/merge:
     dependencies:
@@ -193,7 +193,7 @@ importers:
         version: link:../../plugins/rollup
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
 
   examples/set-variables:
     dependencies:
@@ -209,7 +209,7 @@ importers:
         version: link:../../plugins/rollup
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
 
   packages/compiler:
     dependencies:
@@ -350,10 +350,10 @@ importers:
         version: link:../../plugins/webpack
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
       '@types/react-dom':
         specifier: catalog:dep
-        version: 19.2.3(@types/react@19.2.13)
+        version: 19.2.3(@types/react@19.2.14)
       postcss-flexbugs-fixes:
         specifier: catalog:dep
         version: 5.0.2(postcss@8.5.6)
@@ -416,10 +416,10 @@ importers:
         version: 1.4.5(@rsbuild/core@1.5.0)
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
       '@types/react-dom':
         specifier: catalog:dep
-        version: 19.2.3(@types/react@19.2.13)
+        version: 19.2.3(@types/react@19.2.14)
 
   templates/vite:
     dependencies:
@@ -438,10 +438,10 @@ importers:
     devDependencies:
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
       '@types/react-dom':
         specifier: catalog:dep
-        version: 19.2.3(@types/react@19.2.13)
+        version: 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react':
         specifier: ^5.1.1
         version: 5.1.3(vite@7.0.0(@types/node@25.2.3)(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.1))
@@ -469,10 +469,10 @@ importers:
         version: 1.15.11(@swc/helpers@0.5.18)
       '@types/react':
         specifier: catalog:dep
-        version: 19.2.13
+        version: 19.2.14
       '@types/react-dom':
         specifier: catalog:dep
-        version: 19.2.3(@types/react@19.2.13)
+        version: 19.2.3(@types/react@19.2.14)
       clean-webpack-plugin:
         specifier: ^4.0.0
         version: 4.0.0(webpack@5.76.0)
@@ -2758,8 +2758,8 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react@19.2.13':
-    resolution: {integrity: sha512-KkiJeU6VbYbUOp5ITMIc7kBfqlYkKA5KhEHVrGMmUUMt7NeaZg65ojdPk+FtNrBAOXNVM5QM72jnADjM+XVRAQ==}
+  '@types/react@19.2.14':
+    resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
 
   '@types/retry@0.12.2':
     resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
@@ -6966,11 +6966,11 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@19.2.3(@types/react@19.2.13)':
+  '@types/react-dom@19.2.3(@types/react@19.2.14)':
     dependencies:
-      '@types/react': 19.2.13
+      '@types/react': 19.2.14
 
-  '@types/react@19.2.13':
+  '@types/react@19.2.14':
     dependencies:
       csstype: 3.2.3
 
