@@ -7,7 +7,7 @@ tsdown := "pnpm exec tsdown"
 vitest := "pnpm exec vitest"
 typedoc := "pnpm exec typedoc"
 
-lsl_cfg := "-config ../../../.ls-lint.yml"
+lsl_cfg := "-config ../../../.ls-lint.yaml"
 
 compiler := "packages/compiler"
 runtime := "packages/runtime"

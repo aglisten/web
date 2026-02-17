@@ -1,0 +1,54 @@
+version: 2
+updates:
+    - package-ecosystem: "npm"
+      directory: "/"
+      schedule:
+          interval: "daily"
+          time: "00:00"
+          timezone: "Etc/UTC"
+      cooldown:
+          default-days: 1
+          include:
+              - "*"
+      commit-message:
+          prefix: "chore"
+      allow:
+          # root
+          - dependency-name: "@apst/biome"
+          - dependency-name: "@apst/tsconfig"
+          - dependency-name: "@apst/tsdown"
+          - dependency-name: "@biomejs/biome"
+          - dependency-name: "@typescript/native-preview"
+          - dependency-name: "tsdown"
+          - dependency-name: "typedoc"
+          - dependency-name: "typedoc-plugin-markdown"
+          - dependency-name: "typescript"
+          # tests
+          - dependency-name: "vitest"
+          - dependency-name: "vite-tsconfig-paths"
+          # react
+          - dependency-name: "@types/react"
+          - dependency-name: "@types/react-dom"
+          - dependency-name: "react"
+          - dependency-name: "react-dom"
+          - dependency-name: "next"
+          # webpack
+          - dependency-name: "@swc/core"
+          - dependency-name: "clean-webpack-plugin"
+          - dependency-name: "css-loader"
+          - dependency-name: "html-webpack-plugin"
+          - dependency-name: "mini-css-extract-plugin"
+          - dependency-name: "serve"
+          - dependency-name: "swc-loader"
+          - dependency-name: "webpack-cli"
+          - dependency-name: "webpack-dev-server"
+          # rsbuild
+          - dependency-name: "@rsbuild/plugin-react"
+          # rollup
+          - dependency-name: "@rollup/plugin-typescript"
+          # vite
+          - dependency-name: "@vitejs/plugin-react"
+          # postcss
+          - dependency-name: "postcss-flexbugs-fixes"
+          - dependency-name: "postcss-load-config"
+          - dependency-name: "postcss-preset-env"
