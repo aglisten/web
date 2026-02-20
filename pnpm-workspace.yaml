@@ -35,7 +35,7 @@ catalogs:
         # rollup
         rollup: 4.40.0
         # rolldown
-        rolldown: 1.0.0-rc.4
+        rolldown: 1.0.0-rc.5
         # vite
         vite: 7.0.0
         # postcss
@@ -48,7 +48,7 @@ catalogs:
         # rollup
         rollup: ^4.40.0
         # rolldown
-        rolldown: 1.0.0-rc.4
+        rolldown: 1.0.0-rc.5
         # vite
         vite: ^7.0.0
         # postcss
