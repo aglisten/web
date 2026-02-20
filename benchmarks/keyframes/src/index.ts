@@ -1,4 +1,4 @@
-import { keyframes } from "@aglisten/web";
+import { keyframes } from "ammolite";
 
 const fadeIn: string = keyframes({
     from: {

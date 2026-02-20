@@ -1,4 +1,4 @@
-import { variables } from "@aglisten/web";
+import { variables } from "ammolite";
 
 const htmlLarge = "html[data-size='large']" as const;
 

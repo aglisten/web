@@ -1,4 +1,4 @@
-import type { Runtime } from "@aglisten/runtime";
+import type { Runtime } from "@ammolite/runtime";
 import type {
     Asset,
     Compilation,
@@ -15,8 +15,8 @@ import type { InternalLoaderOptions } from "#/loader-internal";
 
 import * as Path from "node:path";
 
-import { createRuntime } from "@aglisten/runtime";
-import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
+import { createRuntime } from "@ammolite/runtime";
+import { FILTER_JS_ADVANCED } from "@ammolite/runtime/helper";
 
 import { getHtmlHooks } from "#/create/functions/html";
 import { name as currentName } from "../../package.json";
@@ -34,7 +34,7 @@ class PluginInstance implements WebpackPluginInstance {
 
     public outDir: string | undefined;
 
-    public outName: string = "aglisten.css";
+    public outName: string = "ammolite.css";
 
     public outPath: string = this.outName;
 

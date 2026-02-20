@@ -1,4 +1,4 @@
-import type { Runtime } from "@aglisten/runtime";
+import type { Runtime } from "@ammolite/runtime";
 import type { Format, Partial } from "ts-vista";
 
 type CompleteCreatePluginOptions = {

@@ -1,9 +1,9 @@
-import type { Specifier } from "@aglisten/compiler/collector";
-import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
+import type { Specifier } from "@ammolite/compiler/collector";
+import type { CompilerContext } from "@ammolite/compiler/contexts/compiler";
 
-import { parse } from "@aglisten/compiler/ast/parse";
-import { collect } from "@aglisten/compiler/collector";
-import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
+import { parse } from "@ammolite/compiler/ast/parse";
+import { collect } from "@ammolite/compiler/collector";
+import { createCompilerContext } from "@ammolite/compiler/contexts/compiler";
 import { describe, expect, it } from "vitest";
 
 const file = "index.ts" as const;

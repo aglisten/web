@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { style } from "@aglisten/web";
+import { style } from "ammolite";
 
 import { colors } from "../styles/variables/colors";
 

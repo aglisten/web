@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
+import { FILTER_JS_ADVANCED } from "@ammolite/runtime/helper";
 import { fdir } from "fdir";
 
 type GetPathsOptions = {

@@ -1,4 +1,4 @@
-import { style } from "@aglisten/web";
+import { style } from "ammolite";
 
 const container: string = style({
     display: "block",

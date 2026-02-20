@@ -6,14 +6,14 @@
         "start": "next start --port 3000"
     },
     "dependencies": {
-        "@aglisten/web": "workspace:*",
+        "ammolite": "workspace:*",
         "next": "^16.1.6",
         "react": "catalog:dep",
         "react-dom": "catalog:dep"
     },
     "devDependencies": {
-        "@aglisten/postcss": "workspace:*",
-        "@aglisten/webpack": "workspace:*",
+        "@ammolite/postcss": "workspace:*",
+        "@ammolite/webpack": "workspace:*",
         "@types/react": "catalog:dep",
         "@types/react-dom": "catalog:dep",
         "postcss-flexbugs-fixes": "catalog:dep",

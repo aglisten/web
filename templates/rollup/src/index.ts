@@ -1,4 +1,4 @@
-import { style } from "@aglisten/web";
+import { style } from "ammolite";
 
 import { colors } from "./styles/color";
 import { sizes } from "./styles/size";

@@ -2,7 +2,7 @@ import type {
     InputOptions,
     OutputOptions as WebpackOutputOptions,
     PluginOptions as WebpackPluginOptions,
-} from "@aglisten/webpack";
+} from "@ammolite/webpack";
 import type {
     RsbuildConfig,
     RsbuildPlugin,
@@ -12,7 +12,7 @@ import type { Format, Omit } from "ts-vista";
 
 import * as Path from "node:path";
 
-import { createPlugin } from "@aglisten/webpack/create";
+import { createPlugin } from "@ammolite/webpack/create";
 
 import { name } from "../package.json";
 
@@ -34,7 +34,7 @@ const getFileName = (
     const isDev: boolean = process.env.NODE_ENV === "development";
 
     const parsedPath: Path.ParsedPath = Path.parse(
-        options?.output?.fileName ?? "aglisten",
+        options?.output?.fileName ?? "ammolite",
     );
 
     const ext: string = parsedPath.ext === "" ? ".css" : parsedPath.ext;
@@ -97,4 +97,4 @@ const plugin = (options?: PluginOptions): RsbuildPlugin => {
 };
 
 export type { InputOptions, OutputOptions, PluginOptions };
-export { plugin as pluginAglisten };
+export { plugin as pluginAmmolite };

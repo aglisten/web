@@ -1,4 +1,4 @@
-import { aglisten } from "@aglisten/rollup";
+import { ammolite } from "@ammolite/rollup";
 import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
 
@@ -12,7 +12,7 @@ const config = {
         assetFileNames: "[name][extname]",
     },
     plugins: [
-        aglisten(),
+        ammolite(),
         typescript({
             outDir: "./dist/esm",
         }),
@@ -30,7 +30,7 @@ export default defineConfig([
             entryFileNames: "[name].js",
         },
         plugins: [
-            aglisten(),
+            ammolite(),
             typescript({
                 outDir: "./dist/cjs",
             }),

@@ -96,7 +96,7 @@ const externalResolver = (options: ExternalResolverOptions): Plugin => {
     const { exclude, include } = getIncludeAndExclude(options);
 
     return {
-        name: "@aglisten/transpiler/external-resolver",
+        name: "@ammolite/transpiler/external-resolver",
         resolveId: (id: string): ResolveIdResult => {
             // CSS-in-JS package
             if (id === options.packageName) {

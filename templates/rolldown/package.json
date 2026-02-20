@@ -5,10 +5,10 @@
         "build": "rolldown --config rolldown.config.ts"
     },
     "dependencies": {
-        "@aglisten/web": "workspace:*"
+        "ammolite": "workspace:*"
     },
     "devDependencies": {
-        "@aglisten/rollup": "workspace:*",
+        "@ammolite/rollup": "workspace:*",
         "rolldown": "catalog:dev"
     }
 }

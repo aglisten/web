@@ -1,3 +1,3 @@
-const SIGNATURE = "_aglisten" as const;
+const SIGNATURE = "_ammolite" as const;
 
 export { SIGNATURE };

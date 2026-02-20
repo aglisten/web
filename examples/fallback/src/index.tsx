@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { style } from "@aglisten/web";
+import { style } from "ammolite";
 
 const App = (): React.JSX.Element => {
     return <div className={container}></div>;

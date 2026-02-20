@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/rsbuild",
+    "name": "@ammolite/rsbuild",
     "version": "0.1.0",
-    "description": "A Rsbuild plugin for Aglisten",
+    "description": "A Rsbuild plugin for Ammolite",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -17,7 +17,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/webpack": "workspace:~",
+        "@ammolite/webpack": "workspace:~",
         "ts-vista": "catalog:dep"
     },
     "devDependencies": {

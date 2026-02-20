@@ -7,12 +7,12 @@
         "preview": "rsbuild preview --port 3000"
     },
     "dependencies": {
-        "@aglisten/web": "workspace:*",
+        "ammolite": "workspace:*",
         "react": "catalog:dep",
         "react-dom": "catalog:dep"
     },
     "devDependencies": {
-        "@aglisten/rsbuild": "workspace:*",
+        "@ammolite/rsbuild": "workspace:*",
         "@rsbuild/core": "catalog:dev",
         "@rsbuild/plugin-react": "^1.4.2",
         "@types/react": "catalog:dep",

@@ -8,8 +8,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "@aglisten/vite": "workspace:*",
-        "@aglisten/web": "workspace:*",
+        "@ammolite/vite": "workspace:*",
+        "ammolite": "workspace:*",
         "react": "catalog:dep",
         "react-dom": "catalog:dep"
     },

@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { style, variables } from "@aglisten/web";
+import { style, variables } from "ammolite";
 import Image from "next/image";
 
 export default (): React.JSX.Element => {

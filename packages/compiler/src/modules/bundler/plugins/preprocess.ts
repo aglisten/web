@@ -21,7 +21,7 @@ type FilePreprocessorOptions = {
 
 const filePreprocessor = (options: FilePreprocessorOptions): Plugin => {
     return {
-        name: "@aglisten/transpiler/file-preprocessor",
+        name: "@ammolite/transpiler/file-preprocessor",
         transform: (code: string, file: string): TransformResult => {
             // avoid duplicated preprocess
             if (Path.resolve(file) === Path.resolve(options.file))

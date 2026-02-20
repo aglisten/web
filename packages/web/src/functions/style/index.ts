@@ -8,7 +8,7 @@ import { TransformError } from "#/errors/transform";
  * ### Example
  *
  * ```ts
- * import { style } from "@aglisten/web";
+ * import { style } from "ammolite";
  *
  * const container: string = style({
  *     backgroundColor: "green",

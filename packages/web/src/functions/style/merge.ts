@@ -50,7 +50,7 @@ const getClassFromKeyValues = (keyValues: KeyValues): string => {
  * ### Example
  *
  * ```ts
- * import { style, merge } from "@aglisten/web";
+ * import { style, merge } from "ammolite";
  *
  * const styleA: string = style({
  *     backgroundColor: "red",

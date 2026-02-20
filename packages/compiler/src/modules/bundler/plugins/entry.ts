@@ -7,7 +7,7 @@ type EntryOverriderOptions = {
 
 const entryOverrider = (options: EntryOverriderOptions): Plugin => {
     return {
-        name: "@aglisten/transpiler/entry-overrider",
+        name: "@ammolite/transpiler/entry-overrider",
         load: (file: string): LoadResult => {
             if (file === options.file) return options.code;
             return void 0;

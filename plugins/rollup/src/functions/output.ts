@@ -14,7 +14,7 @@ const getOutput = (options: GetOutputOptions): Output => {
     let outName: string = "";
 
     const parsed: Path.ParsedPath = Path.parse(
-        options.options?.output?.fileName ?? "aglisten",
+        options.options?.output?.fileName ?? "ammolite",
     );
 
     const hasExt: boolean = parsed.ext !== "";

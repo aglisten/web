@@ -1,8 +1,8 @@
-import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
+import type { CompilerContext } from "@ammolite/compiler/contexts/compiler";
 
-import { parse } from "@aglisten/compiler/ast/parse";
-import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
-import { process } from "@aglisten/compiler/processor";
+import { parse } from "@ammolite/compiler/ast/parse";
+import { createCompilerContext } from "@ammolite/compiler/contexts/compiler";
+import { process } from "@ammolite/compiler/processor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";

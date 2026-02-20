@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
         rules: {
             "*.{js,jsx,ts,tsx}": {
                 loaders: [
-                    "@aglisten/webpack/loader",
+                    "@ammolite/webpack/loader",
                 ],
             },
         },

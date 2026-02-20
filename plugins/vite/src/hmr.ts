@@ -1,8 +1,8 @@
 import type { ViteHotContext } from "vite/types/hot.js";
 
-const NAME = "Aglisten" as const;
+const NAME = "Ammolite" as const;
 
-const PREFIX = "aglisten" as const;
+const PREFIX = "ammolite" as const;
 
 const hot: ViteHotContext | undefined = (import.meta as any).hot;
 

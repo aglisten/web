@@ -8,7 +8,7 @@ import { TransformError } from "#/errors/transform";
  * ### Example
  *
  * ```ts
- * import { keyframes } from "@aglisten/web";
+ * import { keyframes } from "ammolite";
  *
  * const fadeIn = keyframes({
  *     "0%": {

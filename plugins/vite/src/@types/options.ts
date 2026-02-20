@@ -20,7 +20,7 @@ type CompleteOutputOptions = {
     /**
      * Name of the output file.
      *
-     * By default, it is `aglisten`.
+     * By default, it is `ammolite`.
      */
     fileName: string;
 };

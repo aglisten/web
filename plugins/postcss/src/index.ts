@@ -1,11 +1,11 @@
-import type { Runtime } from "@aglisten/runtime";
+import type { Runtime } from "@ammolite/runtime";
 import type { PluginCreator, Root } from "postcss";
 
 import type { InputOptions, PluginOptions } from "#/@types/options";
 
 import * as Fsp from "node:fs/promises";
 
-import { createRuntime } from "@aglisten/runtime";
+import { createRuntime } from "@ammolite/runtime";
 
 import { getPaths } from "#/functions/path";
 import { name } from "../package.json";
@@ -45,14 +45,14 @@ const plugin: PluginCreator<PluginOptions> = (options?: PluginOptions) => {
                     type: "dependency",
                     plugin: name,
                     file,
-                    parent: "aglisten.css",
+                    parent: "ammolite.css",
                 });
             }
 
             // append result
             root.append(
                 postcss.parse(await runtime.getCSS(), {
-                    from: "aglisten.css",
+                    from: "ammolite.css",
                 }),
             );
         },

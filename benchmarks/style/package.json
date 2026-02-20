@@ -6,9 +6,9 @@
         "": ""
     },
     "dependencies": {
-        "@aglisten/compiler": "workspace:*",
-        "@aglisten/runtime": "workspace:*",
-        "@aglisten/web": "workspace:*",
+        "@ammolite/compiler": "workspace:*",
+        "@ammolite/runtime": "workspace:*",
+        "ammolite": "workspace:*",
         "vitest": "catalog:dep"
     },
     "devDependencies": {

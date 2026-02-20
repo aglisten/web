@@ -1,7 +1,7 @@
-import type { VariablesSetter } from "@aglisten/web";
+import type { VariablesSetter } from "ammolite";
 import type * as React from "react";
 
-import { setVariables, style, variables } from "@aglisten/web";
+import { setVariables, style, variables } from "ammolite";
 
 const App = (): React.JSX.Element => {
     return (

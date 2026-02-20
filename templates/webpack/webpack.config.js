@@ -1,6 +1,6 @@
 const path = require("node:path");
 
-const { AglistenPlugin } = require("@aglisten/webpack");
+const { AmmolitePlugin } = require("@ammolite/webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -36,7 +36,7 @@ const config = (_, argv) => {
         new MiniCssExtractPlugin({
             filename: "index.css",
         }),
-        new AglistenPlugin({
+        new AmmolitePlugin({
             dev: isDev,
         }),
         new HtmlWebpackPlugin({

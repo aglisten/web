@@ -1,6 +1,6 @@
-import type { VariablesSetter } from "@aglisten/web";
+import type { VariablesSetter } from "ammolite";
 
-import { setVariables } from "@aglisten/web";
+import { setVariables } from "ammolite";
 import { describe, expect, it } from "vitest";
 
 describe("web setVariables tests", (): void => {

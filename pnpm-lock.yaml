@@ -108,13 +108,13 @@ importers:
 
   benchmarks/keyframes:
     dependencies:
-      '@aglisten/compiler':
+      '@ammolite/compiler':
         specifier: workspace:*
         version: link:../../packages/compiler
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       vitest:
@@ -127,13 +127,13 @@ importers:
 
   benchmarks/style:
     dependencies:
-      '@aglisten/compiler':
+      '@ammolite/compiler':
         specifier: workspace:*
         version: link:../../packages/compiler
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       vitest:
@@ -146,13 +146,13 @@ importers:
 
   benchmarks/variables:
     dependencies:
-      '@aglisten/compiler':
+      '@ammolite/compiler':
         specifier: workspace:*
         version: link:../../packages/compiler
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:*
         version: link:../../packages/runtime
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       vitest:
@@ -165,14 +165,14 @@ importers:
 
   examples/fallback:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
         specifier: catalog:dep
         version: 19.2.4
     devDependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:*
         version: link:../../plugins/rollup
       '@types/react':
@@ -181,14 +181,14 @@ importers:
 
   examples/merge:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
         specifier: catalog:dep
         version: 19.2.4
     devDependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:*
         version: link:../../plugins/rollup
       '@types/react':
@@ -197,14 +197,14 @@ importers:
 
   examples/set-variables:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
         specifier: catalog:dep
         version: 19.2.4
     devDependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:*
         version: link:../../plugins/rollup
       '@types/react':
@@ -234,7 +234,7 @@ importers:
 
   packages/runtime:
     dependencies:
-      '@aglisten/compiler':
+      '@ammolite/compiler':
         specifier: workspace:~
         version: link:../compiler
       es-toolkit:
@@ -258,7 +258,7 @@ importers:
 
   plugins/postcss:
     dependencies:
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:~
         version: link:../../packages/runtime
       fdir:
@@ -274,7 +274,7 @@ importers:
 
   plugins/rollup:
     dependencies:
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
@@ -287,7 +287,7 @@ importers:
 
   plugins/rsbuild:
     dependencies:
-      '@aglisten/webpack':
+      '@ammolite/webpack':
         specifier: workspace:~
         version: link:../webpack
       ts-vista:
@@ -300,10 +300,10 @@ importers:
 
   plugins/vite:
     dependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:~
         version: link:../rollup
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
@@ -316,7 +316,7 @@ importers:
 
   plugins/webpack:
     dependencies:
-      '@aglisten/runtime':
+      '@ammolite/runtime':
         specifier: workspace:~
         version: link:../../packages/runtime
       ts-vista:
@@ -329,7 +329,7 @@ importers:
 
   templates/next:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       next:
@@ -342,10 +342,10 @@ importers:
         specifier: catalog:dep
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@aglisten/postcss':
+      '@ammolite/postcss':
         specifier: workspace:*
         version: link:../../plugins/postcss
-      '@aglisten/webpack':
+      '@ammolite/webpack':
         specifier: workspace:*
         version: link:../../plugins/webpack
       '@types/react':
@@ -366,11 +366,11 @@ importers:
 
   templates/rolldown:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
     devDependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:*
         version: link:../../plugins/rollup
       rolldown:
@@ -379,11 +379,11 @@ importers:
 
   templates/rollup:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
     devDependencies:
-      '@aglisten/rollup':
+      '@ammolite/rollup':
         specifier: workspace:*
         version: link:../../plugins/rollup
       '@rollup/plugin-typescript':
@@ -395,7 +395,7 @@ importers:
 
   templates/rsbuild:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
@@ -405,7 +405,7 @@ importers:
         specifier: catalog:dep
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@aglisten/rsbuild':
+      '@ammolite/rsbuild':
         specifier: workspace:*
         version: link:../../plugins/rsbuild
       '@rsbuild/core':
@@ -423,10 +423,10 @@ importers:
 
   templates/vite:
     dependencies:
-      '@aglisten/vite':
+      '@ammolite/vite':
         specifier: workspace:*
         version: link:../../plugins/vite
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
@@ -451,7 +451,7 @@ importers:
 
   templates/webpack:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       react:
@@ -461,7 +461,7 @@ importers:
         specifier: catalog:dep
         version: 19.2.4(react@19.2.4)
     devDependencies:
-      '@aglisten/webpack':
+      '@ammolite/webpack':
         specifier: workspace:*
         version: link:../../plugins/webpack
       '@swc/core':
@@ -503,7 +503,7 @@ importers:
 
   tests/compiler:
     dependencies:
-      '@aglisten/compiler':
+      '@ammolite/compiler':
         specifier: workspace:*
         version: link:../../packages/compiler
       oxc-minify:
@@ -525,7 +525,7 @@ importers:
 
   tests/web:
     dependencies:
-      '@aglisten/web':
+      'ammolite':
         specifier: workspace:*
         version: link:../../packages/web
       vitest:

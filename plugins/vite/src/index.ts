@@ -1,4 +1,4 @@
-import type { CompileResult, Runtime } from "@aglisten/runtime";
+import type { CompileResult, Runtime } from "@ammolite/runtime";
 import type {
     IndexHtmlTransformContext,
     IndexHtmlTransformResult,
@@ -16,14 +16,14 @@ import type {
 import * as Fsp from "node:fs/promises";
 import * as Path from "node:path";
 
-import { createPlugin } from "@aglisten/rollup/create";
-import { createRuntime } from "@aglisten/runtime";
-import { FILTER_CSS, FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
+import { createPlugin } from "@ammolite/rollup/create";
+import { createRuntime } from "@ammolite/runtime";
+import { FILTER_CSS, FILTER_JS_ADVANCED } from "@ammolite/runtime/helper";
 
 import { getOutput } from "#/functions/output";
 import { name, version } from "../package.json";
 
-const PREFIX = "aglisten" as const;
+const PREFIX = "ammolite" as const;
 
 const plugin = (options?: PluginOptions): Plugin => {
     const isDev: boolean =
@@ -193,4 +193,4 @@ const plugin = (options?: PluginOptions): Plugin => {
 };
 
 export type { InputOptions, OutputOptions, PluginOptions };
-export { plugin as aglisten };
+export { plugin as ammolite };

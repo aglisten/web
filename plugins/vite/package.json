@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/vite",
+    "name": "@ammolite/vite",
     "version": "0.1.0",
-    "description": "A Vite plugin for Aglisten",
+    "description": "A Vite plugin for Ammolite",
     "type": "module",
     "exports": {
         ".": {
@@ -17,8 +17,8 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/rollup": "workspace:~",
-        "@aglisten/runtime": "workspace:~",
+        "@ammolite/rollup": "workspace:~",
+        "@ammolite/runtime": "workspace:~",
         "ts-vista": "catalog:dep"
     },
     "devDependencies": {

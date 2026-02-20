@@ -1,4 +1,4 @@
-import { aglisten } from "@aglisten/rollup";
+import { ammolite } from "@ammolite/rollup";
 import { defineConfig } from "tsdown";
 
 export default defineConfig({
@@ -17,6 +17,6 @@ export default defineConfig({
         assetFileNames: "[name][extname]",
     },
     plugins: [
-        aglisten(),
+        ammolite(),
     ],
 });

@@ -5,11 +5,11 @@
         "build": "tsdown --config tsdown.config.ts"
     },
     "dependencies": {
-        "@aglisten/web": "workspace:*",
+        "ammolite": "workspace:*",
         "react": "catalog:dep"
     },
     "devDependencies": {
-        "@aglisten/rollup": "workspace:*",
+        "@ammolite/rollup": "workspace:*",
         "@types/react": "catalog:dep"
     }
 }

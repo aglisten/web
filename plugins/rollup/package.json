@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/rollup",
+    "name": "@ammolite/rollup",
     "version": "0.1.0",
-    "description": "A Rollup plugin for Aglisten",
+    "description": "A Rollup plugin for Ammolite",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/runtime": "workspace:~",
+        "@ammolite/runtime": "workspace:~",
         "ts-vista": "catalog:dep"
     },
     "devDependencies": {

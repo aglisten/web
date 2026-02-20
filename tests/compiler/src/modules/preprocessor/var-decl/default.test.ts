@@ -1,11 +1,11 @@
-import type { CompilerContext } from "@aglisten/compiler/contexts/compiler";
+import type { CompilerContext } from "@ammolite/compiler/contexts/compiler";
 
 import type { MinifyCodeResult } from "#/functions/minify/code";
 
-import { codegen } from "@aglisten/compiler/ast/codegen";
-import { parse } from "@aglisten/compiler/ast/parse";
-import { createCompilerContext } from "@aglisten/compiler/contexts/compiler";
-import { preprocess } from "@aglisten/compiler/preprocessor";
+import { codegen } from "@ammolite/compiler/ast/codegen";
+import { parse } from "@ammolite/compiler/ast/parse";
+import { createCompilerContext } from "@ammolite/compiler/contexts/compiler";
+import { preprocess } from "@ammolite/compiler/preprocessor";
 import { describe, expect, it } from "vitest";
 
 import { SIGNATURE } from "#/consts";

@@ -1,4 +1,4 @@
-import { keyframes, merge, style } from "@aglisten/web";
+import { keyframes, merge, style } from "ammolite";
 import * as React from "react";
 
 import LogoVite from "/vite.svg";

@@ -1,10 +1,10 @@
 [< Back](./README.md)
 
-# Contributing to Aglisten
+# Contributing to Ammolite
 
 Thanks for your interest in contributing!
 
-This is a guideline for contributing to Aglisten.
+This is a guideline for contributing to Ammolite.
 
 ## Before the Contribution
 

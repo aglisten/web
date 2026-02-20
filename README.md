@@ -1,4 +1,4 @@
-# Aglisten
+# Ammolite
 
 A CSS-in-JS library.
 

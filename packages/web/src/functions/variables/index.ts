@@ -16,7 +16,7 @@ type VariablesObject = Record<
  * ### Example
  *
  * ```ts
- * import { variables } from "@aglisten/web";
+ * import { variables } from "ammolite";
  *
  * type Vars = {
  *     blue: string;

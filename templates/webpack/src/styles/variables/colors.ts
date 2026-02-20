@@ -1,4 +1,4 @@
-import { variables } from "@aglisten/web";
+import { variables } from "ammolite";
 
 const colors = variables({
     blue: "#007acc",

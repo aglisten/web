@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { merge, style } from "@aglisten/web";
+import { merge, style } from "ammolite";
 
 const App = (): React.JSX.Element => {
     return (

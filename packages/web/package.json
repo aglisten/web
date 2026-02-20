@@ -1,5 +1,5 @@
 {
-    "name": "@aglisten/web",
+    "name": "ammolite",
     "version": "0.1.0",
     "description": "A CSS-in-JS library",
     "exports": {

@@ -16,11 +16,11 @@ type VariablesSetter = {
  * ### Example
  *
  * ```ts
- * import type { VariablesSetter } from "@aglisten/web";
+ * import type { VariablesSetter } from "ammolite";
  *
  * import type { Vars } from "./vars";
  *
- * import { setVariables } from "@aglisten/web";
+ * import { setVariables } from "ammolite";
  *
  * import { vars } from "./vars";
  *

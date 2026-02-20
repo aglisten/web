@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/runtime",
+    "name": "@ammolite/runtime",
     "version": "0.1.0",
-    "description": "A runtime for Aglisten",
+    "description": "A CSS-in-JS runtime",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -22,7 +22,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/compiler": "workspace:~",
+        "@ammolite/compiler": "workspace:~",
         "es-toolkit": "catalog:dep",
         "ts-vista": "catalog:dep"
     }

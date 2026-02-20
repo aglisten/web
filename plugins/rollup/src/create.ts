@@ -1,11 +1,11 @@
-import type { CompileResult, Runtime } from "@aglisten/runtime";
+import type { CompileResult, Runtime } from "@ammolite/runtime";
 import type { Plugin as RollupPlugin, TransformResult } from "rollup";
 import type { Format, Partial } from "ts-vista";
 
 import type { PluginOptions } from "#/@types/options";
 
-import { createRuntime } from "@aglisten/runtime";
-import { FILTER_JS_ADVANCED } from "@aglisten/runtime/helper";
+import { createRuntime } from "@ammolite/runtime";
+import { FILTER_JS_ADVANCED } from "@ammolite/runtime/helper";
 
 import { getOutput } from "#/functions/output";
 import { name, version } from "../package.json";

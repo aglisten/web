@@ -4,8 +4,8 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     optimizeDeps: {
         exclude: [
-            "@aglisten/runtime",
-            "@aglisten/web",
+            "@ammolite/runtime",
+            "ammolite",
         ],
     },
     test: {

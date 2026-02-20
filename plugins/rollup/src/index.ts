@@ -10,4 +10,4 @@ import { createPlugin } from "#/create";
 const plugin: Plugin = createPlugin();
 
 export type { InputOptions, OutputOptions, PluginOptions };
-export { plugin as aglisten };
+export { plugin as ammolite };

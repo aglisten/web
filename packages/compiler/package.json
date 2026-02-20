@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/compiler",
+    "name": "@ammolite/compiler",
     "version": "0.1.0",
-    "description": "A compiler for Aglisten",
+    "description": "A CSS-in-JS compiler",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",

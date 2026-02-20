@@ -2,7 +2,7 @@
 
 # Roadmap
 
-This is the roadmap of Aglisten.
+This is the roadmap of Ammolite.
 
 The tiers and the tasks are ordered by priority, focusing on make it work first, and then make it better.
 

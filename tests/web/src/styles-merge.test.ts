@@ -1,4 +1,4 @@
-import { merge } from "@aglisten/web";
+import { merge } from "ammolite";
 import { describe, expect, it } from "vitest";
 
 describe("web styles merge tests", (): void => {

@@ -1,6 +1,6 @@
 import type { RolldownOptions } from "rolldown";
 
-import { aglisten } from "@aglisten/rollup";
+import { ammolite } from "@ammolite/rollup";
 import { defineConfig } from "rolldown";
 
 const options: RolldownOptions = {
@@ -15,7 +15,7 @@ const options: RolldownOptions = {
         attachDebugInfo: "none",
     },
     plugins: [
-        aglisten(),
+        ammolite(),
     ],
 };
 

@@ -1,7 +1,7 @@
 {
-    "name": "@aglisten/postcss",
+    "name": "@ammolite/postcss",
     "version": "0.1.0",
-    "description": "A PostCSS plugin for Aglisten",
+    "description": "A PostCSS plugin for Ammolite",
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -17,7 +17,7 @@
         "dist"
     ],
     "dependencies": {
-        "@aglisten/runtime": "workspace:~",
+        "@ammolite/runtime": "workspace:~",
         "fdir": "catalog:dep",
         "ts-vista": "catalog:dep"
     },

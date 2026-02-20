@@ -17,6 +17,6 @@ export default {
             presetEnvOptions,
         ],
         "postcss-flexbugs-fixes",
-        "@aglisten/postcss",
+        "@ammolite/postcss",
     ],
 };

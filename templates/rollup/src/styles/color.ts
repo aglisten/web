@@ -1,4 +1,4 @@
-import { variables } from "@aglisten/web";
+import { variables } from "ammolite";
 
 const htmlDark = "html[data-theme='dark']" as const;
 

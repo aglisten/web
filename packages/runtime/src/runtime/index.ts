@@ -4,11 +4,11 @@ import type {
     CompileResult as RawCompileResult,
     SourceMap,
     UserCompileOptions,
-} from "@aglisten/compiler";
+} from "@ammolite/compiler";
 import type { Format, Partial } from "ts-vista";
 
-import { compile } from "@aglisten/compiler";
-import { transformCssList } from "@aglisten/compiler/processor/css";
+import { compile } from "@ammolite/compiler";
+import { transformCssList } from "@ammolite/compiler/processor/css";
 import { toMerged } from "es-toolkit";
 
 import { INCLUDED_FUNCTIONS_DEFAULT, PACKAGE_NAME_DEFAULT } from "#/helper";
