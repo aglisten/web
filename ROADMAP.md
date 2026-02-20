@@ -8,22 +8,18 @@ The tiers and the tasks are ordered by priority, focusing on make it work first,
 
 Welcome for any suggestions if you have any ideas for the roadmap.
 
-## Tier 0
-
-- [ ] Add support for spread element
-- [ ] Add support for more edge cases
-- [ ] Add more tests for different edge cases
-
 ## Tier 1
 
-- [ ] Add support for Lynx React
+- [ ] Add support for Lynx
+- [ ] Add support for spread element
 - [ ] Add support for function (calculate at compile time)
-- [ ] Add support for extension (plugin/preset)
+- [ ] Add support for preset (inline extension)
+- [ ] Add support for plugin (in config file)
 
 ## Tier 2
 
-- [ ] Add support for React Native
+- [ ] Optimize compiler performance (RIIR)
 
 ## Tier 3
 
-- [ ] Optimize compiler performance (RIIR)
+- [ ] Add support for React Native
