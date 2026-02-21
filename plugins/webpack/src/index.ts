@@ -8,5 +8,5 @@ import { createPlugin } from "#/create";
 
 const Plugin = createPlugin();
 
-export default Plugin;
 export type { InputOptions, OutputOptions, PluginOptions };
+export { Plugin as AmmolitePlugin };
