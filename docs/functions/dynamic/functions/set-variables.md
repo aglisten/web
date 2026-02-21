@@ -29,7 +29,7 @@ const colors: Colors = variables({
     blue: "#1591ea",
 });
 
-const thmeReverse: VariablesSetter = setVariables(colors, {
+const themeReverse: VariablesSetter = setVariables(colors, {
     blue: "#ea6e15",
 });
 ```
@@ -55,7 +55,7 @@ const App = (): React.JSX.Element => {
             <div>
                 {/* default variable values are used here */}
             </div>
-            <div style={thmeReverse.props}>
+            <div style={themeReverse.props}>
                 {/* variable values are overridden in this scope */}
             </div>
         </>
