@@ -2,11 +2,13 @@ import type { AtRules, PropertiesFallback, Pseudos } from "csstype";
 import type { HtmlElementsAttributesMap } from "html-tag-types";
 import type { Format } from "ts-vista";
 
+type CSSValue = string | number;
+
+type CSSProperties = PropertiesFallback<CSSValue>;
+
 type HtmlTag = keyof HtmlElementsAttributesMap;
 
-type CSSProperties = PropertiesFallback<string | number>;
-
-type CSSSituation =
+type CSSSelector =
     | `&${Pseudos}` // &:hover
     | `&${Pseudos}${string}` // &:not(...)
     | `${AtRules}${string}` // @media
@@ -24,19 +26,22 @@ type CSSSituation =
     | `${string}::${string}` // selector::after
     | HtmlTag; // HTML element
 
-type CSSObject = CSSProperties & {
-    [key in CSSSituation]?: CSSObject;
-} & {
-    // CSS variable
-    [key in `--${string}`]?: string | number | (string | number)[];
+type CSSNested = {
+    [key in CSSSelector]?: CSSObject;
 };
+
+type CSSVariables = {
+    [K in `--${string}`]?: CSSValue | CSSValue[];
+};
+
+type CSSObject = CSSProperties & CSSNested & CSSVariables;
 
 /** CSS. */
 type CSS = Format<CSSObject>;
 
 /** Keyframes. */
-type Keyframes = Format<{
+type Keyframes = {
     [key in "from" | "to" | `${number}%` | number]?: CSSObject;
-}>;
+};
 
 export type { CSS, Keyframes };
