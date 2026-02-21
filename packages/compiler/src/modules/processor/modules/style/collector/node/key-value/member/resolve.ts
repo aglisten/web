@@ -1,104 +1,16 @@
 import type {
     Expression,
-    IdentifierName,
     MemberExpression,
     ObjectExpression,
     ObjectPropertyKind,
-    PrivateIdentifier,
     Program,
 } from "oxc-parser";
 
 import type { CompilerContext } from "#/contexts/compiler";
-import type { StyleNodePlan } from "##/processor/style/@types";
 
 import { findInlineExpression } from "#/ast/expr";
 import { CompileError } from "#/errors/compile";
-import { handleKeyValue } from "##/processor/style/collector/node/key-value";
-
-type WalkObjectOptions = {
-    context: CompilerContext;
-    member: MemberExpression;
-};
-
-const walkObject = (options: WalkObjectOptions): string[] => {
-    const result: string[] = [];
-
-    const object: Expression = options.member.object;
-
-    // abc.efg
-    if (object.type === "Identifier") {
-        result.push(object.name);
-    }
-    // abc.efg.xyz
-    else if (object.type === "MemberExpression") {
-        result.push(
-            ...walkObject({
-                context: options.context,
-                member: object,
-            }),
-        );
-    }
-    // unsupported
-    else {
-        throw new CompileError({
-            context: options.context,
-            span: {
-                start: object.start,
-                end: object.end,
-            },
-            message: `Unsupported object type: ${object.type}`,
-        });
-    }
-
-    return result;
-};
-
-type ColelctMemberPathOptions = {
-    context: CompilerContext;
-    program: Program;
-    member: MemberExpression;
-};
-
-type ColelctMemberPathResult = {
-    path: string[];
-};
-
-const collectMemberPath = (
-    options: ColelctMemberPathOptions,
-): ColelctMemberPathResult => {
-    const member: MemberExpression = options.member;
-    const property: Expression | IdentifierName | PrivateIdentifier =
-        member.property;
-
-    const path: string[] = walkObject({
-        context: options.context,
-        member,
-    });
-
-    let last: string;
-
-    if (property.type === "Identifier") {
-        last = property.name;
-    }
-    // TODO: support more property type
-    // unsupported
-    else {
-        throw new CompileError({
-            context: options.context,
-            span: {
-                start: property.start,
-                end: property.end,
-            },
-            message: `Unsupported property type: ${property.type}`,
-        });
-    }
-
-    path.push(last);
-
-    return {
-        path,
-    };
-};
+import { collectMemberPath } from "##/processor/style/collector/node/key-value/member/collect";
 
 type FindInObjectOptions = {
     context: CompilerContext;
@@ -154,7 +66,7 @@ type ResolvePathToExprOptions = {
     context: CompilerContext;
     program: Program;
     member: MemberExpression;
-    path: string[];
+    path: readonly string[];
 };
 
 type ResolvePathToExprResult = {
@@ -175,9 +87,9 @@ const resolvePathToExpr = (
         });
     }
 
-    const name: string | undefined = options.path[0];
+    const rootName: string | undefined = options.path[0];
 
-    if (!name) {
+    if (!rootName) {
         throw new CompileError({
             context: options.context,
             span: {
@@ -191,7 +103,7 @@ const resolvePathToExpr = (
     let currentExpr: Expression | undefined = findInlineExpression({
         context: options.context,
         program: options.program,
-        name,
+        name: rootName,
     });
 
     if (!currentExpr) {
@@ -275,42 +187,5 @@ const resolvePathToExpr = (
     };
 };
 
-type HandleMemberValueOptions = {
-    context: CompilerContext;
-    program: Program;
-    selectors: readonly string[];
-    key: string;
-    member: MemberExpression;
-};
-
-type HandleMemberValueResult = {
-    plans: StyleNodePlan[];
-};
-
-const handleMemberValue = (
-    options: HandleMemberValueOptions,
-): HandleMemberValueResult => {
-    const { path } = collectMemberPath({
-        context: options.context,
-        program: options.program,
-        member: options.member,
-    });
-
-    const { expr } = resolvePathToExpr({
-        context: options.context,
-        program: options.program,
-        member: options.member,
-        path,
-    });
-
-    return handleKeyValue({
-        context: options.context,
-        program: options.program,
-        selectors: options.selectors,
-        key: options.key,
-        value: expr,
-    });
-};
-
-export type { HandleMemberValueOptions, HandleMemberValueResult };
-export { handleMemberValue };
+export type { ResolvePathToExprOptions, ResolvePathToExprResult };
+export { resolvePathToExpr };

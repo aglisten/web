@@ -217,4 +217,59 @@ describe("processor style tests", (): void => {
             }).code,
         );
     });
+
+    it("should process the style function with multiple member expressions  ", (): void => {
+        const code = `
+            const display = {
+                value: {
+                    block: "block",
+                },
+            };
+
+            const container = {
+                ${SIGNATURE}: true,
+                id: "container",
+                variable: "container",
+                function: "style",
+                arguments: [
+                    {
+                        display: display.value.block,
+                    },
+                ],
+            };
+        ` as const;
+
+        const output = `
+            .djcd17uu {
+                display: block;
+            }
+        ` as const;
+
+        const { program } = parse({
+            file,
+            code,
+        });
+
+        const context: CompilerContext = createCompilerContext({
+            test: true,
+            file,
+            program,
+        });
+
+        const { css } = process({
+            context,
+            program,
+            programRef: program,
+        });
+
+        expect(
+            minifyCSS({
+                source: css,
+            }).code,
+        ).toBe(
+            minifyCSS({
+                source: output,
+            }).code,
+        );
+    });
 });
