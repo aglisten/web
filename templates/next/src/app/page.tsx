@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { style, variables } from "ammolite";
+import { merge, style, variables } from "ammolite";
 import Image from "next/image";
 
 export default (): React.JSX.Element => {
@@ -16,11 +16,14 @@ export default (): React.JSX.Element => {
                     priority
                 />
                 <div className={intro}>
-                    <h1>To get started, edit the page.tsx file.</h1>
-                    <p>
+                    <h1 className={introH1}>
+                        To get started, edit the page.tsx file.
+                    </h1>
+                    <p className={introP}>
                         Looking for a starting point or more instructions? Head
                         over to{" "}
                         <a
+                            className={introA}
                             href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -29,6 +32,7 @@ export default (): React.JSX.Element => {
                         </a>{" "}
                         or the{" "}
                         <a
+                            className={introA}
                             href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -40,7 +44,7 @@ export default (): React.JSX.Element => {
                 </div>
                 <div className={ctas}>
                     <a
-                        className={primary}
+                        className={merge(ctasA, primary)}
                         href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -55,7 +59,7 @@ export default (): React.JSX.Element => {
                         Deploy Now
                     </a>
                     <a
-                        className={secondary}
+                        className={merge(ctasA, secondary)}
                         href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -142,35 +146,35 @@ const intro: string = style({
     "@media (max-width: 600px)": {
         gap: "16px",
     },
+});
 
-    h1: {
-        maxWidth: "320px",
-        fontSize: "40px",
-        fontWeight: 600,
-        lineHeight: "48px",
-        letterSpacing: "-2.4px",
-        textWrap: "balance",
-        color: colors.textPrimary,
+const introH1: string = style({
+    maxWidth: "320px",
+    fontSize: "40px",
+    fontWeight: 600,
+    lineHeight: "48px",
+    letterSpacing: "-2.4px",
+    textWrap: "balance",
+    color: colors.textPrimary,
 
-        "@media (max-width: 600px)": {
-            fontSize: "32px",
-            lineHeight: "40px",
-            letterSpacing: "-1.92px",
-        },
+    "@media (max-width: 600px)": {
+        fontSize: "32px",
+        lineHeight: "40px",
+        letterSpacing: "-1.92px",
     },
+});
 
-    p: {
-        maxWidth: "440px",
-        fontSize: "18px",
-        lineHeight: "32px",
-        textWrap: "balance",
-        color: colors.textSecondary,
-    },
+const introP: string = style({
+    maxWidth: "440px",
+    fontSize: "18px",
+    lineHeight: "32px",
+    textWrap: "balance",
+    color: colors.textSecondary,
+});
 
-    a: {
-        fontWeight: 500,
-        color: colors.textPrimary,
-    },
+const introA: string = style({
+    fontWeight: 500,
+    color: colors.textPrimary,
 });
 
 const ctas: string = style({
@@ -180,20 +184,20 @@ const ctas: string = style({
     maxWidth: "440px",
     gap: "16px",
     fontSize: "14px",
+});
 
-    a: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "40px",
-        padding: "0 16px",
-        borderRadius: "128px",
-        border: "1px solid transparent",
-        transition: ".2s",
-        cursor: "pointer",
-        width: "fit-content",
-        fontWeight: 500,
-    },
+const ctasA: string = style({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "40px",
+    padding: "0 16px",
+    borderRadius: "128px",
+    border: "1px solid transparent",
+    transition: ".2s",
+    cursor: "pointer",
+    width: "fit-content",
+    fontWeight: 500,
 });
 
 const primary: string = style({
